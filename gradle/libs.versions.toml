@@ -13,6 +13,7 @@ retrofit_gson_ver = "2.5.0"
 hilt-version = "2.51.1"
 appcompat = "1.7.0"
 material = "1.12.0"
+securityCryptoKtx = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -41,6 +42,7 @@ hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-com
 navigation = { module = "androidx.navigation:navigation-compose", version = "2.8.4" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-security-crypto-ktx = { group = "androidx.security", name = "security-crypto-ktx", version.ref = "securityCryptoKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

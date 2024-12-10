@@ -35,6 +35,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import com.where.to.go.application.plugins.TokenManager
 import com.where.to.go.application.ui.theme.WhereToGoApplicationTheme
 import com.where.to.go.internet.cases.AuthUseCase
 import com.where.to.go.internet.cases.UserUseCase
@@ -55,6 +56,7 @@ class AuthorizationActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent { AuthorizationScreen(authUseCase = authUseCase) }
+        TokenManager.init(this)
     }
 }
 
@@ -213,7 +215,7 @@ fun handleLogin(
             if (response.isSuccessful) {
                 val token = response.body()?.token ?: "Токен отсутствует"
                 onResult("Успешный вход: $token")
-                //TODO save token
+                TokenManager.saveToken(token)
                 val intent = Intent(context, MainActivity::class.java)
                 context.startActivity(intent)
             } else {
