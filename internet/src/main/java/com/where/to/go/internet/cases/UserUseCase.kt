@@ -8,15 +8,23 @@ import retrofit2.Response
 
 class UserUseCase: UserService {
     override suspend fun getAllUsers(): Response<List<User>> {
-        return RetrofitClient.instance.getAllUsers()
+        return RetrofitClient.userService.getAllUsers()
     }
 
-    override suspend fun createUser(user: AuthRequestModel): Response<AuthRequestModel> {
-        return RetrofitClient.instance.createUser(user)
+    override suspend fun getUser(id: Int): Response<User> {
+        return RetrofitClient.userService.getUser(id)
     }
 
     override suspend fun testCall(): Response<Any> {
-        return RetrofitClient.instance.testCall()
+        return RetrofitClient.userService.testCall()
+    }
+
+    override suspend fun deleteUser(id: Int): Response<Any> {
+        return RetrofitClient.userService.deleteUser(id)
+    }
+
+    override suspend fun editUser(id: Int, user: User): Response<User> {
+        return RetrofitClient.userService.editUser(id, user)
     }
 
 }

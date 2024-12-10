@@ -1,6 +1,7 @@
 package com.where.to.go.application
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -61,6 +62,7 @@ fun TestScreen(userUseCase: UserUseCase) {
         if (getUserState > 0) {
             isProgress = true
             users = userUseCase.getAllUsers().body()?.toMutableList() ?: emptyList<User>().toMutableList()
+            Log.e("TAG", users.toString())
             isProgress = false
 
         }

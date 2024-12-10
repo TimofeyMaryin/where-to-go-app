@@ -15,9 +15,3 @@ data class User(
     val phone: String?
 )
 
-data class AuthRequestModel(
-    val name: String,
-    val email: String?,
-    val phone: String?,
-    val password: String,
-)
