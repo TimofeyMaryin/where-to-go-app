@@ -33,4 +33,5 @@ object RetrofitClient {
     val partyService: PartyService by lazy {
         retrofit.create(PartyService::class.java)
     }
+
 }

@@ -1,6 +1,7 @@
 package com.where.to.go.internet.dao
 
 import com.where.to.go.internet.models.AuthRequestModel
+import com.where.to.go.internet.models.AuthResponseModel
 import com.where.to.go.internet.models.User
 import retrofit2.Response
 import retrofit2.http.Body
@@ -11,6 +12,11 @@ import retrofit2.http.Url
 
 interface UserService {
     @GET("/test/users") suspend fun getAllUsers(): Response<List<User>>
-    @POST("/test/users") suspend fun createUser(@Body user: AuthRequestModel): Response<AuthRequestModel>
     @GET suspend fun testCall(): Response<Any>
+    @POST suspend fun login(user: AuthRequestModel): Response<AuthResponseModel>
+    @GET suspend fun getUser(id: Int): Response<User>
+    @GET suspend fun deleteUser(id: Int): Response<Any>
+    @POST suspend fun editUser(id: Int, user: User): Response<User>
+    @POST suspend fun signup(user: AuthRequestModel): Response<AuthResponseModel>
+
 }
