@@ -3,7 +3,8 @@ package com.where.to.go.application.plugins
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
+import androidx.security.crypto.MasterKeys
+
 
 object TokenManager {
     private const val PREFS_NAME = "secure_prefs"
@@ -12,9 +13,7 @@ object TokenManager {
     private lateinit var sharedPreferences: SharedPreferences
 
     fun init(context: Context) {
-        val masterKey = MasterKey.Builder(context)
-            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-            .build()
+        val masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
 
         sharedPreferences = EncryptedSharedPreferences.create(
             PREFS_NAME,
