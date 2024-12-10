@@ -13,7 +13,4 @@ interface UserService {
     @GET("/test/users") suspend fun getAllUsers(): Response<List<User>>
     @POST("/test/users") suspend fun createUser(@Body user: AuthRequestModel): Response<AuthRequestModel>
     @GET suspend fun testCall(): Response<Any>
-
-    @POST("/auth/signup") suspend fun signup(@Body user: AuthRequestModel): Response<AuthRequestModel>
-    @POST("/auth/login") suspend fun login(@Body user: AuthRequestModel): Response<AuthRequestModel>
 }

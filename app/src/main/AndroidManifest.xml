@@ -20,6 +20,13 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.WhereToGoApplication">
+
+        </activity>
+        <activity
+            android:name=".AuthorizationActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.WhereToGoApplication">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
