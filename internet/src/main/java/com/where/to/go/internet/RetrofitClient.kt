@@ -1,6 +1,7 @@
 package com.where.to.go.internet
 
 import com.where.to.go.internet.dao.AuthService
+import com.where.to.go.internet.dao.PartyService
 import com.where.to.go.internet.dao.UserService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -28,5 +29,8 @@ object RetrofitClient {
     }
     val authService: AuthService by lazy {
         retrofit.create(AuthService::class.java)
+    }
+    val partyService: PartyService by lazy {
+        retrofit.create(PartyService::class.java)
     }
 }
