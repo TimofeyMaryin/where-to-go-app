@@ -1,5 +1,6 @@
 package com.where.to.go.application
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,28 +27,35 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.where.to.go.application.ui.theme.WhereToGoApplicationTheme
+import com.where.to.go.auth.AuthActivity
 import com.where.to.go.internet.cases.UserUseCase
 import com.where.to.go.internet.models.User
 
-class MainActivity : ComponentActivity() {
+    class MainActivity : ComponentActivity() {
     private lateinit var userUseCase: UserUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userUseCase = UserUseCase()
 
+
         enableEdgeToEdge()
 
-        setContent { TestScreen(userUseCase = userUseCase) }
+        setContent { TestScreen(userUseCase = userUseCase, this) }
     }
 }
 
 
 @Composable
-fun TestScreen(userUseCase: UserUseCase) {
+fun TestScreen(
+    userUseCase: UserUseCase,
+    activity: MainActivity
+) {
+    val context = LocalContext.current
     var getUserState by remember { mutableIntStateOf(0) }
     var getTestState by remember {
         mutableStateOf(0)
@@ -83,7 +92,11 @@ fun TestScreen(userUseCase: UserUseCase) {
                 Greeting(
                     data = users.joinToString(" | "),
                     testData = bodyTestCase,
-                    onTestClick = {  },
+                    onTestClick = {
+                        val intent = Intent(activity, AuthActivity::class.java)
+                        activity.startActivity(intent)
+
+                    },
                     onClick = { getUserState++ }
                 )
             }

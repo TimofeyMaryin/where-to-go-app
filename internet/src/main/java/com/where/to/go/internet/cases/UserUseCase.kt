@@ -19,4 +19,12 @@ class UserUseCase: UserService {
         return RetrofitClient.instance.testCall()
     }
 
+    override suspend fun signup(user: AuthRequestModel): Response<AuthRequestModel> {
+        return RetrofitClient.instance.signup(user)
+    }
+
+    override suspend fun login(user: AuthRequestModel): Response<AuthRequestModel> {
+        return RetrofitClient.instance.login(user)
+    }
+
 }

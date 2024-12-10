@@ -41,6 +41,9 @@ hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-com
 navigation = { module = "androidx.navigation:navigation-compose", version = "2.8.4" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+# Shadow
+custom-shadow = { group = "com.github.TimofeyMaryin", name = "gufo-shadow", version = "1.0.0" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

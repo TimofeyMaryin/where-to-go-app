@@ -1,23 +1,19 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-
     id("kotlin-kapt")
     alias(libs.plugins.hilt)
 }
 
 android {
-    namespace = "com.where.to.go.application"
+    namespace = "com.where.to.go.auth"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.where.to.go.application"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -75,18 +71,12 @@ dependencies {
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 
-    // Retrofit
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.convertor.gson)
-
-    implementation(libs.navigation)
-
-    implementation(project(":domain"))
+    implementation(project(":presentation:component"))
     implementation(project(":internet"))
-    implementation(project(":presentation:auth"))
-
 
 }
+
+
 
 kapt {
     correctErrorTypes = true

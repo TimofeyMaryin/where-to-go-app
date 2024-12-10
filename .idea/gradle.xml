@@ -12,6 +12,9 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/internet" />
+            <option value="$PROJECT_DIR$/presentation" />
+            <option value="$PROJECT_DIR$/presentation/auth" />
+            <option value="$PROJECT_DIR$/presentation/component" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

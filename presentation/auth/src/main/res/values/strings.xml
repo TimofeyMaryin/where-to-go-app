@@ -1,0 +1,15 @@
+<resources>
+    <string name="where_to_go">Куда пойти?</string>
+    <string name="start_screen_label">Какой-то тест, чтобы был какой-то длинный напечатанный текст</string>
+
+    <string name="enter">Войти</string>
+    <string name="signup">Регистрация</string>
+    <string name="auth">Авторизация</string>
+
+    <string name="email">E-mail</string>
+    <string name="password">Пароль</string>
+
+    <string name="im_guest">Я посетитель</string>
+    <string name="im_organizer">Я организатор</string>
+    <string name="add">Добавить</string>
+</resources>

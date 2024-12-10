@@ -16,6 +16,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+
+        maven { url = uri("https://jitpack.io") }
     }
 }
 
@@ -23,3 +25,5 @@ rootProject.name = "WhereToGoApplication"
 include(":app")
 include(":domain")
 include(":internet")
+include(":presentation:auth")
+include(":presentation:component")
