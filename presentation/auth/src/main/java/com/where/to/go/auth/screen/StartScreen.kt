@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import com.where.to.go.auth.R
 import com.where.to.go.auth.navigation.Screen
 import com.where.to.go.auth.vms.AuthViewModel
+import com.where.to.go.component.AnimateText
 import com.where.to.go.component.AppText
 import com.where.to.go.component.ButtonColor
 import com.where.to.go.component.PrimaryButton
@@ -38,17 +39,6 @@ fun StartScreen(
     viewModel: AuthViewModel,
 ) {
 
-    val animatedText = remember { Animatable(0f) }
-    val fullText = stringResource(id = R.string.where_to_go).toCharArray()
-    LaunchedEffect(Unit) {
-        for (i in fullText.indices) {
-            animatedText.animateTo(
-                targetValue = (i + 1).toFloat(),
-                animationSpec = tween(durationMillis = 100) // Длительность анимации для каждой буквы
-            )
-            delay(100) // Задержка между буквами
-        }
-    }
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
 
@@ -72,12 +62,7 @@ fun StartScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-
-                AppText(
-                    text = fullText.take(animatedText.value.toInt()).joinToString(""),
-                    weight = TextWeight.BOLD,
-                    size = TextSize.HEADLINE
-                )
+                AnimateText(value = stringResource(id = R.string.where_to_go), weight = TextWeight.BOLD, size = TextSize.HEADLINE)
 
                 AppText(text = stringResource(id = R.string.start_screen_label), weight = TextWeight.REGULAR, size = TextSize.TITLE_MEDIUM)
 
