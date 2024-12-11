@@ -1,6 +1,7 @@
 package com.where.to.go.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -53,6 +54,11 @@ fun AppTextField(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier
+                .border(
+                    width = 2.dp,
+                    color = if (isError) colorError else Color.Transparent,
+                    shape = primaryClip()
+                )
                 .fillMaxWidth()
                 .then(modifier),
             shape = primaryClip(),
@@ -63,14 +69,14 @@ fun AppTextField(
                 errorIndicatorColor = Color.Transparent,
 
                 focusedContainerColor = colorContainerBg,
-                errorContainerColor = colorError,
+                errorContainerColor = colorContainerBg,
                 disabledContainerColor = colorContainerBg,
                 unfocusedContainerColor = colorContainerBg,
 
                 unfocusedTextColor = colorWhite,
                 focusedTextColor = colorWhite,
                 disabledTextColor = colorWhite,
-                errorTextColor = colorWhite,
+                errorTextColor = colorError,
 
             ),
             maxLines = 1,
