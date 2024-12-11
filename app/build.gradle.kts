@@ -20,7 +20,10 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+
     }
+
 
     buildTypes {
         release {
@@ -85,6 +88,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":internet"))
     implementation(project(":presentation:auth"))
+     implementation(project(":presentation:main"))
 
 
 }

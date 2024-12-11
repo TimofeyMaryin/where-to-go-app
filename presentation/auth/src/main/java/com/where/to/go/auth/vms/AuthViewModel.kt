@@ -16,7 +16,8 @@ class AuthViewModel @Inject constructor(): ViewModel() {
 
     val enterUserName: (String) -> Unit = { email -> this.userEmail = email }
     val enterUserPassword: (String) -> Unit = { password -> this.userPassword = password }
-    val clearUserData = { userEmail = ""; userPassword = ""; userAccType = -1 }
+    val clearUserData = { userEmail = ""; userPassword = ""; userRole = -1 }
+
 
     fun isValidEmail(email: String = this.userEmail): Boolean {
         // Регулярное выражение для проверки формата электронной почты
@@ -25,8 +26,8 @@ class AuthViewModel @Inject constructor(): ViewModel() {
     }
 
     // auth
-    var userAccType by mutableStateOf(-1)
-    var enterUserAccType: (Int) -> Unit = { type -> userAccType = type }
+    var userRole by mutableStateOf(-1)
+    var enterUserAccType: (Int) -> Unit = { type -> userRole = type }
 
     var userTelegram by mutableStateOf<String?>(null)
     var userVK by mutableStateOf<String?>(null)

@@ -1,7 +1,10 @@
 package com.where.to.go.auth.screen
 
+import android.content.Context
 import android.content.Intent
+import android.media.session.MediaSession.Token
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColor
@@ -34,19 +37,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.input.OffsetMapping
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.input.TransformedText
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.core.content.contentValuesOf
 import androidx.core.text.isDigitsOnly
 import androidx.navigation.NavController
 import com.where.to.go.auth.AuthActivity
 import com.where.to.go.auth.R
+import com.where.to.go.auth.plugins.TokenManager
 import com.where.to.go.auth.vms.AuthViewModel
 import com.where.to.go.component.AppText
 import com.where.to.go.component.AppTextField
@@ -65,6 +63,7 @@ import com.where.to.go.component.pink
 import com.where.to.go.component.primaryClip
 import com.where.to.go.internet.cases.AuthUseCase
 import com.where.to.go.internet.models.AuthRequestModel
+import com.where.to.go.main.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -75,6 +74,7 @@ fun AuthScreen(
     viewModel: AuthViewModel,
 ) {
     val context = LocalContext.current
+
     var showAlertForFillPersonalData by remember { mutableStateOf<PersonalType?>(null) }
     val scope = rememberCoroutineScope()
 
@@ -107,7 +107,7 @@ fun AuthScreen(
 
             item {
                 CheckBoxParent(
-                    status = viewModel.userAccType == 0,
+                    status = viewModel.userRole == 0,
                     value = stringResource(id = R.string.im_guest)
                 ) {
                     viewModel.enterUserAccType.invoke(0)
@@ -115,7 +115,7 @@ fun AuthScreen(
             }
             item {
                 CheckBoxParent(
-                    status = viewModel.userAccType == 1,
+                    status = viewModel.userRole == 1,
                     value = stringResource(id = R.string.im_organizer)
                 ) {
                     viewModel.enterUserAccType.invoke(1)
@@ -164,6 +164,7 @@ fun AuthScreen(
                     color = ButtonColor.COLORFUL
                 ) {
                     handleSignup(
+                        context = context,
                         authUseCase = authUseCase,
                         coroutineScope = scope,
                         email = viewModel.userEmail,
@@ -172,10 +173,11 @@ fun AuthScreen(
                             Log.e("TAG - Auth", "AuthScreen load: $it", )
 
                         },
-                        onResult = {
-                            Log.e("TAG - Auth", "AuthScreen res: $it", )
+                        onResult = { msg: String ->
+                            Log.e("TAG", "AuthScreen: $msg", )
                         },
-                        phone = viewModel.userPhone ?: ""
+                        phone = viewModel.userPhone ?: "",
+                        role = viewModel.userRole
                     )
 
                 }
@@ -313,22 +315,73 @@ private fun AddPersonalData(
 
 
 fun handleSignup(
+    context: Context,
     authUseCase: AuthUseCase,
     email: String,
     phone: String,
     password: String,
+    role: Int,
     coroutineScope: CoroutineScope,
     onLoading: (Boolean) -> Unit,
     onResult: (String) -> Unit
 ) {
     coroutineScope.launch {
         onLoading(true)
+
         try {
-            val response = authUseCase.signup(AuthRequestModel(email = email, phone = phone, password = password, name = ""))
+            val response = authUseCase.signup(AuthRequestModel(email = email, phone = phone, password = password, role = role))
+
             if (response.isSuccessful) {
-                onResult("Reponse: " + response.message())
+                Log.e("TAG - handle-signup", "handleSignup: ${response.body()}", )
+                onResult("Success handleSignup: ${response.body()}")
+                handleLogin(
+                    context = context,
+                    authUseCase = authUseCase,
+                    email = email,
+                    role = role,
+                    password = password,
+                    coroutineScope = coroutineScope,
+                    onLoading = onLoading,
+                    onResult = onResult,
+                )
+
+            } else {
+                onResult("Ошибка handleSignup_1: ${response.message()}")
+            }
+        } catch (e: Exception) {
+            onResult("Ошибка handleSignup_2: ${e.message}")
+        } finally {
+            onLoading(false)
+        }
+    }
+}
 
 
+fun handleLogin(
+    context: Context,
+    authUseCase: AuthUseCase,
+    email: String,
+    role: Int,
+    password: String,
+    coroutineScope: CoroutineScope,
+    onLoading: (Boolean) -> Unit,
+    onResult: (String) -> Unit
+
+) {
+    coroutineScope.launch {
+        onLoading(true)
+        try {
+            val response = authUseCase.login(AuthRequestModel(email = email, phone = "", password = password, role = role))
+            if (response.isSuccessful) {
+                val token = response.body()?.token ?: "Токен отсутствует"
+                onResult("Успешный вход: $token")
+
+                TokenManager.apply {
+                    init(context)
+                    saveToken(token)
+                }
+                val intent = Intent(context, MainActivity::class.java)
+                context.startActivity(intent)
             } else {
                 onResult("Ошибка: ${response.message()}")
             }

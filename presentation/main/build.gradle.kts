@@ -3,11 +3,10 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
     alias(libs.plugins.hilt)
-
 }
 
 android {
-    namespace = "com.where.to.go.auth"
+    namespace = "com.where.to.go.main"
     compileSdk = 34
 
     defaultConfig {
@@ -15,9 +14,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-        vectorDrawables {
-            useSupportLibrary = true
-        }
     }
 
     buildTypes {
@@ -51,8 +47,6 @@ android {
 
 dependencies {
 
-    implementation ("androidx.security:security-crypto:1.0.0")
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -79,7 +73,6 @@ dependencies {
     implementation(libs.retrofit)
 
     implementation(project(":presentation:component"))
-    implementation(project(":presentation:main"))
     implementation(project(":internet"))
 
 }
