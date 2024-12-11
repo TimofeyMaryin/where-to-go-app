@@ -50,6 +50,8 @@ android {
 
 dependencies {
 
+    implementation ("androidx.security:security-crypto:1.0.0")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -76,6 +78,7 @@ dependencies {
     implementation(libs.retrofit)
 
     implementation(project(":presentation:component"))
+    implementation(project(":presentation:main"))
     implementation(project(":internet"))
 
 }

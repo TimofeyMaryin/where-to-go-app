@@ -40,6 +40,12 @@
             android:exported="true"
             />
 
+        <activity
+            android:name="com.where.to.go.main.MainActivity"
+            android:theme="@style/Theme.WhereToGoApplication"
+            android:exported="true"
+            />
+
 
     </application>
 

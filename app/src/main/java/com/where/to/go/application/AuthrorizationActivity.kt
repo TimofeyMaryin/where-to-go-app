@@ -3,7 +3,6 @@ package com.where.to.go.application
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -18,14 +17,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -35,15 +31,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.where.to.go.application.plugins.TokenManager
-import com.where.to.go.application.ui.theme.WhereToGoApplicationTheme
+import com.where.to.go.auth.plugins.TokenManager
 import com.where.to.go.internet.cases.AuthUseCase
-import com.where.to.go.internet.cases.UserUseCase
 import com.where.to.go.internet.models.AuthRequestModel
-import com.where.to.go.internet.models.AuthResponseModel
-import com.where.to.go.internet.models.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
