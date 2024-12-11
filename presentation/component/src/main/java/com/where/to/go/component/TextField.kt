@@ -20,11 +20,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlin.math.absoluteValue
 
 
 enum class TextFieldType { TEXT, PASSWORD, EMAIL, PHONE }
@@ -94,7 +98,7 @@ fun AppTextField(
                 TextFieldType.TEXT -> VisualTransformation.None
                 TextFieldType.PASSWORD -> PasswordVisualTransformation()
                 TextFieldType.EMAIL -> VisualTransformation.None
-                TextFieldType.PHONE -> VisualTransformation.None
+                TextFieldType.PHONE -> MaskVisualTransformation("# (###) ###-##-##")
             }
         )
     }
@@ -121,4 +125,41 @@ private fun AppTextFieldPreview() {
         }
     }
 
+}
+
+
+class MaskVisualTransformation(private val mask: String) : VisualTransformation {
+
+    private val specialSymbolsIndices = mask.indices.filter { mask[it] != '#' }
+
+    override fun filter(text: AnnotatedString): TransformedText {
+        var out = ""
+        var maskIndex = 0
+        text.forEach { char ->
+            while (specialSymbolsIndices.contains(maskIndex)) {
+                out += mask[maskIndex]
+                maskIndex++
+            }
+            out += char
+            maskIndex++
+        }
+        return TransformedText(AnnotatedString(out), offsetTranslator())
+    }
+
+    private fun offsetTranslator() = object : OffsetMapping {
+        override fun originalToTransformed(offset: Int): Int {
+            val offsetValue = offset.absoluteValue
+            if (offsetValue == 0) return 0
+            var numberOfHashtags = 0
+            val masked = mask.takeWhile {
+                if (it == '#') numberOfHashtags++
+                numberOfHashtags < offsetValue
+            }
+            return masked.length + 1
+        }
+
+        override fun transformedToOriginal(offset: Int): Int {
+            return mask.take(offset.absoluteValue).count { it == '#' }
+        }
+    }
 }
