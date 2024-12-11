@@ -8,9 +8,13 @@ import com.where.to.go.auth.screen.LoginScreen
 import com.where.to.go.auth.screen.AuthScreen
 import com.where.to.go.auth.screen.StartScreen
 import com.where.to.go.auth.vms.AuthViewModel
+import com.where.to.go.internet.cases.AuthUseCase
 
 @Composable
-fun AppNavigation(viewModel: AuthViewModel) {
+fun AppNavigation(
+    viewModel: AuthViewModel,
+    authUseCase: AuthUseCase,
+) {
     val navController = rememberNavController()
 
 
@@ -30,7 +34,7 @@ fun AppNavigation(viewModel: AuthViewModel) {
         this.composable(
             route = Screen.AuthScreen.route
         ) {
-            AuthScreen(navController = navController, viewModel = viewModel)
+            AuthScreen(navController = navController, viewModel = viewModel, authUseCase = authUseCase)
         }
 
         this.composable(

@@ -71,6 +71,10 @@ dependencies {
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 
+    // Retrofit
+    implementation(libs.retrofit.convertor.gson)
+    implementation(libs.retrofit)
+
     implementation(project(":presentation:component"))
     implementation(project(":internet"))
 

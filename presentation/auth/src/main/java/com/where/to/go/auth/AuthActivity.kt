@@ -23,16 +23,19 @@ import com.where.to.go.component.TextSize
 import com.where.to.go.component.TextWeight
 import com.where.to.go.component.WhereToGoApplicationTheme
 import com.where.to.go.component.colorBg
+import com.where.to.go.internet.RetrofitClient
+import com.where.to.go.internet.cases.AuthUseCase
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 class AuthActivity: ComponentActivity() {
     private val authViewModel: AuthViewModel by viewModels()
-
+    private lateinit var authUseCase: AuthUseCase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.e("TAG", "onCreate: start auth", )
+        authUseCase = AuthUseCase()
 
         enableEdgeToEdge()
         setContent {
@@ -42,7 +45,7 @@ class AuthActivity: ComponentActivity() {
                         .fillMaxSize()
                         .background(colorBg),
                 ) {
-                    AppNavigation(viewModel = authViewModel)
+                    AppNavigation(viewModel = authViewModel, authUseCase = authUseCase)
                     it
 
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

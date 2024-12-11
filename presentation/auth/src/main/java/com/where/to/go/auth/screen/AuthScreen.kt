@@ -1,6 +1,7 @@
 package com.where.to.go.auth.screen
 
 import android.app.Person
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColor
@@ -27,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,14 +59,21 @@ import com.where.to.go.component.colorBg
 import com.where.to.go.component.colorContainerBg
 import com.where.to.go.component.pink
 import com.where.to.go.component.primaryClip
+import com.where.to.go.internet.RetrofitClient
+import com.where.to.go.internet.cases.AuthUseCase
+import com.where.to.go.internet.models.AuthRequestModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun AuthScreen(
+    authUseCase: AuthUseCase,
     navController: NavController,
     viewModel: AuthViewModel,
 ) {
 
     var showAlertForFillPersonalData by remember { mutableStateOf<PersonalType?>(null) }
+    val scope = rememberCoroutineScope()
 
     BackHandler {
         navController.popBackStack()
@@ -151,6 +160,19 @@ fun AuthScreen(
                     value = stringResource(id = R.string.enter),
                     color = ButtonColor.COLORFUL
                 ) {
+                    handleSignup(
+                        authUseCase = authUseCase,
+                        coroutineScope = scope,
+                        email = viewModel.userEmail,
+                        password = viewModel.userPassword,
+                        onLoading = {
+                            Log.e("TAG - Auth", "AuthScreen load: $it", )
+                        },
+                        onResult = {
+                            Log.e("TAG - Auth", "AuthScreen res: $it", )
+                        },
+                        phone = viewModel.userPhone ?: ""
+                    )
 
                 }
             }
@@ -283,4 +305,33 @@ private fun AddPersonalData(
     }
 
 
+}
+
+
+fun handleSignup(
+    authUseCase: AuthUseCase,
+    email: String,
+    phone: String,
+    password: String,
+    coroutineScope: CoroutineScope,
+    onLoading: (Boolean) -> Unit,
+    onResult: (String) -> Unit
+) {
+    coroutineScope.launch {
+        onLoading(true)
+        try {
+            val response = authUseCase.signup(AuthRequestModel(email = email, phone = phone, password = password, name = ""))
+            if (response.isSuccessful) {
+                onResult("Reponse: " + response.message())
+
+
+            } else {
+                onResult("Ошибка: ${response.message()}")
+            }
+        } catch (e: Exception) {
+            onResult("Ошибка: ${e.message}")
+        } finally {
+            onLoading(false)
+        }
+    }
 }
