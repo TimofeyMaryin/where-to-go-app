@@ -1,27 +1,28 @@
 package com.where.to.go.auth.screen
 
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import com.where.to.go.auth.R
 import com.where.to.go.auth.vms.AuthViewModel
@@ -34,8 +35,12 @@ import com.where.to.go.component.SquareButton
 import com.where.to.go.component.TextFieldType
 import com.where.to.go.component.TextSize
 import com.where.to.go.component.TextWeight
+import com.where.to.go.component.animateBrushPrimary
+import com.where.to.go.component.colorContainerBg
+import com.where.to.go.component.colorError
+import com.where.to.go.component.colorWhite
+import com.where.to.go.component.primaryClip
 import com.where.to.go.internet.cases.AuthUseCase
-import com.where.to.go.internet.cases.UserUseCase
 
 @Composable
 fun LoginScreen(
@@ -97,6 +102,40 @@ fun LoginScreen(
                 ) {
                     viewModel.userPhone = it
                 }
+
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    AppText(
+                        text = "Ваша роль",
+                        weight = TextWeight.REGULAR,
+                        size = TextSize.BODY_LARGE,
+                        color = colorWhite
+                    )
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .clip(primaryClip())
+                                .fillMaxWidth()
+                                .height(60.dp)
+                                .background(colorContainerBg),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceAround
+                        ) {
+                            UserRoleButton(value = stringResource(id = R.string.im_guest), status = viewModel.userRole == 0) {
+                                viewModel.userRole = 0
+                            }
+
+                            UserRoleButton(value = stringResource(id = R.string.im_organizer), status = viewModel.userRole == 1) {
+                                viewModel.userRole = 1
+                            }
+                        }
+                    }
+                }
             }
 
 
@@ -111,11 +150,43 @@ fun LoginScreen(
                     onLoading = {},
                     onResult = {},
                     password = viewModel.userPassword,
-                    role = 0
+                    role = viewModel.userRole
                 )
             }
         }
 
+    }
+
+}
+
+@Composable
+private fun RowScope.UserRoleButton(
+    value: String,
+    status: Boolean,
+    onClick: () -> Unit
+) {
+    val animateBgAlpha by animateFloatAsState(targetValue = if (status) 1f else 0f)
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .weight(1f),
+        contentAlignment = Alignment.Center,
+    ) {
+        Box(
+            modifier = Modifier
+                .clip(primaryClip())
+                .fillMaxWidth(.9f)
+                .fillMaxHeight(.9f)
+                .background(animateBrushPrimary(alpha = animateBgAlpha))
+                .clickable { onClick() },
+            contentAlignment = Alignment.Center
+        ) {
+            AppText(
+                text = value,
+                weight = TextWeight.REGULAR,
+                size = TextSize.BODY_LARGE
+            )
+        }
     }
 
 }
