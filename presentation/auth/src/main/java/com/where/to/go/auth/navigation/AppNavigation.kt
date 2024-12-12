@@ -40,7 +40,7 @@ fun AppNavigation(
         this.composable(
             route = Screen.LoginScreen.route
         ) {
-            LoginScreen(navController = navController, viewModel = viewModel)
+            LoginScreen(navController = navController, viewModel = viewModel, authUseCase = authUseCase)
         }
 
     }

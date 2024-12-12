@@ -8,6 +8,7 @@
 
     <string name="email">E-mail</string>
     <string name="password">Пароль</string>
+    <string name="phone">Номер телефона</string>
 
     <string name="im_guest">Я посетитель</string>
     <string name="im_organizer">Я организатор</string>
