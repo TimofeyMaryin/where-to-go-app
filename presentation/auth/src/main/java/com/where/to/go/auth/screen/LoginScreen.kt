@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -33,13 +34,17 @@ import com.where.to.go.component.SquareButton
 import com.where.to.go.component.TextFieldType
 import com.where.to.go.component.TextSize
 import com.where.to.go.component.TextWeight
+import com.where.to.go.internet.cases.AuthUseCase
+import com.where.to.go.internet.cases.UserUseCase
 
 @Composable
 fun LoginScreen(
+    authUseCase: AuthUseCase,
     navController: NavController,
     viewModel: AuthViewModel,
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     BackHandler {
         viewModel.clearUserData.invoke()
@@ -84,11 +89,30 @@ fun LoginScreen(
                 ) {
                     viewModel.enterUserPassword.invoke(it)
                 }
+
+                AppTextField(
+                    hint = stringResource(id = R.string.phone),
+                    value = viewModel.userPhone,
+                    type = TextFieldType.PHONE
+                ) {
+                    viewModel.userPhone = it
+                }
             }
 
 
             PrimaryButton(value = "Продолжить", color = ButtonColor.COLORFUL) {
                 Toast.makeText(context, "Go LSD!", Toast.LENGTH_SHORT).show()
+
+                handleLogin(
+                    context = context,
+                    authUseCase = authUseCase,
+                    email = viewModel.userEmail,
+                    coroutineScope = scope,
+                    onLoading = {},
+                    onResult = {},
+                    password = viewModel.userPassword,
+                    role = 0
+                )
             }
         }
 

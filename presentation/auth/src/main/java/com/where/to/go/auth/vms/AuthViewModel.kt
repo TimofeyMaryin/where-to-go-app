@@ -13,10 +13,22 @@ class AuthViewModel @Inject constructor(): ViewModel() {
 
     var userEmail by mutableStateOf("")
     var userPassword by mutableStateOf("")
+    var userRole by mutableStateOf(-1)
+
+    var userPhone by mutableStateOf("")
+    var userTelegram by mutableStateOf<String>("")
+    var userVK by mutableStateOf<String>("")
 
     val enterUserName: (String) -> Unit = { email -> this.userEmail = email }
     val enterUserPassword: (String) -> Unit = { password -> this.userPassword = password }
-    val clearUserData = { userEmail = ""; userPassword = ""; userRole = -1 }
+    val clearUserData = {
+        userEmail = "";
+        userPassword = "";
+        userRole = -1
+        userPhone = ""
+        userTelegram = ""
+        userVK = ""
+    }
 
 
     fun isValidEmail(email: String = this.userEmail): Boolean {
@@ -25,11 +37,6 @@ class AuthViewModel @Inject constructor(): ViewModel() {
         return !emailRegex.matches(email)
     }
 
-    // auth
-    var userRole by mutableStateOf(-1)
     var enterUserAccType: (Int) -> Unit = { type -> userRole = type }
 
-    var userTelegram by mutableStateOf<String?>(null)
-    var userVK by mutableStateOf<String?>(null)
-    var userPhone by mutableStateOf<String?>(null)
 }

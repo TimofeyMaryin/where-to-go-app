@@ -186,7 +186,16 @@ fun AuthScreen(
     }
 
     if (showAlertForFillPersonalData != null) {
-        var personalData by remember { mutableStateOf("") }
+        var personalData by remember {
+            mutableStateOf(
+                when (showAlertForFillPersonalData) {
+                    PersonalType.TG -> viewModel.userTelegram
+                    PersonalType.VK -> viewModel.userVK
+                    PersonalType.PHONE -> viewModel.userPhone
+                    null -> ""
+                }
+            )
+        }
         val transition = rememberInfiniteTransition()
         val animateIconColor by transition.animateColor(
             initialValue = pink,
@@ -266,7 +275,7 @@ enum class PersonalType { TG, VK, PHONE }
 @Composable
 private fun AddPersonalData(
     @DrawableRes img: Int,
-    value: String?,
+    value: String,
     onAdd: () -> Unit
 ) {
 
@@ -292,21 +301,16 @@ private fun AddPersonalData(
                     contentScale = ContentScale.Crop
                 )
 
-                if (value != null) {
-                    AppText(text = value, weight = TextWeight.REGULAR, size = TextSize.BODY_LARGE)
-                } else {
-                    TextButton(onClick = { onAdd() }) {
-                        AppText(
-                            text = stringResource(id = R.string.add),
-                            weight = TextWeight.REGULAR,
-                            size = TextSize.BODY_LARGE,
-                            textDecoration = TextDecoration.Underline
-                        )
-                    }
+                TextButton(onClick = { onAdd() }) {
+                    AppText(
+                        text = value.ifEmpty { stringResource(id = R.string.add) },
+                        weight = TextWeight.REGULAR,
+                        size = TextSize.BODY_LARGE
+                    )
                 }
-            }
 
-            SmallCheckBox(status = value != null)
+            }
+            SmallCheckBox(status = value.isNotEmpty())
         }
     }
 
