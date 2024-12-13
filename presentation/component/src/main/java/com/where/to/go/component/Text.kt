@@ -50,6 +50,6 @@ fun AppText(
         fontFamily = fontFamily,
         textDecoration = textDecoration,
         modifier = modifier,
-        lineHeight = 34.sp
+        lineHeight = 28.sp
     )
 }

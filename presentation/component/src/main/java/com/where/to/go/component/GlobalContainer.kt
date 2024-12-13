@@ -45,7 +45,7 @@ fun GlobalContainer(
             ) {
                 Row(
                     modifier = Modifier.fillMaxSize(),
-                    verticalAlignment = if (!isFullScreen) Alignment.CenterVertically else Alignment.Bottom,
+                    verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Row(

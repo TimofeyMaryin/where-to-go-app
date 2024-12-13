@@ -50,11 +50,13 @@ import com.where.to.go.auth.AuthActivity
 import com.where.to.go.auth.R
 import com.where.to.go.auth.navigation.Screen
 import com.where.to.go.auth.vms.AuthViewModel
+import com.where.to.go.component.AddPersonalData
 import com.where.to.go.component.AppText
 import com.where.to.go.component.AppTextField
 import com.where.to.go.component.ButtonColor
 import com.where.to.go.component.CheckBoxParent
 import com.where.to.go.component.GlobalContainer
+import com.where.to.go.component.PersonalType
 import com.where.to.go.component.PrimaryButton
 import com.where.to.go.component.SmallCheckBox
 import com.where.to.go.component.SquareButton
@@ -148,18 +150,18 @@ fun AuthScreen(
 
             }
             item {
-                AddPersonalData(img = R.drawable.telegram, value = viewModel.userTelegram) {
+                AddPersonalData(img = com.where.to.go.component.R.drawable.telegram, value = viewModel.userTelegram) {
                     showAlertForFillPersonalData = PersonalType.TG
                 }
             }
             item {
-                AddPersonalData(img = R.drawable.vk, value = viewModel.userVK) {
+                AddPersonalData(img = com.where.to.go.component.R.drawable.vk, value = viewModel.userVK) {
                     showAlertForFillPersonalData = PersonalType.VK
                 }
             }
 
             item {
-                AddPersonalData(img = R.drawable.phone, value = viewModel.userPhone) {
+                AddPersonalData(img = com.where.to.go.component.R.drawable.phone, value = viewModel.userPhone) {
                     showAlertForFillPersonalData = PersonalType.PHONE
                 }
             }
@@ -285,51 +287,7 @@ fun AuthScreen(
     }
 }
 
-enum class PersonalType { TG, VK, PHONE }
-@Composable
-private fun AddPersonalData(
-    @DrawableRes img: Int,
-    value: String,
-    onAdd: () -> Unit
-) {
 
-    Box(
-        modifier = Modifier.fillMaxWidth(),
-        contentAlignment = Alignment.Center
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Image(
-                    painter = painterResource(id = img),
-                    contentDescription = null,
-                    modifier = Modifier.size(25.dp),
-                    contentScale = ContentScale.Crop
-                )
-
-                TextButton(onClick = { onAdd() }) {
-                    AppText(
-                        text = value.ifEmpty { stringResource(id = R.string.add) },
-                        weight = TextWeight.REGULAR,
-                        size = TextSize.BODY_LARGE
-                    )
-                }
-
-            }
-            SmallCheckBox(status = value.isNotEmpty())
-        }
-    }
-
-
-}
 
 
 
