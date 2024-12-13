@@ -51,6 +51,7 @@ import com.where.to.go.component.TextSize
 import com.where.to.go.component.TextWeight
 import com.where.to.go.component.WhereToGoApplicationTheme
 import com.where.to.go.component.colorBg
+import com.where.to.go.main.R
 
 
 @Composable
@@ -63,13 +64,17 @@ fun RecommendsFragment() {
 
         GlobalContainer(
             topBarStart = {
-                SquareButton(icon = com.where.to.go.component.R.drawable.ic_launcher_foreground) {
+
+                SquareButton(icon = R.drawable.ic_top_bar_menu) {
                     // TODO Show menu
                 }
 
                 AppText(text = "Рекомендации", weight = TextWeight.REGULAR, size = TextSize.TITLE_MEDIUM)
 
-                SquareButton(icon = com.where.to.go.component.R.drawable.ic_launcher_foreground) {
+
+            },
+            topBarEnd = {
+                SquareButton(icon = R.drawable.ic_top_bar_settings) {
                     // TODO Settings
                 }
             }

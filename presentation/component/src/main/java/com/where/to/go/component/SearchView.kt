@@ -60,7 +60,7 @@ fun CustomSearchView(
         )
 
         // Search Button
-        SquareButton(icon = R.drawable.ic_launcher_foreground, size = size.dp) {
+        SquareButton(icon = R.drawable.ic_filters, size = size.dp) {
             onSearchClick() // Handle search action
         }
     }

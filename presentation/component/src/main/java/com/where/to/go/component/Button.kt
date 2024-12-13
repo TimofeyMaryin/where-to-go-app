@@ -73,7 +73,7 @@ fun SquareButton(
 
     Box(
         modifier = Modifier
-            .clip(primaryClip())
+            .clip(secondaryClip())
             .size(size)
             .background(animateBrushPrimary())
             .aspectRatio(1f)

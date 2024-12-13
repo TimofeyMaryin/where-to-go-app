@@ -14,6 +14,7 @@ import com.gufo.custom.gufoshadow.shadow
 
 
 @Composable fun primaryClip() = MaterialTheme.shapes.large
+@Composable fun secondaryClip() = MaterialTheme.shapes.small
 
 @Composable
 fun Modifier.primaryButtonShadow(): Modifier {
