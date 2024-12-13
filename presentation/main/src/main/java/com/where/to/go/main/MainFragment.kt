@@ -13,6 +13,7 @@ import com.where.to.go.component.AppText
 import com.where.to.go.component.TextSize
 import com.where.to.go.component.TextWeight
 import com.where.to.go.component.WhereToGoApplicationTheme
+import com.where.to.go.main.navigation.MainScreenNavigation
 
 
 fun ComponentActivity.mainFragment() {
@@ -20,10 +21,7 @@ fun ComponentActivity.mainFragment() {
     setContent {
         WhereToGoApplicationTheme {
             Scaffold {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    AppText(text = "Token ", weight = TextWeight.BOLD, size = TextSize.BODY_LARGE)
-                }
-
+                MainScreenNavigation()
                 it
             }
         }
