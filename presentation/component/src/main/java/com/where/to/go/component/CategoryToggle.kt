@@ -14,12 +14,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,168 +32,45 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-
 @Composable
 fun CategoryToggle(
-    status: Boolean,
-    onClick: () -> Unit
+    isChecked: Boolean,
+    onToggle: (Boolean) -> Unit,
+    label: String
 ) {
-    val tweenMs = 500
-
-    val animateBorderAlpha by animateFloatAsState(
-        targetValue = if (status) 1f else 0f,
-        animationSpec = tween(tweenMs)
-    )
+    val backgroundColor = if (isChecked) pink else Color.Transparent
+    val borderColor = if (isChecked) Color.Transparent else pink // Define your border color
+    val textColor = colorWhite // Define your text color
 
     Box(
         modifier = Modifier
-            .clip(primaryClip())
-            .border(
-                width = 2.dp,
-                brush = animateBrushPrimary(animateBorderAlpha),
-                shape = primaryClip()
-            )
-            .background(colorBg)
-            .size(40.dp)
-            .clickable { onClick() },
+            .padding(8.dp)
+            .border(2.dp, borderColor, shape = RoundedCornerShape(8.dp))
+            .background(backgroundColor, shape = RoundedCornerShape(8.dp))
+            .clickable { onToggle(!isChecked) } // Toggle state on click
+            .height(50.dp) // Set a fixed height for the toggle
+            .fillMaxWidth(), // Fill the width of the parent
         contentAlignment = Alignment.Center
     ) {
-        AnimatedVisibility(
-            visible = status,
-            enter = slideInVertically(tween(tweenMs)) + fadeIn(tween(tweenMs)),
-            exit = slideOutVertically(tween(tweenMs)) + fadeOut(tween(tweenMs))
-        ) {
-            Icon(
-                imageVector = Icons.Default.Check,
-                contentDescription = null,
-                tint = colorWhite,
-                modifier = Modifier.size(25.dp)
-            )
-        }
-    }
-
-}
-
-@Composable
-private fun CategoryToggle(
-    status: Boolean,
-) {
-    val tweenMs = 500
-
-    val animateBorderAlpha by animateFloatAsState(
-        targetValue = if (status) 1f else 0f,
-        animationSpec = tween(tweenMs)
-    )
-
-    Box(
-        modifier = Modifier
-            .clip(primaryClip())
-            .border(
-                width = 2.dp,
-                brush = animateBrushPrimary(animateBorderAlpha),
-                shape = primaryClip()
-            )
-            .background(colorBg)
-            .size(40.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        AnimatedVisibility(
-            visible = status,
-            enter = slideInVertically(tween(tweenMs)) + fadeIn(tween(tweenMs)),
-            exit = slideOutVertically(tween(tweenMs)) + fadeOut(tween(tweenMs))
-        ) {
-            Icon(
-                imageVector = Icons.Default.Check,
-                contentDescription = null,
-                tint = colorWhite,
-                modifier = Modifier.size(25.dp)
-            )
-        }
-    }
-
-}
-
-
-@Composable
-fun ToggleParent(
-    status: Boolean,
-    value: String,
-    onClick: () -> Unit,
-) {
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() },
-        contentAlignment = Alignment.Center
-    ){
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            CategoryToggle(status = status)
-
-            AppText(text = value, weight = TextWeight.REGULAR, size = TextSize.BODY_LARGE)
-        }
-    }
-
-}
-
-
-@Composable
-fun SmallToggle(
-    status: Boolean,
-) {
-
-    val tweenMs = 500
-
-    val animateBorderAlpha by animateFloatAsState(
-        targetValue = if (status) 1f else 0f,
-        animationSpec = tween(tweenMs)
-    )
-
-    Box(
-        modifier = Modifier.size(35.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Box(
-            modifier = Modifier
-                .clip(CircleShape)
-                .border(
-                    width = 2.dp,
-                    brush = animateBrushPrimary(animateBorderAlpha),
-                    shape = CircleShape,
-                )
-                .background(colorBg)
-                .size(20.dp),
+        Text(
+            text = label,
+            color = textColor,
+            style = MaterialTheme.typography.bodyLarge // Use your desired text style
         )
-        AnimatedVisibility(
-            visible = status,
-            enter = slideInVertically(tween(tweenMs)) + fadeIn(tween(tweenMs)),
-            exit = slideOutVertically(tween(tweenMs)) + fadeOut(tween(tweenMs))
-        ) {
-            Icon(
-                imageVector = Icons.Default.Check,
-                contentDescription = null,
-                tint = colorWhite,
-                modifier = Modifier.size(30.dp)
-            )
-        }
     }
-
 }
 
 @Preview
 @Composable
-private fun TogglePreview() {
-    var state by remember { mutableStateOf(false) }
+private fun CategoryTogglePreview() {
+    var isChecked by remember { mutableStateOf(false) }
 
-    CheckBoxParent(status = state, value = "Я посетитель") {
-        state = !state
-    }
+    CategoryToggle(
+        isChecked = isChecked,
+        onToggle = { isChecked = it },
+        label = "Category"
+    )
 }

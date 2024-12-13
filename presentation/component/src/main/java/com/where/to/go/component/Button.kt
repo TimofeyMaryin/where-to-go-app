@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 enum class ButtonColor { COLORFUL, BORDER }
@@ -65,6 +66,7 @@ fun PrimaryButton(
 
 @Composable
 fun SquareButton(
+    size: Dp = 40.dp,
     @DrawableRes icon: Int,
     onClick: () -> Unit,
 ) {
@@ -72,7 +74,7 @@ fun SquareButton(
     Box(
         modifier = Modifier
             .clip(primaryClip())
-            .size(40.dp)
+            .size(size)
             .background(animateBrushPrimary())
             .aspectRatio(1f)
             .clickable { onClick() },
