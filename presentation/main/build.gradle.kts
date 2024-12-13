@@ -72,6 +72,8 @@ dependencies {
     implementation(libs.retrofit.convertor.gson)
     implementation(libs.retrofit)
 
+    implementation(libs.custom.shadow)
+
     implementation(project(":presentation:component"))
     implementation(project(":internet"))
 

@@ -86,7 +86,7 @@ fun RecommendsFragment(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(.9f),
+            .fillMaxHeight(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {

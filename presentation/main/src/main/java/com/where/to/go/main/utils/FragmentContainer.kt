@@ -24,6 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.gufo.custom.gufoshadow.shadow
 import com.where.to.go.component.AppText
 import com.where.to.go.component.GlobalContainer
 import com.where.to.go.component.SquareButton
@@ -96,6 +97,11 @@ private fun BottomMenu(
 ) {
     Box(
         modifier = Modifier
+            .shadow(
+                color = animatedColorPrimary(),
+                borderRadius = 16.dp,
+                blurRadius = 5.dp
+            )
             .clip(primaryClip())
             .fillMaxWidth()
             .height(70.dp)
