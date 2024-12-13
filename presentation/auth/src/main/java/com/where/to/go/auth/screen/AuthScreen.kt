@@ -2,6 +2,7 @@ package com.where.to.go.auth.screen
 
 import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColor
@@ -47,6 +48,7 @@ import androidx.core.text.isDigitsOnly
 import androidx.navigation.NavController
 import com.where.to.go.auth.AuthActivity
 import com.where.to.go.auth.R
+import com.where.to.go.auth.navigation.Screen
 import com.where.to.go.auth.vms.AuthViewModel
 import com.where.to.go.component.AppText
 import com.where.to.go.component.AppTextField
@@ -64,6 +66,7 @@ import com.where.to.go.component.colorBg
 import com.where.to.go.component.pink
 import com.where.to.go.component.primaryClip
 import com.where.to.go.internet.cases.AuthUseCase
+import com.where.to.go.internet.cases.UserUseCase
 import com.where.to.go.internet.models.AuthRequestModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -71,12 +74,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun AuthScreen(
     authUseCase: AuthUseCase,
+    userUseCase: UserUseCase,
     navController: NavController,
     viewModel: AuthViewModel,
 ) {
-    val context = LocalContext.current
     var showAlertForFillPersonalData by remember { mutableStateOf<PersonalType?>(null) }
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     BackHandler {
         navController.popBackStack()
@@ -107,7 +111,7 @@ fun AuthScreen(
 
             item {
                 CheckBoxParent(
-                    status = viewModel.userAccType == 0,
+                    status = viewModel.userRole == 0,
                     value = stringResource(id = R.string.im_guest)
                 ) {
                     viewModel.enterUserAccType.invoke(0)
@@ -115,7 +119,7 @@ fun AuthScreen(
             }
             item {
                 CheckBoxParent(
-                    status = viewModel.userAccType == 1,
+                    status = viewModel.userRole == 1,
                     value = stringResource(id = R.string.im_organizer)
                 ) {
                     viewModel.enterUserAccType.invoke(1)
@@ -129,6 +133,7 @@ fun AuthScreen(
                     isError = viewModel.isValidEmail()
                 ) {
                     viewModel.enterUserName.invoke(it)
+                    viewModel.checkSendable()
                 }
             }
             item {
@@ -138,6 +143,7 @@ fun AuthScreen(
                     type = TextFieldType.PASSWORD
                 ) {
                     viewModel.enterUserPassword.invoke(it)
+                    viewModel.checkSendable()
                 }
 
             }
@@ -163,21 +169,31 @@ fun AuthScreen(
                     value = stringResource(id = R.string.enter),
                     color = ButtonColor.COLORFUL
                 ) {
-                    handleSignup(
-                        authUseCase = authUseCase,
-                        coroutineScope = scope,
-                        email = viewModel.userEmail,
-                        password = viewModel.userPassword,
-                        onLoading = {
-                            Log.e("TAG - Auth", "AuthScreen load: $it", )
-
-                        },
-                        onResult = {
-                            Log.e("TAG - Auth", "AuthScreen res: $it", )
-                        },
-                        phone = viewModel.userPhone ?: ""
-                    )
-
+                    if(viewModel.sendable){
+                        viewModel.handleSignup(
+                            authUseCase = authUseCase,
+                            role = viewModel.userRole,
+                            coroutineScope = scope,
+                            email = viewModel.userEmail,
+                            password = viewModel.userPassword,
+                            onLoading = {
+                                Log.e("TAG - Auth", "AuthScreen load: $it", )
+                                // TODO Start/stop loading
+                            },
+                            onResult = {
+                                navController.navigate(Screen.LoginScreen.route)
+                                Toast.makeText(context, "Аккаунт создан, авторизуйтесь", Toast.LENGTH_LONG).show()
+                            },
+                            onError = {
+                                // TODO show error
+                            }
+                            //phone = viewModel.userPhone,
+                        )
+                    }
+                    else{
+                        //test(userUseCase, scope, {Log.e("TEST", " $it")})
+                        Toast.makeText(context, "Не все поля правильно заполнены", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }
@@ -316,30 +332,24 @@ private fun AddPersonalData(
 }
 
 
-fun handleSignup(
-    authUseCase: AuthUseCase,
-    email: String,
-    phone: String,
-    password: String,
+
+fun test(
+    userUseCase: UserUseCase,
     coroutineScope: CoroutineScope,
-    onLoading: (Boolean) -> Unit,
     onResult: (String) -> Unit
 ) {
     coroutineScope.launch {
-        onLoading(true)
         try {
-            val response = authUseCase.signup(AuthRequestModel(email = email, phone = phone, password = password, name = ""))
+            val response = userUseCase.getAllUsers()
             if (response.isSuccessful) {
-                onResult("Reponse: " + response.message())
-
-
+                onResult("Reponse: " + response.body())
             } else {
-                onResult("Ошибка: ${response.message()}")
+                onResult("Ошибка: ${response.raw()}")
             }
         } catch (e: Exception) {
             onResult("Ошибка: ${e.message}")
         } finally {
-            onLoading(false)
+            onResult("Ошибка:")
         }
     }
 }

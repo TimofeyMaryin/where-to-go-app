@@ -208,7 +208,7 @@ fun handleLogin(
     coroutineScope.launch {
         onLoading(true)
         try {
-            val response = authUseCase.login(AuthRequestModel(email = email, phone = "", password = password, role = role))
+            val response = authUseCase.login(AuthRequestModel(email = email, password = password, role = role))
             if (response.isSuccessful) {
                 val token = response.body()?.token ?: "Токен отсутствует"
                 onResult("Успешный вход: $token")
@@ -239,7 +239,7 @@ fun handleSignup(
     coroutineScope.launch {
         onLoading(true)
         try {
-            val response = authUseCase.signup(AuthRequestModel(email = email, phone = email, password = password, role = role))
+            val response = authUseCase.signup(AuthRequestModel(email = email, password = password, role = role))
             if (response.isSuccessful) {
                 onResult("Reponse: " + response.message())
 

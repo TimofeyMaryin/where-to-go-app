@@ -8,11 +8,10 @@ import kotlinx.serialization.Serializable
 data class AuthRequestModel(
     val role: Int,
     val email: String?,
-    val phone: String?,
     val password: String,
 )
 
 @Serializable
 data class AuthResponseModel(
-    val token: String // user
+    val token: String
 )

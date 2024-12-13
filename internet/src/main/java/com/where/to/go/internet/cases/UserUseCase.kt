@@ -16,9 +16,6 @@ class UserUseCase: UserService {
         return RetrofitClient.userService.getUser(id)
     }
 
-    override suspend fun testCall(): Response<Any> {
-        return RetrofitClient.userService.testCall()
-    }
 
     override suspend fun deleteUser(id: Int): Response<Any> {
         return RetrofitClient.userService.deleteUser(id)
@@ -26,14 +23,6 @@ class UserUseCase: UserService {
 
     override suspend fun editUser(id: Int, user: User): Response<User> {
         return RetrofitClient.userService.editUser(id, user)
-    }
-
-    override suspend fun signup(user: AuthRequestModel): Response<AuthResponseModel> {
-        return RetrofitClient.authService.signup(user)
-    }
-
-    override suspend fun login(user: AuthRequestModel): Response<AuthResponseModel> {
-        return RetrofitClient.authService.login(user)
     }
 
 }

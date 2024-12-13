@@ -79,7 +79,7 @@ fun TestScreen(
 
     LaunchedEffect(key1 = getTestState) {
         if (getTestState > 0) {
-            bodyTestCase = userUseCase.testCall().body().toString()
+            //bodyTestCase = userUseCase.testCall().body().toString()
         }
     }
 

@@ -25,6 +25,7 @@ import com.where.to.go.component.WhereToGoApplicationTheme
 import com.where.to.go.component.colorBg
 import com.where.to.go.internet.RetrofitClient
 import com.where.to.go.internet.cases.AuthUseCase
+import com.where.to.go.internet.cases.UserUseCase
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -36,6 +37,7 @@ class AuthActivity: ComponentActivity() {
         super.onCreate(savedInstanceState)
         Log.e("TAG", "onCreate: start auth", )
         authUseCase = AuthUseCase()
+        val userUseCase = UserUseCase()
 
         enableEdgeToEdge()
         setContent {
@@ -45,7 +47,7 @@ class AuthActivity: ComponentActivity() {
                         .fillMaxSize()
                         .background(colorBg),
                 ) {
-                    AppNavigation(viewModel = authViewModel, authUseCase = authUseCase)
+                    AppNavigation(viewModel = authViewModel, authUseCase = authUseCase, userUseCase)
                     it
 
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

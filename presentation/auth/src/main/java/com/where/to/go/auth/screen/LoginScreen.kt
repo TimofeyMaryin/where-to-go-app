@@ -1,5 +1,8 @@
 package com.where.to.go.auth.screen
 
+import android.content.Context
+import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateFloatAsState
@@ -25,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.where.to.go.auth.R
+import com.where.to.go.auth.plugins.TokenManager
 import com.where.to.go.auth.vms.AuthViewModel
 import com.where.to.go.component.AppText
 import com.where.to.go.component.AppTextField
@@ -41,6 +45,10 @@ import com.where.to.go.component.colorError
 import com.where.to.go.component.colorWhite
 import com.where.to.go.component.primaryClip
 import com.where.to.go.internet.cases.AuthUseCase
+import com.where.to.go.internet.models.AuthRequestModel
+import com.where.to.go.main.MainActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
@@ -140,17 +148,23 @@ fun LoginScreen(
 
 
             PrimaryButton(value = "Продолжить", color = ButtonColor.COLORFUL) {
-                Toast.makeText(context, "Go LSD!", Toast.LENGTH_SHORT).show()
 
-                handleLogin(
-                    context = context,
+                viewModel.handleLogin(
                     authUseCase = authUseCase,
                     email = viewModel.userEmail,
+                    password = viewModel.userPassword,
+                    role = viewModel.userRole,
                     coroutineScope = scope,
                     onLoading = {},
-                    onResult = {},
-                    password = viewModel.userPassword,
-                    role = viewModel.userRole
+                    onResult = {
+                        Toast.makeText(context, "Вы вошли", Toast.LENGTH_LONG).show()
+                        val intent = Intent(context, MainActivity::class.java)
+                        context.startActivity(intent)
+                    },
+                    onError = {
+                        Toast.makeText(context, "Авторизация провалилась", Toast.LENGTH_LONG).show()
+                        Log.e("Tag", it)
+                    }
                 )
             }
         }

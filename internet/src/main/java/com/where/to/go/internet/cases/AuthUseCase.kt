@@ -18,5 +18,4 @@ class AuthUseCase: AuthService {
         return RetrofitClient.authService.login(user)
     }
 
-
 }
