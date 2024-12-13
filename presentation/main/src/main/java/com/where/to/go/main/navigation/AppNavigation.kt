@@ -1,5 +1,6 @@
 package com.where.to.go.main.navigation
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -11,6 +12,7 @@ import com.where.to.go.main.fragment.SchedulePartyFragment
 import com.where.to.go.main.utils.AnimateFragmentContainer
 import com.where.to.go.main.utils.FragmentContainer
 import com.where.to.go.main.vms.RecommendedViewModel
+
 
 @Composable
 fun AppNavigation(
@@ -27,7 +29,7 @@ fun AppNavigation(
                 route = Screen.RecommendedScreen.route,
             ) {
                 AnimateFragmentContainer(enable = viewModel.isCurrentNavDestination.invoke(Screen.RecommendedScreen.route)) {
-                    RecommendsFragment()
+                    RecommendsFragment(viewModel)
                 }
             }
 

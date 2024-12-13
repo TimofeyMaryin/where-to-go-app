@@ -154,7 +154,7 @@ fun LargePartyView(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(285.dp) // Высота контейнера
+            .height(350.dp) // Высота контейнера
             .width(350.dp)
             .clickable(onClick = onClick) // Обработчик клика на весь контейнер
             .padding(start = 7.dp, end = 7.dp)
