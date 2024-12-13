@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="top_bar_recommend">Рекомендация</string>
+    <string name="top_bar_schedule">Запланированно</string>
+    <string name="top_bar_favorite">Любимые</string>
+    <string name="top_bar_profile">Профиль</string>
+    <string name="error">Error</string>
+</resources>

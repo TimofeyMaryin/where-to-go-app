@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.where.to.go.component.AppText
@@ -49,7 +50,19 @@ fun FragmentContainer(
                 // TODO Show menu
             }
 
-            AppText(text = "Рекомендации", weight = TextWeight.REGULAR, size = TextSize.TITLE_MEDIUM)
+            AppText(
+                text = stringResource(
+                    id = when (viewModel.currentNavDestination) {
+                        Screen.RecommendedScreen.route -> R.string.top_bar_recommend
+                        Screen.SchedulePartyScreen.route -> R.string.top_bar_schedule
+                        Screen.FavoritePartyScreen.route -> R.string.top_bar_favorite
+                        Screen.ProfileScreen.route -> R.string.top_bar_profile
+                        else -> R.string.error
+                    }
+                ),
+                weight = TextWeight.REGULAR,
+                size = TextSize.TITLE_MEDIUM
+            )
 
 
         },
@@ -64,7 +77,7 @@ fun FragmentContainer(
 
         Box(
             modifier = Modifier
-                .fillMaxHeight(.9f)
+                .fillMaxHeight()
                 .fillMaxWidth(),
             contentAlignment = Alignment.BottomCenter,
         ) {
