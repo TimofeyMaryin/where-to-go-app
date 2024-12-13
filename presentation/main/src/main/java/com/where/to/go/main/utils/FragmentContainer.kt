@@ -1,9 +1,18 @@
 package com.where.to.go.main.utils
 
+import android.util.Log
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -11,15 +20,21 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -31,6 +46,7 @@ import com.where.to.go.component.SquareButton
 import com.where.to.go.component.TextSize
 import com.where.to.go.component.TextWeight
 import com.where.to.go.component.animatedColorPrimary
+import com.where.to.go.component.brushHamburgerBg
 import com.where.to.go.component.colorContainerBg
 import com.where.to.go.component.colorGray
 import com.where.to.go.component.primaryClip
@@ -44,11 +60,16 @@ fun FragmentContainer(
     viewModel: RecommendedViewModel,
     content: @Composable () -> Unit
 ) {
+
+    val hamburgerMenuTimeMs = 400
+    var hamburgerMenuState by remember { mutableStateOf(false) }
+
+
     GlobalContainer(
         topBarStart = {
 
             SquareButton(icon = R.drawable.ic_top_bar_menu) {
-                // TODO Show menu
+                hamburgerMenuState = !hamburgerMenuState
             }
 
             AppText(
@@ -86,7 +107,32 @@ fun FragmentContainer(
         }
 
 
+        AnimatedVisibility(
+            visible = hamburgerMenuState,
+            enter = slideInHorizontally(tween(hamburgerMenuTimeMs)),
+            exit = slideOutHorizontally(tween(hamburgerMenuTimeMs)) { -it }
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.CenterStart
+            ) {
+                Box(
+                    modifier = Modifier
+                        .clip(primaryClip())
+                        .fillMaxHeight()
+                        .fillMaxWidth(.9f)
+                        .background(brushHamburgerBg),
+                    contentAlignment = Alignment.Center,
+                ) {
+
+                }
+            }
+        }
     }
+
+
+
 }
 
 

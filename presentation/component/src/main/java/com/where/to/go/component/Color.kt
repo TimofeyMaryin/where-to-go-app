@@ -30,6 +30,15 @@ val brushPrimary = Brush.linearGradient(
 val colorWhite = Color.White
 val colorGray = Color(0xff707387)
 val brushGray = Brush.linearGradient(listOf(colorGray, colorGray))
+val brushHamburgerBg = Brush.horizontalGradient(
+    listOf(
+        colorContainerBg,
+        colorContainerBg.copy(.97f),
+        colorContainerBg.copy(.96f),
+        colorContainerBg.copy(.65f),
+        colorContainerBg.copy(.09f)
+    )
+)
 
 val colorError = Color(0xfff83133)
 
