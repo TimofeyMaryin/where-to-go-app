@@ -10,19 +10,26 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -36,6 +43,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -48,6 +56,7 @@ import com.where.to.go.component.TextSize
 import com.where.to.go.component.TextWeight
 import com.where.to.go.component.animatedColorPrimary
 import com.where.to.go.component.brushHamburgerBg
+import com.where.to.go.component.colorBg
 import com.where.to.go.component.colorContainerBg
 import com.where.to.go.component.colorGray
 import com.where.to.go.component.primaryClip
@@ -124,6 +133,11 @@ fun FragmentContainer(
             ) {
                 Box(
                     modifier = Modifier
+                        .shadow(
+                            color = animatedColorPrimary(),
+                            borderRadius = 16.dp,
+                            blurRadius = 5.dp
+                        )
                         .clip(primaryClip())
                         .fillMaxHeight()
                         .fillMaxWidth(.9f)
@@ -142,16 +156,70 @@ fun FragmentContainer(
                                 )
                             }
                         }
-                        .background(brushHamburgerBg),
+                        .background(colorContainerBg),
                     contentAlignment = Alignment.Center,
                 ) {
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(.9f)
+                            .fillMaxHeight(.8f),
+                        contentAlignment = Alignment.TopStart
+                    ) {
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+
+                            Image(
+                                painter = painterResource(id = R.drawable.avatar_test),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .shadow(
+                                        color = animatedColorPrimary(),
+                                        borderRadius = 16.dp,
+                                        blurRadius = 5.dp
+                                    )
+                                    .clip(primaryClip())
+                                    .size(120.dp)
+                                    .aspectRatio(1f),
+                                contentScale = ContentScale.Crop
+                            )
+
+                            AppText(
+                                text = "UserModel.name",
+                                weight = TextWeight.BOLD,
+                                size = TextSize.TITLE_LARGE
+                            )
+
+                            Divider()
+
+                            HamburgerMenuButton(img = null, text = "Оплата") {
+                                
+                            }
+                            
+                            HamburgerMenuButton(img = null, text = "Что-то еще") {
+                                
+                            }
+                            
+                            HamburgerMenuButton(
+                                img = R.drawable.hamburger_menu_button_img_1,
+                                text = "Что-то еще"
+                            ) {
+
+                            }
+
+                        }
+                    }
 
                 }
             }
         }
 
-        val containerColor by animateColorAsState(targetValue = if (hamburgerMenuState) Color.Black.copy(.3f) else Color.Black.copy(.0f))
-        Box(modifier = Modifier.fillMaxSize().background(containerColor))
+//        val containerColor by animateColorAsState(targetValue = if (hamburgerMenuState) Color.Black.copy(.3f) else Color.Black.copy(.0f))
+//        Box(modifier = Modifier
+//            .fillMaxSize()
+//            .background(containerColor))
     }
 
 
@@ -256,4 +324,38 @@ private fun RowScope.BottomMenuItem(
         }
     }
 
+}
+
+
+@Composable
+private fun HamburgerMenuButton(
+    @DrawableRes img: Int?,
+    text: String,
+    onClick: () -> Unit
+) {
+
+    Box(
+        modifier = Modifier
+            .clip(primaryClip())
+            .fillMaxWidth()
+            .clickable { onClick() },
+        contentAlignment = Alignment.Center
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            if (img != null) {
+                Image(painter = painterResource(id = img), contentDescription = null, modifier = Modifier.size(25.dp), contentScale = ContentScale.Crop)
+            } else {
+                Spacer(modifier = Modifier.size(25.dp))
+            }
+
+            AppText(text = text, weight = TextWeight.REGULAR, size = TextSize.BODY_LARGE)
+        }
+    }
+    
 }
