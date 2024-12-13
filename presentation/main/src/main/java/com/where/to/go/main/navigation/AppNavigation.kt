@@ -1,0 +1,52 @@
+package com.where.to.go.main.navigation
+
+import androidx.compose.runtime.Composable
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.where.to.go.main.fragment.FavoritePartyFragment
+import com.where.to.go.main.fragment.ProfileFragment
+import com.where.to.go.main.fragment.RecommendsFragment
+import com.where.to.go.main.fragment.SchedulePartyFragment
+import com.where.to.go.main.utils.FragmentContainer
+import com.where.to.go.main.vms.RecommendedViewModel
+
+@Composable
+fun AppNavigation(
+    viewModel: RecommendedViewModel,
+) {
+    val navController = rememberNavController()
+
+    FragmentContainer(navController = navController, viewModel) {
+        NavHost(
+            navController = navController,
+            startDestination = Screen.RecommendedScreen.route,
+        ) {
+            composable(
+                route = Screen.RecommendedScreen.route,
+            ) {
+                RecommendsFragment()
+            }
+
+            composable(
+                route = Screen.SchedulePartyScreen.route
+            ) {
+                SchedulePartyFragment(navController = navController, viewModel = viewModel)
+            }
+
+            composable(
+                route = Screen.FavoritePartyScreen.route
+            ) {
+                FavoritePartyFragment(navController = navController, viewModel = viewModel)
+            }
+
+            composable(
+                route = Screen.ProfileScreen.route
+            ) {
+                ProfileFragment(navController = navController, viewModel = viewModel)
+            }
+
+        }
+
+    }
+}

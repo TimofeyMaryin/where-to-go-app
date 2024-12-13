@@ -59,100 +59,78 @@ fun RecommendsFragment() {
     var search by remember { mutableStateOf("") }
     val categories = remember { mutableStateListOf(false, false, false, false) }
 
-    Column(modifier = Modifier
-        .fillMaxSize()) {
-
-        GlobalContainer(
-            topBarStart = {
-
-                SquareButton(icon = R.drawable.ic_top_bar_menu) {
-                    // TODO Show menu
-                }
-
-                AppText(text = "Рекомендации", weight = TextWeight.REGULAR, size = TextSize.TITLE_MEDIUM)
-
-
-            },
-            topBarEnd = {
-                SquareButton(icon = R.drawable.ic_top_bar_settings) {
-                    // TODO Settings
-                }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(.9f),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top,
+    ) {
+        CustomSearchView(
+            hint = "Поиск",
+            value = search,
+            onValueChange = { search = it }, // Обновляем состояние
+            onSearchClick = {
+                // TODO Search
             }
+        )
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 20.dp, bottom = 20.dp)
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(.9f),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Top,
-            ) {
-                CustomSearchView(
-                    hint = "Поиск",
-                    value = search,
-                    onValueChange = { search = it }, // Обновляем состояние
-                    onSearchClick = {
-                        // TODO Search
-                    }
+            items(categories.size) { index ->
+                CategoryToggle(
+                    isChecked = categories[index],
+                    onToggle = { newState ->
+                        categories[index] = newState // Обновляем состояние
+                        Log.e("ONTOGGLE", categories[index].toString())
+                    },
+                    label = "Category ${index + 1}"
                 )
-                LazyRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 20.dp, bottom = 20.dp)
-                ) {
-                    items(categories.size) { index ->
-                        CategoryToggle(
-                            isChecked = categories[index],
-                            onToggle = { newState ->
-                                categories[index] = newState // Обновляем состояние
-                                Log.e("ONTOGGLE", categories[index].toString())
-                            },
-                            label = "Category ${index + 1}"
-                        )
-                    }
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 20.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween // Распределяет элементы по краям
-                ) {
-                    AppText(
-                        text = "Рекомендованные",
-                        modifier = Modifier
-                            .padding(bottom = 20.dp)
-                            .align(Alignment.CenterVertically),
-                        weight = TextWeight.REGULAR,
-                        size = TextSize.TITLE_MEDIUM,
-                    )
-
-                    Button(
-                        onClick = { /* Действие при нажатии на кнопку */ },
-                        modifier = Modifier.align(Alignment.CenterVertically)
-                    ) {
-                        Text("Кнопка") // Текст на кнопке
-                    }
-                }
-
-                LazyRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    items(categories.size) { index ->
-                        LargePartyView(
-                            title = "Test party",
-                            date = "Tommorow",
-                            guestCount = 25,
-                            price = "1/2",
-                            backgroundImageResId = com.where.to.go.component.R.drawable.test
-                        ) {
-
-                        }
-                    }
-                }
-
             }
-
         }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween // Распределяет элементы по краям
+        ) {
+            AppText(
+                text = "Рекомендованные",
+                modifier = Modifier
+                    .padding(bottom = 20.dp)
+                    .align(Alignment.CenterVertically),
+                weight = TextWeight.REGULAR,
+                size = TextSize.TITLE_MEDIUM,
+            )
+
+            Button(
+                onClick = { /* Действие при нажатии на кнопку */ },
+                modifier = Modifier.align(Alignment.CenterVertically)
+            ) {
+                Text("Кнопка") // Текст на кнопке
+            }
+        }
+
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            items(categories.size) { index ->
+                LargePartyView(
+                    title = "Test party",
+                    date = "Tommorow",
+                    guestCount = 25,
+                    price = "1/2",
+                    backgroundImageResId = com.where.to.go.component.R.drawable.test
+                ) {
+
+                }
+            }
+        }
+
     }
+
 }

@@ -1,28 +1,17 @@
 package com.where.to.go.component
 
 import androidx.compose.animation.animateColor
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.InfiniteRepeatableSpec
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.delay
 
 val colorBg = Color(0xff1e2031)
 val colorBgBrush = Brush.horizontalGradient(colors = listOf(colorBg, colorBg))
@@ -40,6 +29,7 @@ val brushPrimary = Brush.linearGradient(
 
 val colorWhite = Color.White
 val colorGray = Color(0xff707387)
+val brushGray = Brush.linearGradient(listOf(colorGray, colorGray))
 
 val colorError = Color(0xfff83133)
 
@@ -69,6 +59,21 @@ fun animateBrushPrimary(alpha: Float = 1f): Brush {
     )
 
     return gradient
+}
+
+@Composable fun animatedColorPrimary(alpha: Float = 1f): Color {
+    val transition = rememberInfiniteTransition()
+
+    val animatePrimaryColors by transition.animateColor(
+        initialValue = pink,
+        targetValue = blue,
+        animationSpec = InfiniteRepeatableSpec(
+            tween(400),
+            repeatMode = RepeatMode.Restart
+        ), label = ""
+    )
+    return animatePrimaryColors
+
 }
 
 
