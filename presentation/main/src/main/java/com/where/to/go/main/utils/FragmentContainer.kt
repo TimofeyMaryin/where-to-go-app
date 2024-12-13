@@ -13,6 +13,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -112,9 +113,13 @@ fun FragmentContainer(
             enter = slideInHorizontally(tween(hamburgerMenuTimeMs)),
             exit = slideOutHorizontally(tween(hamburgerMenuTimeMs)) { -it }
         ) {
+            var offsetX by remember { mutableStateOf(0f) }
             Box(
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .pointerInput(Unit) {
+                        detectTapGestures { }
+                    },
                 contentAlignment = Alignment.CenterStart
             ) {
                 Box(
@@ -122,6 +127,21 @@ fun FragmentContainer(
                         .clip(primaryClip())
                         .fillMaxHeight()
                         .fillMaxWidth(.9f)
+                        .offset(x = offsetX.dp)
+                        .pointerInput(Unit) {
+                            detectDragGestures { change, dragAmount ->
+                                offsetX += dragAmount.x
+
+                                if (dragAmount.x < -4) {
+                                    hamburgerMenuState = false
+                                }
+
+                                Log.e(
+                                    "TAG",
+                                    "FragmentContainer offset: $offsetX | dragAmount.x: ${dragAmount.x}",
+                                )
+                            }
+                        }
                         .background(brushHamburgerBg),
                     contentAlignment = Alignment.Center,
                 ) {
@@ -129,6 +149,9 @@ fun FragmentContainer(
                 }
             }
         }
+
+        val containerColor by animateColorAsState(targetValue = if (hamburgerMenuState) Color.Black.copy(.3f) else Color.Black.copy(.0f))
+        Box(modifier = Modifier.fillMaxSize().background(containerColor))
     }
 
 
