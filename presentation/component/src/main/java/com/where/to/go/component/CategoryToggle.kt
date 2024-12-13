@@ -1,5 +1,6 @@
 package com.where.to.go.component
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -26,6 +27,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -44,21 +46,23 @@ fun CategoryToggle(
     val backgroundColor = if (isChecked) pink else Color.Transparent
     val borderColor = if (isChecked) Color.Transparent else pink // Define your border color
     val textColor = colorWhite // Define your text color
-
     Box(
         modifier = Modifier
-            .padding(8.dp)
-            .border(2.dp, borderColor, shape = RoundedCornerShape(8.dp))
-            .background(backgroundColor, shape = RoundedCornerShape(8.dp))
-            .clickable { onToggle(!isChecked) } // Toggle state on click
-            .height(50.dp) // Set a fixed height for the toggle
-            .fillMaxWidth(), // Fill the width of the parent
+             .padding(8.dp)
+            .border(2.dp, borderColor, shape = RoundedCornerShape(10.dp))
+            .background(backgroundColor, shape = RoundedCornerShape(10.dp))
+            .clickable { onToggle(!isChecked) }
+            .height(35.dp)
+            .fillMaxWidth()
+            .then(if (isChecked) Modifier.toggleShadow() else Modifier),// Fill the width of the parent
         contentAlignment = Alignment.Center
     ) {
-        Text(
+        AppText(
             text = label,
-            color = textColor,
-            style = MaterialTheme.typography.bodyLarge // Use your desired text style
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+            weight = TextWeight.REGULAR,
+            size = TextSize.BODY_LARGE,
+            color = textColor
         )
     }
 }

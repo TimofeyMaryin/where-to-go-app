@@ -35,3 +35,23 @@ fun Modifier.primaryButtonShadow(): Modifier {
     )
 }
 
+@Composable
+fun Modifier.toggleShadow(): Modifier {
+    val transition = rememberInfiniteTransition()
+    val animateShadowColor by transition.animateColor(
+        initialValue = pink,
+        targetValue = blue,
+        animationSpec = InfiniteRepeatableSpec(
+            tween(1000 * 5),
+            repeatMode = RepeatMode.Reverse
+        ), label = ""
+    )
+
+
+    return this.shadow(
+        borderRadius = 5.dp,
+        blurRadius = 40.dp,
+        color = animateShadowColor
+    )
+}
+

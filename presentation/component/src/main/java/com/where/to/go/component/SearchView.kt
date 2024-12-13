@@ -34,7 +34,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-val size: Int = 65
+val size: Int = 55
 @Composable
 fun CustomSearchView(
     hint: String,
