@@ -89,7 +89,6 @@ class AuthViewModel @Inject constructor(): ViewModel() {
         onLoading: (Boolean) -> Unit,
         onResult: (String) -> Unit,
         onError: (String) -> Unit
-
     ) {
         coroutineScope.launch {
             onLoading(true)
@@ -97,10 +96,10 @@ class AuthViewModel @Inject constructor(): ViewModel() {
                 val response = authUseCase.login(AuthRequestModel(email = email, password = password, role = role))
                 if (response.isSuccessful) {
                     val token = response.body()?.token ?: "Токен отсутствует"
-                    onResult("Успешный вход: $token")
-                    TokenManager.saveToken(token)
+                    Log.e("TOKENTAG", token)
+                    onResult(token)
                 } else {
-                    onError(response.message())
+                    onError(response.raw().toString())
                 }
             } catch (e: Exception) {
                 onError("${e.message}")

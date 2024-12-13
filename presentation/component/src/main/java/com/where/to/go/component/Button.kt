@@ -43,8 +43,8 @@ fun PrimaryButton(
                 },
                 shape = primaryClip()
             )
-            .height(85.dp)
-            .aspectRatio(1.9f)
+            .height(70.dp)
+            .aspectRatio(2.2f)
             .background(
                 when (color) {
                     ButtonColor.COLORFUL -> animateBrushPrimary()

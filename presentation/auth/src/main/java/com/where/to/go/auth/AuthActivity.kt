@@ -17,6 +17,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.where.to.go.auth.navigation.AppNavigation
+import com.where.to.go.auth.plugins.TokenManager
 import com.where.to.go.auth.vms.AuthViewModel
 import com.where.to.go.component.AppText
 import com.where.to.go.component.TextSize
@@ -26,6 +27,7 @@ import com.where.to.go.component.colorBg
 import com.where.to.go.internet.RetrofitClient
 import com.where.to.go.internet.cases.AuthUseCase
 import com.where.to.go.internet.cases.UserUseCase
+import com.where.to.go.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -35,7 +37,7 @@ class AuthActivity: ComponentActivity() {
     private lateinit var authUseCase: AuthUseCase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.e("TAG", "onCreate: start auth", )
+        Log.e("TOKENTAG", "onCreate: start auth", )
         authUseCase = AuthUseCase()
         val userUseCase = UserUseCase()
 
@@ -60,5 +62,10 @@ class AuthActivity: ComponentActivity() {
             }
         }
 
+        TokenManager.init(this)
+        if(!TokenManager.getToken().isNullOrEmpty()){
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

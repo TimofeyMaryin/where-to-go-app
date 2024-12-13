@@ -6,16 +6,16 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.where.to.go.component.AppText
+import com.where.to.go.component.CategoryToggle
 import com.where.to.go.component.TextSize
 import com.where.to.go.component.TextWeight
 import com.where.to.go.component.WhereToGoApplicationTheme
 
 
-fun ComponentActivity.mainFragment() {
+fun ComponentActivity.recommendsFragment() {
     enableEdgeToEdge()
     setContent {
         WhereToGoApplicationTheme {
@@ -23,7 +23,8 @@ fun ComponentActivity.mainFragment() {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     AppText(text = "Token ", weight = TextWeight.BOLD, size = TextSize.BODY_LARGE)
                 }
-
+                CategoryToggle(status = true) {
+                }
                 it
             }
         }

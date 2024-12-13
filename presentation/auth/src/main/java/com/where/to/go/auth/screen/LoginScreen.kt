@@ -157,6 +157,8 @@ fun LoginScreen(
                     coroutineScope = scope,
                     onLoading = {},
                     onResult = {
+                        TokenManager.saveToken(it)
+                        Log.e("TOKENTAG", "Token " + TokenManager.getToken())
                         Toast.makeText(context, "Вы вошли", Toast.LENGTH_LONG).show()
                         val intent = Intent(context, MainActivity::class.java)
                         context.startActivity(intent)
