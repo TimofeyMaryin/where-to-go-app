@@ -102,128 +102,30 @@ fun FragmentContainer(
             SquareButton(icon = R.drawable.ic_top_bar_settings) {
                 // TODO Settings
             }
-        }
+        },
+        isFullScreen = viewModel.currentNavDestination == Screen.ProfileScreen.route
     ) {
 
         content()
 
         Box(
             modifier = Modifier
-                .fillMaxHeight()
-                .fillMaxWidth(),
+                .fillMaxSize(if (viewModel.currentNavDestination == Screen.ProfileScreen.route) { .9f } else { 1f }),
             contentAlignment = Alignment.BottomCenter,
         ) {
             BottomMenu(navController = navController, viewModel = viewModel,)
         }
 
-
-        AnimatedVisibility(
-            visible = hamburgerMenuState,
-            enter = slideInHorizontally(tween(hamburgerMenuTimeMs)),
-            exit = slideOutHorizontally(tween(hamburgerMenuTimeMs)) { -it }
+        HamburgerMenu(
+            enable = hamburgerMenuState,
+            timeAnim = hamburgerMenuTimeMs,
+            navController = navController,
+            viewModel = viewModel,
+            isFull = viewModel.currentNavDestination == Screen.ProfileScreen.route
         ) {
-            var offsetX by remember { mutableStateOf(0f) }
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .pointerInput(Unit) {
-                        detectTapGestures { }
-                    },
-                contentAlignment = Alignment.CenterStart
-            ) {
-                Box(
-                    modifier = Modifier
-                        .shadow(
-                            color = animatedColorPrimary(),
-                            borderRadius = 16.dp,
-                            blurRadius = 5.dp
-                        )
-                        .clip(primaryClip())
-                        .fillMaxHeight()
-                        .fillMaxWidth(.9f)
-                        .offset(x = offsetX.dp)
-                        .pointerInput(Unit) {
-                            detectDragGestures { change, dragAmount ->
-                                offsetX += dragAmount.x
-
-                                if (dragAmount.x < -4) {
-                                    hamburgerMenuState = false
-                                }
-
-                                Log.e(
-                                    "TAG",
-                                    "FragmentContainer offset: $offsetX | dragAmount.x: ${dragAmount.x}",
-                                )
-                            }
-                        }
-                        .background(colorContainerBg),
-                    contentAlignment = Alignment.Center,
-                ) {
-
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth(.9f)
-                            .fillMaxHeight(.8f),
-                        contentAlignment = Alignment.TopStart
-                    ) {
-                        Column(
-                            modifier = Modifier.fillMaxSize(),
-                            verticalArrangement = Arrangement.spacedBy(16.dp)
-                        ) {
-
-                            Image(
-                                painter = painterResource(id = R.drawable.avatar_test),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .shadow(
-                                        color = animatedColorPrimary(),
-                                        borderRadius = 16.dp,
-                                        blurRadius = 5.dp
-                                    )
-                                    .clip(primaryClip())
-                                    .size(120.dp)
-                                    .aspectRatio(1f),
-                                contentScale = ContentScale.Crop
-                            )
-
-                            AppText(
-                                text = "UserModel.name",
-                                weight = TextWeight.BOLD,
-                                size = TextSize.TITLE_LARGE
-                            )
-
-                            Divider()
-
-                            HamburgerMenuButton(img = null, text = "Оплата") {
-                                
-                            }
-                            
-                            HamburgerMenuButton(img = null, text = "Что-то еще") {
-                                
-                            }
-                            
-                            HamburgerMenuButton(
-                                img = R.drawable.hamburger_menu_button_img_1,
-                                text = "Что-то еще"
-                            ) {
-
-                            }
-
-                        }
-                    }
-
-                }
-            }
+            hamburgerMenuState = it
         }
-
-//        val containerColor by animateColorAsState(targetValue = if (hamburgerMenuState) Color.Black.copy(.3f) else Color.Black.copy(.0f))
-//        Box(modifier = Modifier
-//            .fillMaxSize()
-//            .background(containerColor))
     }
-
-
-
 }
 
 
@@ -326,6 +228,124 @@ private fun RowScope.BottomMenuItem(
 
 }
 
+
+@Composable
+fun HamburgerMenu(
+    enable: Boolean,
+    viewModel: RecommendedViewModel,
+    navController: NavController,
+    timeAnim: Int,
+    isFull: Boolean,
+    onChangeState: (Boolean) -> Unit
+) {
+    AnimatedVisibility(
+        visible = enable,
+        enter = slideInHorizontally(tween(timeAnim)),
+        exit = slideOutHorizontally(tween(timeAnim)) { -it }
+    ) {
+        var offsetX by remember { mutableStateOf(0f) }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .pointerInput(Unit) {
+                    detectTapGestures { }
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            Box(modifier = Modifier.fillMaxSize(if (isFull) .95f else 1f), contentAlignment = Alignment.CenterStart) {
+
+                Box(
+                    modifier = Modifier
+                        .shadow(
+                            color = animatedColorPrimary(),
+                            borderRadius = 16.dp,
+                            blurRadius = 5.dp
+                        )
+                        .clip(primaryClip())
+                        .fillMaxHeight()
+                        .fillMaxWidth(.9f)
+                        .offset(x = offsetX.dp)
+                        .pointerInput(Unit) {
+                            detectDragGestures { change, dragAmount ->
+
+                                offsetX += dragAmount.x
+
+                                if (dragAmount.x < -4) {
+                                    onChangeState(false)
+                                }
+
+                                Log.e(
+                                    "TAG",
+                                    "FragmentContainer offset: $offsetX | dragAmount.x: ${dragAmount.x}",
+                                )
+                            }
+                        }
+                        .background(colorContainerBg),
+                    contentAlignment = Alignment.Center,
+                ) {
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(.9f)
+                            .fillMaxHeight(.8f),
+                        contentAlignment = Alignment.TopStart
+                    ) {
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+
+                            Image(
+                                painter = painterResource(id = R.drawable.avatar_test),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .shadow(
+                                        color = animatedColorPrimary(),
+                                        borderRadius = 16.dp,
+                                        blurRadius = 5.dp,
+                                        offsetX = offsetX.dp
+                                    )
+                                    .clip(primaryClip())
+                                    .size(120.dp)
+                                    .aspectRatio(1f),
+                                contentScale = ContentScale.Crop
+                            )
+
+                            AppText(
+                                text = "UserModel.name",
+                                weight = TextWeight.BOLD,
+                                size = TextSize.TITLE_LARGE
+                            )
+
+                            Divider()
+
+                            HamburgerMenuButton(img = null, text = "Профиль") {
+                                if (viewModel.currentNavDestination != Screen.ProfileScreen.route) {
+                                    viewModel.navigate(navController, Screen.ProfileScreen.route)
+                                }
+                                onChangeState(false)
+                            }
+
+                            HamburgerMenuButton(img = null, text = "Оплата") {
+
+                            }
+
+                            HamburgerMenuButton(
+                                img = R.drawable.hamburger_menu_button_img_1,
+                                text = "Что-то еще"
+                            ) {
+
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+        }
+    }
+}
 
 @Composable
 private fun HamburgerMenuButton(

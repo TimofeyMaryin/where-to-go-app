@@ -14,5 +14,5 @@ fun ProfileFragment(
     navController: NavController,
     viewModel: RecommendedViewModel,
 ) {
-    Box(modifier = Modifier.fillMaxSize().background(Color.Cyan))
+    Box(modifier = Modifier.fillMaxSize().background(Color.Red))
 }

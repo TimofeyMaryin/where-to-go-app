@@ -16,7 +16,6 @@ class UserUseCase: UserService {
         return RetrofitClient.userService.getUser(id)
     }
 
-
     override suspend fun deleteUser(id: Int): Response<Any> {
         return RetrofitClient.userService.deleteUser(id)
     }
