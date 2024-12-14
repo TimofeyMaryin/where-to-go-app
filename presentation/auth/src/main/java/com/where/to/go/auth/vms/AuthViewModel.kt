@@ -21,6 +21,7 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(): ViewModel() {
 
     var userEmail by mutableStateOf("")
+    var restoreCode by mutableStateOf("")
     var userPassword by mutableStateOf("")
     var userRole by mutableStateOf(-1)
 
@@ -29,6 +30,7 @@ class AuthViewModel @Inject constructor(): ViewModel() {
     var userVK by mutableStateOf<String>("")
 
     val enterUserName: (String) -> Unit = { email -> this.userEmail = email }
+    val enterRestoreCode: (String) -> Unit = { restoreCode -> this.restoreCode = restoreCode }
     val enterUserPassword: (String) -> Unit = { password -> this.userPassword = password }
     val clearUserData = {
         userEmail = "";

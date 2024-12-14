@@ -48,20 +48,20 @@ import com.where.to.go.component.colorWhite
 import com.where.to.go.component.primaryClip
 import com.where.to.go.internet.cases.AuthUseCase
 import com.where.to.go.internet.models.AuthRequestModel
-import com.where.to.go.internet.models.ConfirmCodeModel
-import com.where.to.go.internet.models.RestorePasswordModel
+import com.where.to.go.internet.models.ResetPasswordModel
 import com.where.to.go.main.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun VerificationScreen(
+fun ResetPasswordScreen(
     authUseCase: AuthUseCase,
     navController: NavController,
     viewModel: AuthViewModel,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+
     BackHandler {
         viewModel.clearUserData.invoke()
     }
@@ -73,7 +73,7 @@ fun VerificationScreen(
                 viewModel.clearUserData.invoke()
             }
 
-            AppText(text = stringResource(id = R.string.verification), weight = TextWeight.REGULAR, size = TextSize.TITLE_MEDIUM)
+            AppText(text = stringResource(id = R.string.reset_password), weight = TextWeight.REGULAR, size = TextSize.TITLE_MEDIUM)
         }
     ) {
 
@@ -90,31 +90,38 @@ fun VerificationScreen(
             ) {
 
                 AppTextField(
-                    hint = stringResource(id = R.string.restore_code),
-                    value = viewModel.restoreCode,
-                    type = TextFieldType.TEXT,
+                    hint = stringResource(id = R.string.password),
+                    value = viewModel.userPassword,
+                    type = TextFieldType.PASSWORD
                 ) {
-                    viewModel.enterRestoreCode.invoke(it)
+                    viewModel.enterUserPassword.invoke(it)
                     viewModel.checkSendable()
                 }
 
+                /*AppTextField(
+                    hint = stringResource(id = R.string.phone),
+                    value = viewModel.userPhone,
+                    type = TextFieldType.PHONE
+                ) {
+                    viewModel.userPhone = it
+                }*/
 
             }
 
-            PrimaryButton(value = "Подтвердить", color = ButtonColor.COLORFUL) {
-                ServerHelper.confirmCode(
+
+            PrimaryButton(value = "Сменить пароль", color = ButtonColor.COLORFUL) {
+                ServerHelper.resetPassword(
                     authUseCase = authUseCase,
-                    model= ConfirmCodeModel(viewModel.restoreCode, viewModel.userEmail),
+                    tokenManager = TokenManager,
+                    model = ResetPasswordModel(viewModel.userEmail, viewModel.userPassword),
                     coroutineScope = scope,
                     onLoading = {},
                     onResult = {
-                        TokenManager.saveToken(it!!.token)
-                        Toast.makeText(context, "Код верный", Toast.LENGTH_LONG).show()
-                        navController.navigate(Screen.ResetPasswordScreen.route)
-                        //go to next screen
+                        Toast.makeText(context, "Пароль изменен", Toast.LENGTH_LONG).show()
+                        navController.navigate(Screen.LoginScreen.route)
                     },
                     onError = {
-                        Toast.makeText(context, "Не удалось связаться с сервером", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, "Авторизация провалилась", Toast.LENGTH_LONG).show()
                         Log.e("Tag", it)
                     }
                 )

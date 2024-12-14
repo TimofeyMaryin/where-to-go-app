@@ -7,8 +7,10 @@
     <string name="auth">Авторизация</string>
     <string name="restore">Восстановить пароль</string>
     <string name="verification">Подтвердите код</string>
+    <string name="reset_password">Сброс пароля</string>
 
     <string name="email">E-mail</string>
+    <string name="restore_code">Код подтверждения</string>
     <string name="password">Пароль</string>
     <string name="phone">Номер телефона</string>
 

@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.where.to.go.auth.screen.LoginScreen
 import com.where.to.go.auth.screen.AuthScreen
+import com.where.to.go.auth.screen.ResetPasswordScreen
 import com.where.to.go.auth.screen.RestoreScreen
 import com.where.to.go.auth.screen.StartScreen
 import com.where.to.go.auth.screen.VerificationScreen
@@ -58,7 +59,11 @@ fun AppNavigation(
         ) {
             VerificationScreen(navController = navController, viewModel = viewModel, authUseCase = authUseCase)
         }
-
+        this.composable(
+            route = Screen.ResetPasswordScreen.route
+        ) {
+            ResetPasswordScreen(navController = navController, viewModel = viewModel, authUseCase = authUseCase)
+        }
 
     }
 

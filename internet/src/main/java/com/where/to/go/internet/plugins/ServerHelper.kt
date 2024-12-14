@@ -4,6 +4,8 @@ import android.util.Log
 import com.where.to.go.internet.cases.AuthUseCase
 import com.where.to.go.internet.models.AuthRequestModel
 import com.where.to.go.internet.models.AuthResponseModel
+import com.where.to.go.internet.models.ConfirmCodeModel
+import com.where.to.go.internet.models.ResetPasswordModel
 import com.where.to.go.internet.models.RestorePasswordModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -106,6 +108,57 @@ class ServerHelper{
                 onLoading(true)
                 try {
                     val response = authUseCase.restorePassword(model)
+                    if (response.isSuccessful) {
+                        onResult(response.message())
+                    } else {
+                        onError(response.raw().toString())
+                    }
+                } catch (e: Exception) {
+                    onError("${e.message}")
+                } finally {
+                    onLoading(false)
+                }
+            }
+        }
+
+        fun confirmCode(
+            authUseCase: AuthUseCase,
+            model: ConfirmCodeModel,
+            coroutineScope: CoroutineScope,
+            onLoading: (Boolean) -> Unit,
+            onResult: (AuthResponseModel?) -> Unit,
+            onError: (String) -> Unit
+        ) {
+            coroutineScope.launch {
+                onLoading(true)
+                try {
+                    val response = authUseCase.confirmCode(model)
+                    if (response.isSuccessful) {
+                        onResult(response.body())
+                    } else {
+                        onError(response.raw().toString() + " " + response.message())
+                    }
+                } catch (e: Exception) {
+                    onError("${e.message}")
+                } finally {
+                    onLoading(false)
+                }
+            }
+        }
+
+        fun resetPassword(
+            authUseCase: AuthUseCase,
+            tokenManager: TokenManager,
+            model: ResetPasswordModel,
+            coroutineScope: CoroutineScope,
+            onLoading: (Boolean) -> Unit,
+            onResult: (String) -> Unit,
+            onError: (String) -> Unit
+        ) {
+            coroutineScope.launch {
+                onLoading(true)
+                try {
+                    val response = authUseCase.resetPassword(model, getAuthHeader(tokenManager.getToken()))
                     if (response.isSuccessful) {
                         onResult(response.message())
                     } else {
