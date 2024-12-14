@@ -1,16 +1,16 @@
-package com.where.to.go.internet.plugins
+package com.where.to.go.internet.servers
 
-import android.util.Log
 import com.where.to.go.internet.cases.AuthUseCase
 import com.where.to.go.internet.models.AuthRequestModel
 import com.where.to.go.internet.models.AuthResponseModel
 import com.where.to.go.internet.models.ConfirmCodeModel
 import com.where.to.go.internet.models.ResetPasswordModel
 import com.where.to.go.internet.models.RestorePasswordModel
+import com.where.to.go.internet.plugins.TokenManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class ServerHelper{
+class AuthServer {
     companion object{
         fun handleSignup(
             authUseCase: AuthUseCase,
@@ -176,8 +176,4 @@ class ServerHelper{
             return "Bearer  $token"
         }
     }
-
-
-
-
 }

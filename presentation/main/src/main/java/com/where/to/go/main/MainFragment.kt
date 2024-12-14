@@ -6,11 +6,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Scaffold
 import com.where.to.go.component.WhereToGoApplicationTheme
 import com.where.to.go.main.navigation.AppNavigation
+import com.where.to.go.main.vms.ProfileViewModel
 import com.where.to.go.main.vms.RecommendedViewModel
 
 
 fun ComponentActivity.mainFragment(
-    viewModel: RecommendedViewModel
+    recommendsViewModel: RecommendedViewModel,
+    profileViewModel: ProfileViewModel
 ) {
 
 
@@ -18,7 +20,7 @@ fun ComponentActivity.mainFragment(
     setContent {
         WhereToGoApplicationTheme {
             Scaffold {
-                AppNavigation(viewModel)
+                AppNavigation(recommendsViewModel, profileViewModel)
                 it
             }
         }

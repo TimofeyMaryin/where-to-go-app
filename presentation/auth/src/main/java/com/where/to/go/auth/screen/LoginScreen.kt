@@ -1,6 +1,5 @@
 package com.where.to.go.auth.screen
 
-import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
@@ -28,7 +27,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.where.to.go.auth.R
-import com.where.to.go.internet.plugins.ServerHelper
 import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.auth.vms.AuthViewModel
 import com.where.to.go.component.AppText
@@ -42,14 +40,11 @@ import com.where.to.go.component.TextSize
 import com.where.to.go.component.TextWeight
 import com.where.to.go.component.animateBrushPrimary
 import com.where.to.go.component.colorContainerBg
-import com.where.to.go.component.colorError
 import com.where.to.go.component.colorWhite
 import com.where.to.go.component.primaryClip
 import com.where.to.go.internet.cases.AuthUseCase
-import com.where.to.go.internet.models.AuthRequestModel
+import com.where.to.go.internet.servers.AuthServer
 import com.where.to.go.main.MainActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
@@ -154,7 +149,7 @@ fun LoginScreen(
 
             PrimaryButton(value = "Продолжить", color = ButtonColor.COLORFUL) {
                 if(viewModel.sendable){
-                    ServerHelper.handleLogin(
+                    AuthServer.handleLogin(
                         authUseCase = authUseCase,
                         email = viewModel.userEmail,
                         password = viewModel.userPassword,

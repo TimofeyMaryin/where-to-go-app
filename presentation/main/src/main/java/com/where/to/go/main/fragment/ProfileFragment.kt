@@ -1,6 +1,6 @@
 package com.where.to.go.main.fragment
 
-import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -8,16 +8,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,17 +32,21 @@ import com.where.to.go.component.TextWeight
 import com.where.to.go.component.animatedColorPrimary
 import com.where.to.go.component.colorContainerBg
 import com.where.to.go.component.primaryClip
+import com.where.to.go.internet.cases.UserUseCase
+import com.where.to.go.internet.dao.UserService
+import com.where.to.go.internet.models.AuthResponseModel
 import com.where.to.go.internet.plugins.TokenManager
+import com.where.to.go.internet.servers.UserServer
 import com.where.to.go.main.R
-import com.where.to.go.main.vms.RecommendedViewModel
-import java.security.AccessController.getContext
-import kotlin.coroutines.coroutineContext
+import com.where.to.go.main.vms.ProfileViewModel
 
 @Composable
 fun ProfileFragment(
     navController: NavController,
-    viewModel: RecommendedViewModel,
+    viewModel: ProfileViewModel,
+    userUseCase: UserUseCase
 ) {
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -166,6 +169,7 @@ fun ProfileFragment(
             Container(weight = 2f) {
                 PrimaryButton(value = "Logout", color = ButtonColor.COLORFUL) {
                     TokenManager.clearToken()
+
 
                     //TODO start activity auth
                     //val intent = Intent(getContext()!!, AuthActivity::class.java)

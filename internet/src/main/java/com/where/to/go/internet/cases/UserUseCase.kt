@@ -6,6 +6,7 @@ import com.where.to.go.internet.models.AuthRequestModel
 import com.where.to.go.internet.models.AuthResponseModel
 import com.where.to.go.internet.models.User
 import retrofit2.Response
+import retrofit2.http.Body
 
 class UserUseCase: UserService {
     override suspend fun getAllUsers(): Response<List<User>> {
@@ -14,6 +15,10 @@ class UserUseCase: UserService {
 
     override suspend fun getUser(id: Int): Response<User> {
         return RetrofitClient.userService.getUser(id)
+    }
+
+    override suspend fun findUser(@Body token: AuthResponseModel): Response<User> {
+        return RetrofitClient.userService.findUser(token)
     }
 
     override suspend fun deleteUser(id: Int): Response<Any> {
