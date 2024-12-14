@@ -128,7 +128,7 @@ fun CheckBoxParent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp),
+                .padding(vertical = 1.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {

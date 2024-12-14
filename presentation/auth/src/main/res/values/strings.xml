@@ -5,6 +5,8 @@
     <string name="enter">Войти</string>
     <string name="signup">Регистрация</string>
     <string name="auth">Авторизация</string>
+    <string name="restore">Восстановить пароль</string>
+    <string name="verification">Подтвердите код</string>
 
     <string name="email">E-mail</string>
     <string name="password">Пароль</string>

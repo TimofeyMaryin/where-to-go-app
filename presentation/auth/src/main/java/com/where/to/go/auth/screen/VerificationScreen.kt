@@ -47,12 +47,13 @@ import com.where.to.go.component.colorWhite
 import com.where.to.go.component.primaryClip
 import com.where.to.go.internet.cases.AuthUseCase
 import com.where.to.go.internet.models.AuthRequestModel
+import com.where.to.go.internet.models.RestorePasswordModel
 import com.where.to.go.main.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(
+fun VerificationScreen(
     authUseCase: AuthUseCase,
     navController: NavController,
     viewModel: AuthViewModel,
@@ -71,7 +72,7 @@ fun LoginScreen(
                 viewModel.clearUserData.invoke()
             }
 
-            AppText(text = stringResource(id = R.string.enter), weight = TextWeight.REGULAR, size = TextSize.TITLE_MEDIUM)
+            AppText(text = stringResource(id = R.string.verification), weight = TextWeight.REGULAR, size = TextSize.TITLE_MEDIUM)
         }
     ) {
 
@@ -97,78 +98,22 @@ fun LoginScreen(
                     viewModel.checkSendable()
                 }
 
-                AppTextField(
-                    hint = stringResource(id = R.string.password),
-                    value = viewModel.userPassword,
-                    type = TextFieldType.PASSWORD
-                ) {
-                    viewModel.enterUserPassword.invoke(it)
-                    viewModel.checkSendable()
-                }
 
-                /*AppTextField(
-                    hint = stringResource(id = R.string.phone),
-                    value = viewModel.userPhone,
-                    type = TextFieldType.PHONE
-                ) {
-                    viewModel.userPhone = it
-                }*/
-
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    AppText(
-                        text = "Ваша роль",
-                        weight = TextWeight.REGULAR,
-                        size = TextSize.BODY_LARGE,
-                        color = colorWhite
-                    )
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .clip(primaryClip())
-                                .fillMaxWidth()
-                                .height(60.dp)
-                                .background(colorContainerBg),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceAround
-                        ) {
-                            UserRoleButton(value = stringResource(id = R.string.im_guest), status = viewModel.userRole == 0) {
-                                viewModel.userRole = 0
-                                viewModel.checkSendable()
-                            }
-
-                            UserRoleButton(value = stringResource(id = R.string.im_organizer), status = viewModel.userRole == 1) {
-                                viewModel.userRole = 1
-                                viewModel.checkSendable()
-                            }
-                        }
-                    }
-                }
             }
 
 
-            PrimaryButton(value = "Продолжить", color = ButtonColor.COLORFUL) {
+            PrimaryButton(value = "asdasd", color = ButtonColor.COLORFUL) {
                 if(viewModel.sendable){
-                    ServerHelper.handleLogin(
+                    ServerHelper.restorePassword(
                         authUseCase = authUseCase,
-                        email = viewModel.userEmail,
-                        password = viewModel.userPassword,
-                        role = viewModel.userRole,
+                        model= RestorePasswordModel(viewModel.userEmail),
                         coroutineScope = scope,
                         onLoading = {},
                         onResult = {
-                            TokenManager.saveToken(it)
-                            Toast.makeText(context, "Вы вошли", Toast.LENGTH_LONG).show()
-                            val intent = Intent(context, MainActivity::class.java)
-                            context.startActivity(intent)
+                            //go to next screen
                         },
                         onError = {
-                            Toast.makeText(context, "Авторизация провалилась", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, "Не удалось связаться с сервером", Toast.LENGTH_LONG).show()
                             Log.e("Tag", it)
                         }
                     )
@@ -179,38 +124,6 @@ fun LoginScreen(
             }
         }
 
-    }
-
-}
-
-@Composable
-private fun RowScope.UserRoleButton(
-    value: String,
-    status: Boolean,
-    onClick: () -> Unit
-) {
-    val animateBgAlpha by animateFloatAsState(targetValue = if (status) 1f else 0f)
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .weight(1f),
-        contentAlignment = Alignment.Center,
-    ) {
-        Box(
-            modifier = Modifier
-                .clip(primaryClip())
-                .fillMaxWidth(.9f)
-                .fillMaxHeight(.9f)
-                .background(animateBrushPrimary(alpha = animateBgAlpha))
-                .clickable { onClick() },
-            contentAlignment = Alignment.Center
-        ) {
-            AppText(
-                text = value,
-                weight = TextWeight.REGULAR,
-                size = TextSize.BODY_LARGE
-            )
-        }
     }
 
 }
