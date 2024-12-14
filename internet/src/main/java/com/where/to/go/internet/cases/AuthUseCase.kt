@@ -18,4 +18,12 @@ class AuthUseCase: AuthService {
         return RetrofitClient.authService.login(user)
     }
 
+    override suspend fun tokenUpdate(
+        token: AuthResponseModel,
+        authToken: String
+    ): Response<AuthResponseModel> {
+        return RetrofitClient.authService.tokenUpdate(token, authToken)
+    }
+
+
 }

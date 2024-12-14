@@ -7,8 +7,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 private val fontFamily = FontFamily(
@@ -31,6 +33,7 @@ fun AppText(
     textAlign: TextAlign = TextAlign.Start,
     textDecoration: TextDecoration? = null,
     size: TextSize,
+    lineHeight: Int? = null
 ) {
     Text(
         text = text,
@@ -50,6 +53,6 @@ fun AppText(
         fontFamily = fontFamily,
         textDecoration = textDecoration,
         modifier = modifier,
-        lineHeight = 28.sp
+        lineHeight = lineHeight?.sp ?: 28.sp
     )
 }

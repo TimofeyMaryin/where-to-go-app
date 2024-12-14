@@ -28,7 +28,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.where.to.go.auth.R
-import com.where.to.go.auth.plugins.TokenManager
+import com.where.to.go.internet.plugins.ServerHelper
+import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.auth.vms.AuthViewModel
 import com.where.to.go.component.AppText
 import com.where.to.go.component.AppTextField
@@ -149,7 +150,7 @@ fun LoginScreen(
 
             PrimaryButton(value = "Продолжить", color = ButtonColor.COLORFUL) {
 
-                viewModel.handleLogin(
+                ServerHelper.handleLogin(
                     authUseCase = authUseCase,
                     email = viewModel.userEmail,
                     password = viewModel.userPassword,

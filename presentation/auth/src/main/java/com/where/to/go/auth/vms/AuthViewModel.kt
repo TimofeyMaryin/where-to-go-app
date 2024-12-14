@@ -7,7 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.where.to.go.auth.plugins.TokenManager
+import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.internet.cases.AuthUseCase
 import com.where.to.go.internet.models.AuthRequestModel
 import com.where.to.go.main.MainActivity
@@ -52,61 +52,6 @@ class AuthViewModel @Inject constructor(): ViewModel() {
 
     var enterUserAccType: (Int) -> Unit = { type -> userRole = type }
 
-    fun handleSignup(
-        authUseCase: AuthUseCase,
-        email: String,
-        //phone: String,
-        role: Int,
-        password: String,
-        coroutineScope: CoroutineScope,
-        onLoading: (Boolean) -> Unit,
-        onResult: (String) -> Unit,
-        onError: (String) -> Unit
-    ) {
-        coroutineScope.launch {
-            onLoading(true)
-            try {
-                val response = authUseCase.signup(AuthRequestModel(email = email, password = password, role = role))
-                if (response.isSuccessful) {
-                    onResult("Reponse: " + response.message())
-                } else {
-                    onError("Ошибка: ${response.raw()}")
-                }
-            } catch (e: Exception) {
-                onError(e.message.toString())
-            } finally {
-                onLoading(false)
-            }
-        }
-    }
 
-    fun handleLogin(
-        authUseCase: AuthUseCase,
-        email: String,
-        role: Int,
-        password: String,
-        coroutineScope: CoroutineScope,
-        onLoading: (Boolean) -> Unit,
-        onResult: (String) -> Unit,
-        onError: (String) -> Unit
-    ) {
-        coroutineScope.launch {
-            onLoading(true)
-            try {
-                val response = authUseCase.login(AuthRequestModel(email = email, password = password, role = role))
-                if (response.isSuccessful) {
-                    val token = response.body()?.token ?: "Токен отсутствует"
-                    Log.e("TOKENTAG", token)
-                    onResult(token)
-                } else {
-                    onError(response.raw().toString())
-                }
-            } catch (e: Exception) {
-                onError("${e.message}")
-            } finally {
-                onLoading(false)
-            }
-        }
-    }
 
 }

@@ -49,6 +49,7 @@ import androidx.navigation.NavController
 import com.where.to.go.auth.AuthActivity
 import com.where.to.go.auth.R
 import com.where.to.go.auth.navigation.Screen
+import com.where.to.go.internet.plugins.ServerHelper
 import com.where.to.go.auth.vms.AuthViewModel
 import com.where.to.go.component.AddPersonalData
 import com.where.to.go.component.AppText
@@ -172,7 +173,7 @@ fun AuthScreen(
                     color = ButtonColor.COLORFUL
                 ) {
                     if(viewModel.sendable){
-                        viewModel.handleSignup(
+                        ServerHelper.handleSignup(
                             authUseCase = authUseCase,
                             role = viewModel.userRole,
                             coroutineScope = scope,

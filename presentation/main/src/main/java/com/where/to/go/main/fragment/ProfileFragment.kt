@@ -1,5 +1,6 @@
 package com.where.to.go.main.fragment
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,17 +23,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.gufo.custom.gufoshadow.shadow
 import com.where.to.go.component.AddPersonalData
 import com.where.to.go.component.AppText
+import com.where.to.go.component.ButtonColor
 import com.where.to.go.component.Container
+import com.where.to.go.component.PrimaryButton
 import com.where.to.go.component.TextSize
 import com.where.to.go.component.TextWeight
 import com.where.to.go.component.animatedColorPrimary
 import com.where.to.go.component.colorContainerBg
 import com.where.to.go.component.primaryClip
+import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.main.R
 import com.where.to.go.main.vms.RecommendedViewModel
+import java.security.AccessController.getContext
+import kotlin.coroutines.coroutineContext
 
 @Composable
 fun ProfileFragment(
@@ -133,12 +138,13 @@ fun ProfileFragment(
                     AppText(
                         text = stringResource(id = R.string.about_test_user),
                         weight = TextWeight.REGULAR,
-                        size = TextSize.BODY_LARGE
+                        size = TextSize.BODY_LARGE,
+                        lineHeight = 18
                     )
                 }
             }
 
-            Container(weight = 1.4f) {
+            Container(weight = 1.8f) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.SpaceEvenly
@@ -157,8 +163,13 @@ fun ProfileFragment(
                 }
             }
 
-            Container(weight = 1f) {
+            Container(weight = 2f) {
+                PrimaryButton(value = "Logout", color = ButtonColor.COLORFUL) {
+                    TokenManager.clearToken()
 
+                    //TODO start activity auth
+                    //val intent = Intent(getContext()!!, AuthActivity::class.java)
+                }
             }
 
         }

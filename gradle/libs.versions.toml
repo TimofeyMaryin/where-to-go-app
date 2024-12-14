@@ -15,6 +15,7 @@ hilt-version = "2.51.1"
 appcompat = "1.7.0"
 material = "1.12.0"
 securityCryptoKtx = "1.0.0"
+androidx-securityCryptoKtx = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -47,6 +48,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 # Shadow
 custom-shadow = { group = "com.github.TimofeyMaryin", name = "gufo-shadow", version = "1.0.0" }
+androidx-security-crypto-ktx = { group = "androidx.security", name = "security-crypto-ktx", version.ref = "androidx-securityCryptoKtx" }
 
 
 [plugins]

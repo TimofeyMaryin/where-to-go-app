@@ -1,4 +1,4 @@
-package com.where.to.go.auth.plugins
+package com.where.to.go.internet.plugins
 
 import android.content.Context
 import android.content.SharedPreferences

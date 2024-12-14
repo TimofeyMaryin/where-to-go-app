@@ -14,10 +14,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TextButton
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.where.to.go.auth.navigation.AppNavigation
-import com.where.to.go.auth.plugins.TokenManager
+import com.where.to.go.internet.plugins.ServerHelper.Companion.updateToken
+import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.auth.vms.AuthViewModel
 import com.where.to.go.component.AppText
 import com.where.to.go.component.TextSize
@@ -29,15 +31,18 @@ import com.where.to.go.internet.cases.AuthUseCase
 import com.where.to.go.internet.cases.UserUseCase
 import com.where.to.go.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.coroutineScope
 
 
 @AndroidEntryPoint
-class AuthActivity: ComponentActivity() {
+class AuthActivity: ComponentActivity(), CoroutineScope by MainScope()  {
     private val authViewModel: AuthViewModel by viewModels()
     private lateinit var authUseCase: AuthUseCase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.e("TOKENTAG", "onCreate: start auth", )
         authUseCase = AuthUseCase()
         val userUseCase = UserUseCase()
 
@@ -64,8 +69,23 @@ class AuthActivity: ComponentActivity() {
 
         TokenManager.init(this)
         if(!TokenManager.getToken().isNullOrEmpty()){
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            updateToken(
+                authUseCase= authUseCase,
+                tokenManager= TokenManager,
+                coroutineScope = MainScope(),
+                onLoading = {},
+                onResult = {
+                    //Log.e("EGTAG", it)
+                    TokenManager.saveToken(it)
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                },
+                onError = {
+                    Log.e("EGTAG", it)
+                    // TODO Show error
+                })
+        }else{
+            //Log.e("EGTAG", "No token")
         }
     }
 }

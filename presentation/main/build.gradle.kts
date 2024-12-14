@@ -73,6 +73,7 @@ dependencies {
     implementation(libs.retrofit)
 
     implementation(libs.custom.shadow)
+    implementation("com.github.TimofeyMaryin:gufo-shadow:1.0.0")
 
     implementation(project(":presentation:component"))
     implementation(project(":internet"))
