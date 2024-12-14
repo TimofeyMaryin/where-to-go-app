@@ -158,6 +158,7 @@ fun LoginScreen(
                         onLoading = {},
                         onResult = {
                             TokenManager.saveToken(it)
+                            TokenManager.saveEmail(viewModel.userEmail)
                             Toast.makeText(context, "Вы вошли", Toast.LENGTH_LONG).show()
                             val intent = Intent(context, MainActivity::class.java)
                             context.startActivity(intent)

@@ -16,7 +16,7 @@ class UserServer {
     companion object{
         fun findUser(
             userUseCase: UserUseCase,
-            model: AuthResponseModel,
+            model: RestorePasswordModel,
             coroutineScope: CoroutineScope,
             onLoading: (Boolean) -> Unit,
             onResult: (User) -> Unit,

@@ -1,5 +1,6 @@
 package com.where.to.go.main.fragment
 
+import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,6 +40,7 @@ import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.internet.servers.UserServer
 import com.where.to.go.main.R
 import com.where.to.go.main.vms.ProfileViewModel
+import java.security.AccessController.getContext
 
 @Composable
 fun ProfileFragment(
@@ -172,7 +174,7 @@ fun ProfileFragment(
 
 
                     //TODO start activity auth
-                    //val intent = Intent(getContext()!!, AuthActivity::class.java)
+                        //val intent = Intent(getContext()!!, AuthActivity::class.java)
                 }
             }
 

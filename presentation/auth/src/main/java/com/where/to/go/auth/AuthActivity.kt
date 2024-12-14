@@ -23,7 +23,9 @@ import com.where.to.go.component.WhereToGoApplicationTheme
 import com.where.to.go.component.colorBg
 import com.where.to.go.internet.cases.AuthUseCase
 import com.where.to.go.internet.cases.UserUseCase
+import com.where.to.go.internet.models.RestorePasswordModel
 import com.where.to.go.internet.servers.AuthServer.Companion.updateToken
+import com.where.to.go.internet.servers.UserServer.Companion.findUser
 import com.where.to.go.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -61,7 +63,14 @@ class AuthActivity: ComponentActivity(), CoroutineScope by MainScope()  {
             }
         }
 
+
+
         TokenManager.init(this)
+
+        findUser(userUseCase, RestorePasswordModel(email=TokenManager.getEmail()), MainScope(),
+            {},{Log.e("EGTAG", "mail ${it.email}")},{Log.e("EGTAG", it)})
+
+
         if(!TokenManager.getToken().isNullOrEmpty()){
             updateToken(
                 authUseCase= authUseCase,
@@ -69,7 +78,6 @@ class AuthActivity: ComponentActivity(), CoroutineScope by MainScope()  {
                 coroutineScope = MainScope(),
                 onLoading = {},
                 onResult = {
-                    //Log.e("EGTAG", it)
                     TokenManager.saveToken(it)
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
@@ -78,8 +86,6 @@ class AuthActivity: ComponentActivity(), CoroutineScope by MainScope()  {
                     Log.e("EGTAG", it)
                     // TODO Show error
                 })
-        }else{
-            //Log.e("EGTAG", "No token")
         }
     }
 }
