@@ -1,5 +1,6 @@
 package com.where.to.go.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
@@ -18,5 +19,7 @@ class MainActivity: ComponentActivity() {
 
 
         mainFragment(viewModel,profileViewModel)
+
     }
+
 }

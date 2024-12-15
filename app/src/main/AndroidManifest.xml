@@ -32,7 +32,11 @@
             android:name=".MainActivity"
             android:theme="@style/Theme.WhereToGoApplication"
             android:exported="true"
-            />
+            >
+            <intent-filter>
+                <data android:scheme="wg" android:host="main" android:path="/main" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name="com.where.to.go.auth.AuthActivity"
@@ -42,6 +46,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
+                <data android:scheme="myapp" android:host="moduleAuth" android:path="/auth" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

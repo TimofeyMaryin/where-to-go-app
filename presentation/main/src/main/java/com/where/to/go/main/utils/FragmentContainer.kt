@@ -1,5 +1,7 @@
 package com.where.to.go.main.utils
 
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
@@ -44,6 +46,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -238,6 +241,8 @@ fun HamburgerMenu(
     isFull: Boolean,
     onChangeState: (Boolean) -> Unit
 ) {
+    val context = LocalContext.current
+
     AnimatedVisibility(
         visible = enable,
         enter = slideInHorizontally(tween(timeAnim)),
@@ -334,6 +339,12 @@ fun HamburgerMenu(
                                 img = R.drawable.hamburger_menu_button_img_1,
                                 text = "Что-то еще"
                             ) {
+
+                            }
+
+                            HamburgerMenuButton(img = null, text = "Logout") {
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("myapp://moduleAuth/auth"))
+                                context.startActivity(intent)
 
                             }
 
