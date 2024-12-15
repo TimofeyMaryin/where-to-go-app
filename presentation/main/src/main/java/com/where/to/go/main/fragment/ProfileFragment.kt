@@ -82,7 +82,7 @@ fun ProfileFragment(
                     Container(weight = .7f) {
 
                         Image(
-                            painter = painterResource(id = R.drawable.avatar_test),
+                            painter = painterResource(id = viewModel.loginUser?.avatar?.toIntOrNull() ?: R.drawable.avatar_placeholder),
                             contentDescription = null,
                             modifier = Modifier
                                 .clip(primaryClip())
@@ -104,7 +104,7 @@ fun ProfileFragment(
                             verticalArrangement = Arrangement.SpaceAround
                         ) {
                             AppText(
-                                text = "SuperTusa2008",
+                                text = viewModel.loginUser?.name ?: "User${viewModel.loginUser?.id}",
                                 weight = TextWeight.BOLD,
                                 size = TextSize.TITLE_MEDIUM
                             )
@@ -146,7 +146,7 @@ fun ProfileFragment(
                     AppText(text = stringResource(id = R.string.about), weight = TextWeight.MEDIUM, size = TextSize.BODY_LARGE)
 
                     AppText(
-                        text = stringResource(id = R.string.about_test_user),
+                        text = viewModel.loginUser?.description ?: "",
                         weight = TextWeight.REGULAR,
                         size = TextSize.BODY_LARGE,
                         lineHeight = 18
@@ -159,15 +159,15 @@ fun ProfileFragment(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    AddPersonalData(img = com.where.to.go.component.R.drawable.telegram, value = "test_test") {
+                    AddPersonalData(img = com.where.to.go.component.R.drawable.telegram, value = viewModel.loginUser?.tg ?: "") {
 
                     }
 
-                    AddPersonalData(img = com.where.to.go.component.R.drawable.vk, value = "") {
+                    AddPersonalData(img = com.where.to.go.component.R.drawable.vk, value = viewModel.loginUser?.vk ?: "") {
 
                     }
 
-                    AddPersonalData(img = com.where.to.go.component.R.drawable.phone, value = "") {
+                    AddPersonalData(img = com.where.to.go.component.R.drawable.phone, value = viewModel.loginUser?.phone ?: "") {
 
                     }
                 }

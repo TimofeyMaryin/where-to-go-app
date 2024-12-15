@@ -38,6 +38,7 @@ class MainActivity: ComponentActivity() {
             },
             onResult = {
                 Log.e("TAG", "MainActivity - onResult: $it", )
+                profileViewModel.loginUser = it
             },
             onError = {
                 Log.e("TAG", "MainActivity - onError: $it", )
