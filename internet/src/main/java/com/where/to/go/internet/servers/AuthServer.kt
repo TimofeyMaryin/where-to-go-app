@@ -1,18 +1,81 @@
 package com.where.to.go.internet.servers
 
 import com.where.to.go.internet.cases.AuthUseCase
+import com.where.to.go.internet.cases.PartyUseCase
 import com.where.to.go.internet.models.AuthRequestModel
 import com.where.to.go.internet.models.AuthResponseModel
 import com.where.to.go.internet.models.ConfirmCodeModel
+import com.where.to.go.internet.models.Party
 import com.where.to.go.internet.models.ResetPasswordModel
 import com.where.to.go.internet.models.RestorePasswordModel
 import com.where.to.go.internet.plugins.TokenManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+interface AuthServerInterface{
+    fun handleSignup(
+        authUseCase: AuthUseCase,
+        email: String,
+        role: Int,
+        password: String,
+        coroutineScope: CoroutineScope,
+        onLoading: (Boolean) -> Unit,
+        onResult: (String) -> Unit,
+        onError: (String) -> Unit
+    )
+
+    fun handleLogin(
+        authUseCase: AuthUseCase,
+        email: String,
+        role: Int,
+        password: String,
+        coroutineScope: CoroutineScope,
+        onLoading: (Boolean) -> Unit,
+        onResult: (String) -> Unit,
+        onError: (String) -> Unit
+    )
+
+    fun restorePassword(
+        authUseCase: AuthUseCase,
+        model: RestorePasswordModel,
+        coroutineScope: CoroutineScope,
+        onLoading: (Boolean) -> Unit,
+        onResult: (String) -> Unit,
+        onError: (String) -> Unit
+    )
+
+    fun confirmCode(
+        authUseCase: AuthUseCase,
+        model: ConfirmCodeModel,
+        coroutineScope: CoroutineScope,
+        onLoading: (Boolean) -> Unit,
+        onResult: (AuthResponseModel?) -> Unit,
+        onError: (String) -> Unit
+    )
+
+    fun resetPassword(
+        authUseCase: AuthUseCase,
+        tokenManager: TokenManager,
+        model: ResetPasswordModel,
+        coroutineScope: CoroutineScope,
+        onLoading: (Boolean) -> Unit,
+        onResult: (String) -> Unit,
+        onError: (String) -> Unit
+    )
+
+    fun updateToken(
+        authUseCase: AuthUseCase,
+        tokenManager: TokenManager,
+        coroutineScope: CoroutineScope,
+        onLoading: (Boolean) -> Unit,
+        onResult: (String) -> Unit,
+        onError: (String) -> Unit
+    )
+}
+
 class AuthServer {
-    companion object{
-        fun handleSignup(
+    companion object : AuthServerInterface{
+        override fun handleSignup(
             authUseCase: AuthUseCase,
             email: String,
             //phone: String,
@@ -40,7 +103,7 @@ class AuthServer {
             }
         }
 
-        fun handleLogin(
+        override fun handleLogin(
             authUseCase: AuthUseCase,
             email: String,
             role: Int,
@@ -68,7 +131,7 @@ class AuthServer {
             }
         }
 
-        fun updateToken(
+        override fun updateToken(
             authUseCase: AuthUseCase,
             tokenManager: TokenManager,
             coroutineScope: CoroutineScope,
@@ -96,7 +159,7 @@ class AuthServer {
             }
         }
 
-        fun restorePassword(
+        override fun restorePassword(
             authUseCase: AuthUseCase,
             model: RestorePasswordModel,
             coroutineScope: CoroutineScope,
@@ -121,7 +184,7 @@ class AuthServer {
             }
         }
 
-        fun confirmCode(
+        override fun confirmCode(
             authUseCase: AuthUseCase,
             model: ConfirmCodeModel,
             coroutineScope: CoroutineScope,
@@ -146,7 +209,7 @@ class AuthServer {
             }
         }
 
-        fun resetPassword(
+        override fun resetPassword(
             authUseCase: AuthUseCase,
             tokenManager: TokenManager,
             model: ResetPasswordModel,

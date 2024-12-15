@@ -6,6 +6,7 @@ import com.where.to.go.internet.models.AuthRequestModel
 import com.where.to.go.internet.models.AuthResponseModel
 import com.where.to.go.internet.models.RestorePasswordModel
 import com.where.to.go.internet.models.User
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
 
@@ -18,16 +19,19 @@ class UserUseCase: UserService {
         return RetrofitClient.userService.getUser(id)
     }
 
-    override suspend fun findUser(@Body email: RestorePasswordModel): Response<User> {
+    override suspend fun findUser(email: RestorePasswordModel): Response<User> {
         return RetrofitClient.userService.findUser(email)
     }
 
-    override suspend fun deleteUser(id: Int): Response<Any> {
-        return RetrofitClient.userService.deleteUser(id)
+    override suspend fun uploadAvatar(userId: Int, file: MultipartBody.Part, authToken: String): Response<String> {
+        return RetrofitClient.userService.uploadAvatar(userId, file, authToken)
     }
 
-    override suspend fun editUser(id: Int, user: User): Response<User> {
-        return RetrofitClient.userService.editUser(id, user)
+    override suspend fun deleteUser(id: Int, authToken: String): Response<String> {
+        return RetrofitClient.userService.deleteUser(id, authToken)
     }
 
+    override suspend fun editUser(id: Int, user: User, authToken: String): Response<User> {
+        return RetrofitClient.userService.editUser(id, user, authToken)
+    }
 }

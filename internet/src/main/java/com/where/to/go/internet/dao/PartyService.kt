@@ -25,11 +25,7 @@ interface PartyService {
         @Header("Authorization") authToken: String): Response<String>
 
     @GET("/events") suspend fun getAllParties(): Response<List<Party>>
-    @GET("/events/{id}") suspend fun getParty(
-        @Path("id") id: Int,
-    ): Response<Party>
+    @GET("/events/{id}") suspend fun getParty(@Path("id") id: Int): Response<Party>
 
-    @GET("/events/owner/{id}") suspend fun getOwnerParties(
-        @Path("id") id: Int,
-    ): Response<List<Party>>
+    @GET("/events/owner/{id}") suspend fun getOwnerParties(@Path("id") id: Int): Response<List<Party>>
 }

@@ -31,6 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -78,7 +79,6 @@ class AuthActivity: ComponentActivity(), CoroutineScope by MainScope()  {
                 coroutineScope = MainScope(),
                 onLoading = {},
                 onResult = {
-                    TokenManager.saveToken(it)
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                 },
