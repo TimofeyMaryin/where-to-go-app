@@ -1,5 +1,6 @@
 package com.where.to.go.auth
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.core.content.ContextCompat.startActivity
 import com.where.to.go.auth.navigation.AppNavigation
 import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.auth.vms.AuthViewModel
@@ -66,26 +68,54 @@ class AuthActivity: ComponentActivity(), CoroutineScope by MainScope()  {
 
 
 
-        TokenManager.init(this)
+//        TokenManager.init(this)
+//
+//        findUser(userUseCase, RestorePasswordModel(email=TokenManager.getEmail()), MainScope(),
+//            {},{Log.e("EGTAG", "mail ${it.email}")},{Log.e("EGTAG", it)})
+//
+//
+//        if(!TokenManager.getToken().isNullOrEmpty()){
+//            updateToken(
+//                authUseCase= authUseCase,
+//                tokenManager= TokenManager,
+//                coroutineScope = MainScope(),
+//                onLoading = {},
+//                onResult = {
+//                    val intent = Intent(this, MainActivity::class.java)
+//                    startActivity(intent)
+//                },
+//                onError = {
+//                    Log.e("EGTAG", it)
+//                    // TODO Show error
+//                })
+//        }
+    }
+}
 
-        findUser(userUseCase, RestorePasswordModel(email=TokenManager.getEmail()), MainScope(),
-            {},{Log.e("EGTAG", "mail ${it.email}")},{Log.e("EGTAG", it)})
+fun autoLogin(
+    context: Context,
+    userUseCase: UserUseCase,
+    authUseCase: AuthUseCase,
+    onResult: (Boolean) -> Unit,
+) {
+    TokenManager.init(context)
+
+    findUser(userUseCase, RestorePasswordModel(email=TokenManager.getEmail()), MainScope(),
+        {},{Log.e("EGTAG", "mail ${it.email}")},{Log.e("EGTAG", it)})
 
 
-        if(!TokenManager.getToken().isNullOrEmpty()){
-            updateToken(
-                authUseCase= authUseCase,
-                tokenManager= TokenManager,
-                coroutineScope = MainScope(),
-                onLoading = {},
-                onResult = {
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                },
-                onError = {
-                    Log.e("EGTAG", it)
-                    // TODO Show error
-                })
-        }
+    if(!TokenManager.getToken().isNullOrEmpty()){
+        updateToken(
+            authUseCase= authUseCase,
+            tokenManager= TokenManager,
+            coroutineScope = MainScope(),
+            onLoading = {},
+            onResult = {
+                onResult(true)
+            },
+            onError = {
+                Log.e("EGTAG", it)
+                onResult(false)
+            })
     }
 }

@@ -33,7 +33,7 @@ fun AppNavigation(
             route = Screen.StartScreen.route,
 
         ) {
-            StartScreen(navController = navController, viewModel = viewModel)
+            StartScreen(navController = navController, viewModel = viewModel, authUseCase = authUseCase, userUseCase = userUseCase)
         }
 
         this.composable(
