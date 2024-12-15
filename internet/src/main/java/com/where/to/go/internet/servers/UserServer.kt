@@ -1,5 +1,6 @@
 package com.where.to.go.internet.servers
 
+import android.util.Log
 import com.where.to.go.internet.cases.AuthUseCase
 import com.where.to.go.internet.cases.UserUseCase
 import com.where.to.go.internet.models.AuthRequestModel
@@ -76,17 +77,23 @@ class UserServer {
             onError: (String) -> Unit
         ) {
             coroutineScope.launch {
+                Log.e("TAG", "findUser: start", )
                 onLoading(true)
                 try {
+                    Log.e("TAG", "findUser: after try", )
                     val response = userUseCase.findUser(model)
+                    Log.e("TAG", "findUser: after response", )
+                    Log.e("TAG", "findUser: ${response.isSuccessful}", )
                     if (response.isSuccessful) {
                         onResult(response.body()!!)
                     } else {
                         onError("Ошибка: ${response.raw()}")
                     }
                 } catch (e: Exception) {
+                    Log.e("TAG", "findUser error:$e ", )
                     onError(e.message.toString())
                 } finally {
+                    Log.e("TAG", "findUser finally: false ;(", )
                     onLoading(false)
                 }
             }

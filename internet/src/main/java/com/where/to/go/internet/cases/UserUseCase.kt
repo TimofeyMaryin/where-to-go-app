@@ -19,7 +19,7 @@ class UserUseCase: UserService {
         return RetrofitClient.userService.getUser(id)
     }
 
-    override suspend fun findUser(email: RestorePasswordModel): Response<User> {
+    override suspend fun findUser(email: RestorePasswordModel): Response<User?> {
         return RetrofitClient.userService.findUser(email)
     }
 

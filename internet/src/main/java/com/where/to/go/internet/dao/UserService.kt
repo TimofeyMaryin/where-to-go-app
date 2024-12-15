@@ -17,7 +17,7 @@ import retrofit2.http.Path
 interface UserService {
     @GET("/users") suspend fun getAllUsers(): Response<List<User>>
     @GET("users/{id}") suspend fun getUser(@Path("id") id: Int): Response<User>
-    @POST("users/find") suspend fun findUser(@Body email: RestorePasswordModel): Response<User>
+    @POST("users/find") suspend fun findUser(@Body email: RestorePasswordModel): Response<User?>
     @POST("users/{id}/avatar") suspend fun uploadAvatar(@Path("id") userId: Int,
                                                         @Part file: MultipartBody.Part,
                                                         @Header("Authorization") authToken: String): Response<String>
