@@ -1,6 +1,7 @@
 package com.where.to.go.auth.screen
 
 import android.content.Intent
+import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.InfiniteRepeatableSpec
 import androidx.compose.animation.core.animateFloat
@@ -83,9 +84,11 @@ fun StartScreen(
             userUseCase = userUseCase,
         ) {
             if (it) {
+                Log.e("TAG", "StartScreen: it = true", )
                 val intent = Intent(context, MainActivity::class.java)
                 context.startActivity(intent)
             } else {
+                Log.e("TAG", "StartScreen: it = false", )
                 loadInfoState = false
             }
         }
@@ -138,6 +141,7 @@ fun StartScreen(
 
                     }
                 } else {
+
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()

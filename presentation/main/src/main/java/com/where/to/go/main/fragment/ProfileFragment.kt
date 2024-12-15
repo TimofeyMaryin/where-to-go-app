@@ -108,6 +108,11 @@ fun ProfileFragment(
                                 weight = TextWeight.BOLD,
                                 size = TextSize.TITLE_MEDIUM
                             )
+                            AppText(
+                                text = "email: ${TokenManager.getEmail()}",
+                                weight = TextWeight.REGULAR,
+                                size = TextSize.BODY_LARGE
+                            )
 
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,

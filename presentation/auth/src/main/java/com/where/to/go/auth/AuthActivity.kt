@@ -67,28 +67,6 @@ class AuthActivity: ComponentActivity(), CoroutineScope by MainScope()  {
         }
 
 
-
-//        TokenManager.init(this)
-//
-//        findUser(userUseCase, RestorePasswordModel(email=TokenManager.getEmail()), MainScope(),
-//            {},{Log.e("EGTAG", "mail ${it.email}")},{Log.e("EGTAG", it)})
-//
-//
-//        if(!TokenManager.getToken().isNullOrEmpty()){
-//            updateToken(
-//                authUseCase= authUseCase,
-//                tokenManager= TokenManager,
-//                coroutineScope = MainScope(),
-//                onLoading = {},
-//                onResult = {
-//                    val intent = Intent(this, MainActivity::class.java)
-//                    startActivity(intent)
-//                },
-//                onError = {
-//                    Log.e("EGTAG", it)
-//                    // TODO Show error
-//                })
-//        }
     }
 }
 
@@ -111,11 +89,16 @@ fun autoLogin(
             coroutineScope = MainScope(),
             onLoading = {},
             onResult = {
+                Log.e("TAG", "autoLogin: good", )
                 onResult(true)
             },
             onError = {
                 Log.e("EGTAG", it)
+                Log.e("TAG", "autoLogin: not good ;(", )
                 onResult(false)
             })
+    } else {
+        Log.e("TAG", "autoLogin: !TokenManager.getToken().isNullOrEmpty() cannot enter", )
+        onResult(false)
     }
 }
