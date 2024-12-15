@@ -17,9 +17,10 @@ interface PartyServerInterface{
 
     fun getParty(
         partyUseCase: PartyUseCase,
+        id: Int,
         coroutineScope: CoroutineScope,
         onLoading: (Boolean) -> Unit,
-        onResult: (List<Party>) -> Unit,
+        onResult: (Party) -> Unit,
         onError: (String) -> Unit
     )
 
@@ -81,15 +82,16 @@ class PartyServer {
 
         override fun getParty(
             partyUseCase: PartyUseCase,
+            id: Int,
             coroutineScope: CoroutineScope,
             onLoading: (Boolean) -> Unit,
-            onResult: (List<Party>) -> Unit,
+            onResult: (Party) -> Unit,
             onError: (String) -> Unit
         ) {
             coroutineScope.launch {
                 onLoading(true)
                 try {
-                    val response = partyUseCase.getAllParties()
+                    val response = partyUseCase.getParty(id)
                     if (response.isSuccessful) {
                         onResult(response.body()!!)
                     } else {
@@ -151,7 +153,7 @@ class PartyServer {
                 } finally {
                     onLoading(false)
                 }
-            }        
+            }
         }
 
         override fun deleteParty(

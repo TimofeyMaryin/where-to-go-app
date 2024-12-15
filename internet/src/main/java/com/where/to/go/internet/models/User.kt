@@ -1,11 +1,13 @@
 package com.where.to.go.internet.models
 
 import kotlinx.serialization.Serializable
+import java.time.LocalDateTime
 
 
 @Serializable
 data class User(
     val id: Int,
+    val email: String,
     val name: String?,
     val role: Int,
     val password: String,
@@ -14,9 +16,9 @@ data class User(
     val avatar: String?,
     val tg: String?,
     val vk: String?,
-    val email: String?,
     val phone: String?,
-    val created: String,
-    val location: String?
+    val region: String?,
+    val town: String?,
+    val created: LocalDateTime
 )
 
