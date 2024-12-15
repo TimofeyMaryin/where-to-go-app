@@ -106,14 +106,13 @@ fun FragmentContainer(
                 // TODO Settings
             }
         },
-        isFullScreen = viewModel.currentNavDestination == Screen.ProfileScreen.route
     ) {
 
         content()
 
         Box(
             modifier = Modifier
-                .fillMaxSize(if (viewModel.currentNavDestination == Screen.ProfileScreen.route) { .9f } else { 1f }),
+                .fillMaxSize(1f),
             contentAlignment = Alignment.BottomCenter,
         ) {
             BottomMenu(navController = navController, viewModel = viewModel,)
@@ -124,7 +123,6 @@ fun FragmentContainer(
             timeAnim = hamburgerMenuTimeMs,
             navController = navController,
             viewModel = viewModel,
-            isFull = viewModel.currentNavDestination == Screen.ProfileScreen.route
         ) {
             hamburgerMenuState = it
         }
@@ -238,7 +236,7 @@ fun HamburgerMenu(
     viewModel: RecommendedViewModel,
     navController: NavController,
     timeAnim: Int,
-    isFull: Boolean,
+    isFull: Boolean = false,
     onChangeState: (Boolean) -> Unit
 ) {
     val context = LocalContext.current
