@@ -63,6 +63,7 @@ import com.where.to.go.component.colorBg
 import com.where.to.go.component.colorContainerBg
 import com.where.to.go.component.colorGray
 import com.where.to.go.component.primaryClip
+import com.where.to.go.component.primaryFillWidth
 import com.where.to.go.main.R
 import com.where.to.go.main.navigation.Screen
 import com.where.to.go.main.vms.RecommendedViewModel
@@ -73,6 +74,7 @@ fun FragmentContainer(
     viewModel: RecommendedViewModel,
     content: @Composable () -> Unit
 ) {
+
 
     val hamburgerMenuTimeMs = 400
     var hamburgerMenuState by remember { mutableStateOf(false) }
@@ -110,21 +112,23 @@ fun FragmentContainer(
 
         content()
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize(1f),
-            contentAlignment = Alignment.BottomCenter,
-        ) {
-            BottomMenu(navController = navController, viewModel = viewModel,)
-        }
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
 
-        HamburgerMenu(
-            enable = hamburgerMenuState,
-            timeAnim = hamburgerMenuTimeMs,
-            navController = navController,
-            viewModel = viewModel,
-        ) {
-            hamburgerMenuState = it
+            Box(
+                modifier = Modifier.fillMaxSize(primaryFillWidth),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                BottomMenu(navController = navController, viewModel = viewModel,)
+            }
+
+            HamburgerMenu(
+                enable = hamburgerMenuState,
+                timeAnim = hamburgerMenuTimeMs,
+                navController = navController,
+                viewModel = viewModel,
+            ) {
+                hamburgerMenuState = it
+            }
         }
     }
 }
@@ -266,7 +270,7 @@ fun HamburgerMenu(
                         )
                         .clip(primaryClip())
                         .fillMaxHeight()
-                        .fillMaxWidth(.9f)
+                        .fillMaxWidth(primaryFillWidth)
                         .offset(x = offsetX.dp)
                         .pointerInput(Unit) {
                             detectDragGestures { change, dragAmount ->
@@ -289,7 +293,7 @@ fun HamburgerMenu(
 
                     Box(
                         modifier = Modifier
-                            .fillMaxWidth(.9f)
+                            .fillMaxWidth(primaryFillWidth)
                             .fillMaxHeight(.8f),
                         contentAlignment = Alignment.TopStart
                     ) {
