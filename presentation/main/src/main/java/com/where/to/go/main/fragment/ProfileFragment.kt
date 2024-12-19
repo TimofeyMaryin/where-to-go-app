@@ -1,10 +1,18 @@
 package com.where.to.go.main.fragment
 
+import android.app.Activity
 import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+import android.text.TextUtils.replace
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,11 +22,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -39,6 +49,8 @@ import com.where.to.go.internet.models.AuthResponseModel
 import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.internet.servers.UserServer
 import com.where.to.go.main.R
+import com.where.to.go.main.navigation.Screen
+import com.where.to.go.main.utils.ImagePicker
 import com.where.to.go.main.vms.ProfileViewModel
 import java.security.AccessController.getContext
 
@@ -48,7 +60,20 @@ fun ProfileFragment(
     viewModel: ProfileViewModel,
     userUseCase: UserUseCase
 ) {
-    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+    val imagePicker = remember { ImagePicker() }
+    val getImageLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val uri: Uri? = result.data?.data
+            uri?.let {
+                context.contentResolver.openInputStream(it)?.let { inputStream ->
+                    imagePicker.loadImage(it, inputStream)
+                    val encodedUri = Uri.encode(uri.toString())
+                    navController.navigate("${Screen.ImageEditorScreen.route}/${encodedUri}")
+                }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -91,8 +116,12 @@ fun ProfileFragment(
                                     color = animatedColorPrimary(),
                                     shape = primaryClip()
                                 )
-                                .size(100.dp),
+                                .size(100.dp)
+                                .clickable(onClick = {
+                                    imagePicker.pickImage(context as Activity, getImageLauncher)
+                                }),
                             contentScale = ContentScale.Crop
+
                         )
 
                     }
@@ -185,7 +214,6 @@ fun ProfileFragment(
 
         }
     }
-
 
 
 }

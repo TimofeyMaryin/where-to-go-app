@@ -1,12 +1,16 @@
 package com.where.to.go.main.navigation
 
+import android.os.Bundle
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.where.to.go.internet.cases.UserUseCase
 import com.where.to.go.main.fragment.FavoritePartyFragment
+import com.where.to.go.main.fragment.ImageEditorFragment
 import com.where.to.go.main.fragment.ProfileFragment
 import com.where.to.go.main.fragment.RecommendsFragment
 import com.where.to.go.main.fragment.SchedulePartyFragment
@@ -19,7 +23,7 @@ import com.where.to.go.main.vms.RecommendedViewModel
 @Composable
 fun AppNavigation(
     recommendsViewModel: RecommendedViewModel,
-    profileViewModel: ProfileViewModel,
+    profileViewModel: ProfileViewModel
 ) {
     val navController = rememberNavController()
     val userUseCase = UserUseCase()
@@ -49,6 +53,16 @@ fun AppNavigation(
             ) {
                 AnimateFragmentContainer(enable = recommendsViewModel.isCurrentNavDestination.invoke(Screen.FavoritePartyScreen.route)) {
                     FavoritePartyFragment(navController = navController, viewModel = recommendsViewModel)
+                }
+            }
+
+            composable(
+                route = Screen.ProfileScreen.route
+            ) {
+                AnimateFragmentContainer(enable = recommendsViewModel.isCurrentNavDestination.invoke(Screen.ProfileScreen.route)) {
+                    ProfileFragment(navController = navController,
+                        viewModel = profileViewModel,
+                        userUseCase = userUseCase)
                 }
             }
 

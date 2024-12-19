@@ -82,7 +82,7 @@ fun autoLogin(
         {},{Log.e("EGTAG", "mail ${it.email}")},{Log.e("EGTAG", it)})
 
 
-    if(!TokenManager.getToken().isNullOrEmpty()){
+    if(TokenManager.getToken().isNotEmpty()){
         updateToken(
             authUseCase= authUseCase,
             tokenManager= TokenManager,
