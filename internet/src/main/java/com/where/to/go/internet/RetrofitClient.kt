@@ -1,5 +1,6 @@
 package com.where.to.go.internet
 
+import com.google.gson.GsonBuilder
 import com.where.to.go.internet.dao.AuthService
 import com.where.to.go.internet.dao.PartyService
 import com.where.to.go.internet.dao.UserService
@@ -14,6 +15,10 @@ object RetrofitClient {
     private val client = OkHttpClient.Builder()
         .build()
 
+
+    private val gsonBuilder = GsonBuilder()
+        .setLenient()
+        .create()
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
