@@ -33,7 +33,6 @@ fun RowScope.Container(
 ) {
     Box(
         modifier = Modifier
-            .fillMaxSize()
             .weight(weight)
             .then(modifier),
         contentAlignment = Alignment.Center
