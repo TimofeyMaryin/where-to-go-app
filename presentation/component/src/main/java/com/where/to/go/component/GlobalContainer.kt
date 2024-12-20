@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 fun GlobalContainer(
     topBarStart: @Composable RowScope.() -> Unit,
     topBarEnd: (@Composable () -> Unit)? = null,
-    isFullScreen: Boolean = false,
     content: @Composable () -> Unit
 ) {
     
@@ -32,19 +31,17 @@ fun GlobalContainer(
         
         Column(
             modifier = Modifier
-                .fillMaxSize(if (isFullScreen) 1f else .9f),
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(
                 modifier = Modifier
-                    .fillMaxSize(if (isFullScreen) .9f else 1f)
-                    .weight(
-                        if (isFullScreen) 1.4f else 1f
-                    ),
+                    .fillMaxSize()
+                    .weight(1f),
                 contentAlignment = Alignment.Center,
             ) {
                 Row(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxHeight().fillMaxWidth(primaryFillWidth),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {

@@ -9,6 +9,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -86,3 +87,16 @@ fun animateBrushPrimary(alpha: Float = 1f): Brush {
 }
 
 
+@Composable
+fun animateIconColor(): Color {
+    val transition = rememberInfiniteTransition()
+    return transition.animateColor(
+        initialValue = pink,
+        targetValue = blue,
+        animationSpec = infiniteRepeatable(
+            tween(500),
+            repeatMode = RepeatMode.Restart
+        ), label = ""
+    ).value
+
+}

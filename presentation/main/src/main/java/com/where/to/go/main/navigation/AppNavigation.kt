@@ -16,6 +16,7 @@ import com.where.to.go.main.fragment.RecommendsFragment
 import com.where.to.go.main.fragment.SchedulePartyFragment
 import com.where.to.go.main.utils.AnimateFragmentContainer
 import com.where.to.go.main.utils.FragmentContainer
+import com.where.to.go.main.vms.ImageEditorViewModel
 import com.where.to.go.main.vms.ProfileViewModel
 import com.where.to.go.main.vms.RecommendedViewModel
 
@@ -23,10 +24,12 @@ import com.where.to.go.main.vms.RecommendedViewModel
 @Composable
 fun AppNavigation(
     recommendsViewModel: RecommendedViewModel,
-    profileViewModel: ProfileViewModel
+    profileViewModel: ProfileViewModel,
+    editorViewModel: ImageEditorViewModel
 ) {
     val navController = rememberNavController()
     val userUseCase = UserUseCase()
+
     FragmentContainer(navController = navController, recommendsViewModel) {
         NavHost(
             navController = navController,
@@ -67,12 +70,10 @@ fun AppNavigation(
             }
 
             composable(
-                route = Screen.ProfileScreen.route
+                route = Screen.ImageEditorScreen.route
             ) {
-                AnimateFragmentContainer(enable = recommendsViewModel.isCurrentNavDestination.invoke(Screen.ProfileScreen.route)) {
-                    ProfileFragment(navController = navController,
-                        viewModel = profileViewModel,
-                        userUseCase = userUseCase)
+                AnimateFragmentContainer(enable = recommendsViewModel.isCurrentNavDestination.invoke(Screen.ImageEditorScreen.route)) {
+                    ImageEditorFragment(editorViewModel)
                 }
             }
 

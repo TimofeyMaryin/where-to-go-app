@@ -46,15 +46,22 @@ android {
 }
 
 dependencies {
-
+// AndroidX Core and Lifecycle
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.activity.compose)
+
+    // Jetpack Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
+    implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -69,16 +76,21 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
 
     // Retrofit
-    implementation(libs.retrofit.convertor.gson)
     implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
 
+    // Custom Shadow
     implementation(libs.custom.shadow)
-    implementation("com.github.TimofeyMaryin:gufo-shadow:1.0.0")
 
-    implementation ("com.github.yalantis:ucrop:2.2.6")
+    // UCrop
+    implementation("com.github.yalantis:ucrop:2.2.6")
 
+    // Project dependencies
     implementation(project(":presentation:component"))
     implementation(project(":internet"))
+
+    implementation("com.github.TimofeyMaryin:gufo-shadow:1.0.0")
+    implementation ("androidx.compose.runtime:runtime-livedata:1.7.6")
 
 }
 

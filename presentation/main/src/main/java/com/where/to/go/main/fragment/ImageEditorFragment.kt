@@ -1,14 +1,13 @@
 package com.where.to.go.main.fragment
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,98 +19,73 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.Fragment
-import com.where.to.go.main.R
 import com.where.to.go.main.vms.ImageEditorViewModel
 import com.yalantis.ucrop.UCrop
 import java.io.File
+import androidx.compose.runtime.livedata.observeAsState
 
-class ImageEditorFragment(private val viewModel: ImageEditorViewModel,
-                          private val onCropComplete: (Uri) -> Unit) : Fragment() {
+@Composable
+fun ImageEditorFragment(
+    viewModel: ImageEditorViewModel
+) {
+    val imageUri by viewModel.imageUri.observeAsState() // Наблюдаем за изменениями в URI
 
-    var imageUri: Uri? = null
+    val context = LocalContext.current
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        imageUri = Uri.parse(viewModel.imageUri)
-        Log.e("EBOY", "TEST")
-
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                EditorScreen(imageUri) { uri ->
-                    // Возвращаем обрезанное изображение
-                    val resultIntent = Intent().apply {
-                        putExtra("editedImageUri", uri.toString())
-                    }
-                    requireActivity().setResult(Activity.RESULT_OK, resultIntent)
-                    requireActivity().finish()
-                }
-            }
-        }
-    }
-
-    @Composable
-    fun EditorScreen(imageUri: Uri?, onCropComplete: (Uri) -> Unit) {
-        val isCropping by remember { mutableStateOf(false) }
-        LaunchedEffect(imageUri) {
-            imageUri?.let {
-                startCrop(it, onCropComplete)
-            }
-        }
-
-        Column(
-            modifier = Modifier.fillMaxSize().padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            imageUri?.let { uri ->
-                Image(
-                    bitmap = BitmapFactory.decodeFile(uri.path).asImageBitmap(),
-                    contentDescription = null,
-                    modifier = Modifier.size(200.dp)
-                )
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = { imageUri?.let { startCrop(it, onCropComplete) } }) {
-                Text("Обрезать изображение")
-            }
-        }
-    }
-
-    private fun startCrop(sourceUri: Uri, onCropComplete: (Uri) -> Unit) {
-        val destinationUri = Uri.fromFile(File(requireContext().cacheDir, "cropped_image.png"))
-        UCrop.of(sourceUri, destinationUri)
-            .withAspectRatio(1f, 1f)
-            .withMaxResultSize(800, 800)
-            .start(requireActivity(), this)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            val resultUri = UCrop.getOutput(data!!)
+    val cropLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val resultUri = UCrop.getOutput(result.data!!)
             resultUri?.let {
-                // Передаем результат обрезки
-                onCropComplete(it)
+                // Обработка результата обрезки
+                // Например, можно обновить ViewModel или выполнить навигацию
             }
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-            val cropError = UCrop.getError(data!!)
+        } else if (result.resultCode == UCrop.RESULT_ERROR) {
+            val cropError = UCrop.getError(result.data!!)
             // Обработка ошибок
         }
     }
+
+    // UI-компоненты
+    Column(
+        modifier = Modifier.fillMaxSize().padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        if (imageUri != null) {
+            Image(
+                bitmap = BitmapFactory.decodeFile(imageUri!!.path).asImageBitmap(),
+                contentDescription = null,
+                modifier = Modifier.size(200.dp)
+            )
+        } else {
+            Text("Изображение не выбрано")
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(onClick = {
+            imageUri?.let { startCrop(imageUri!!, cropLauncher, context) }
+        }) {
+            Text("Обрезать изображение")
+        }
+    }
+}
+
+private fun startCrop(sourceUri: Uri, cropLauncher: ActivityResultLauncher<Intent>, context: Context) {
+    val destinationUri = Uri.fromFile(File(context.cacheDir, "cropped_image.png"))
+    val options = UCrop.Options().apply {
+        setCompressionQuality(100)
+    }
+    UCrop.of(sourceUri, destinationUri)
+        .withAspectRatio(1f, 1f)
+        .withMaxResultSize(800, 800)
+        .withOptions(options)
+        .getIntent(context).also { intent ->
+            cropLauncher.launch(intent) // Use the launcher to start the crop activity
+        }
 }

@@ -10,6 +10,7 @@ import com.where.to.go.internet.cases.UserUseCase
 import com.where.to.go.internet.models.RestorePasswordModel
 import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.internet.servers.UserServer
+import com.where.to.go.main.vms.ImageEditorViewModel
 import com.where.to.go.main.vms.ProfileViewModel
 import com.where.to.go.main.vms.RecommendedViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,12 +20,13 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity: ComponentActivity() {
     private val viewModel by viewModels<RecommendedViewModel>()
     private val profileViewModel by viewModels<ProfileViewModel>()
+    private val editorViewModel by viewModels<ImageEditorViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
 
-        mainFragment(viewModel,profileViewModel)
+        mainFragment(viewModel, profileViewModel, editorViewModel)
 
     }
 

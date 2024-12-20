@@ -128,7 +128,7 @@ fun RecommendsFragment(
             )
 
             SelectedTapeButton(status = viewModel.recommendedTapeState) {
-                viewModel.changeRecommendedTapeState()
+                viewModel.changeRecommendedTapeState
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
