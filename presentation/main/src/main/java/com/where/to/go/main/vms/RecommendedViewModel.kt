@@ -20,13 +20,6 @@ class RecommendedViewModel: ViewModel() {
 
     var loginUser by mutableStateOf<User?>(null)
 
-    var currentNavDestination by mutableStateOf(Screen.RecommendedScreen.route)
-    val isCurrentNavDestination: (String) -> Boolean = { it == currentNavDestination }
-    fun navigate(navController: NavController, dest: String) {
-        currentNavDestination = dest
-        navController.navigate(dest)
-    }
-
     var recommendedTapeState by mutableStateOf(RecommendTape.VERTICAL)
         private set
     val changeRecommendedTapeState = { recommendedTapeState = if (recommendedTapeState == RecommendTape.VERTICAL) RecommendTape.HORIZONTAL else RecommendTape.VERTICAL }

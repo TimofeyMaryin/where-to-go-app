@@ -79,13 +79,16 @@ import com.where.to.go.main.R
 import com.where.to.go.main.navigation.Screen
 import com.where.to.go.main.utils.ImagePicker
 import com.where.to.go.main.vms.ImageEditorViewModel
+import com.where.to.go.main.vms.NavigationViewModel
 import com.where.to.go.main.vms.ProfileViewModel
+import com.where.to.go.main.vms.RecommendedViewModel
 import com.where.to.go.main.vms.UserDataChangedCallback
 
 @Composable
 fun ProfileFragment(
     navController: NavController,
     viewModel: ProfileViewModel,
+    navigationViewModel: NavigationViewModel,
     userUseCase: UserUseCase
 ) {
     val context = LocalContext.current
@@ -99,7 +102,7 @@ fun ProfileFragment(
                     imagePicker.loadImage(it, inputStream)
                     val encodedUri = Uri.encode(uri.toString())
                     Log.e("MAIN", "encoded $encodedUri")
-                    navController.navigate(Screen.RecommendedScreen.route)
+                    navigationViewModel.navigate(navController, Screen.ImageEditorScreen.route)
                 }
             }
         }
@@ -167,8 +170,7 @@ fun ProfileFragment(
                             )
                             .size(100.dp)
                             .clickable {
-                                navController.navigate(Screen.ImageEditorScreen.route)
-                                //imagePicker.pickImage(context as Activity, getImageLauncher)
+                                imagePicker.pickImage(context as Activity, getImageLauncher)
                                        },
                         contentScale = ContentScale.Crop
                     )

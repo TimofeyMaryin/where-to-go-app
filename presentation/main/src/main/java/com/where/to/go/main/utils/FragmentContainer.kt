@@ -66,12 +66,13 @@ import com.where.to.go.component.primaryClip
 import com.where.to.go.component.primaryFillWidth
 import com.where.to.go.main.R
 import com.where.to.go.main.navigation.Screen
+import com.where.to.go.main.vms.NavigationViewModel
 import com.where.to.go.main.vms.RecommendedViewModel
 
 @Composable
 fun FragmentContainer(
     navController: NavController,
-    viewModel: RecommendedViewModel,
+    navigationViewModel: NavigationViewModel,
     content: @Composable () -> Unit
 ) {
 
@@ -89,7 +90,7 @@ fun FragmentContainer(
 
             AppText(
                 text = stringResource(
-                    id = when (viewModel.currentNavDestination) {
+                    id = when (navigationViewModel.currentNavDestination) {
                         Screen.RecommendedScreen.route -> R.string.top_bar_recommend
                         Screen.SchedulePartyScreen.route -> R.string.top_bar_schedule
                         Screen.FavoritePartyScreen.route -> R.string.top_bar_favorite
@@ -118,14 +119,14 @@ fun FragmentContainer(
                 modifier = Modifier.fillMaxSize(primaryFillWidth),
                 contentAlignment = Alignment.BottomCenter
             ) {
-                BottomMenu(navController = navController, viewModel = viewModel,)
+                BottomMenu(navController = navController, viewModel = navigationViewModel,)
             }
 
             HamburgerMenu(
                 enable = hamburgerMenuState,
                 timeAnim = hamburgerMenuTimeMs,
                 navController = navController,
-                viewModel = viewModel,
+                viewModel = navigationViewModel,
             ) {
                 hamburgerMenuState = it
             }
@@ -137,7 +138,7 @@ fun FragmentContainer(
 @Composable
 private fun BottomMenu(
     navController: NavController,
-    viewModel: RecommendedViewModel,
+    viewModel: NavigationViewModel,
 ) {
     Box(
         modifier = Modifier
@@ -237,7 +238,7 @@ private fun RowScope.BottomMenuItem(
 @Composable
 fun HamburgerMenu(
     enable: Boolean,
-    viewModel: RecommendedViewModel,
+    viewModel: NavigationViewModel,
     navController: NavController,
     timeAnim: Int,
     isFull: Boolean = false,
