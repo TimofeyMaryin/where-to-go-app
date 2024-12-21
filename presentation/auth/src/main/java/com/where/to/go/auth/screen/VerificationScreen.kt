@@ -1,5 +1,6 @@
 package com.where.to.go.auth.screen
 
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
@@ -8,6 +9,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,7 +33,8 @@ import com.where.to.go.component.TextSize
 import com.where.to.go.component.TextWeight
 import com.where.to.go.internet.cases.AuthUseCase
 import com.where.to.go.internet.models.ConfirmCodeModel
-import com.where.to.go.internet.servers.AuthServer
+import com.where.to.go.internet.models.RequestState
+import com.where.to.go.main.MainActivity
 
 @Composable
 fun VerificationScreen(
@@ -39,7 +43,21 @@ fun VerificationScreen(
     viewModel: AuthViewModel,
 ) {
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
+    val confirmCodeState by viewModel.confirmCodeState.observeAsState(RequestState())
+
+    when {
+        confirmCodeState.isLoading -> {
+            // Показать индикатор загрузки
+        }
+        confirmCodeState.error != null -> {
+            Log.e("AUTOLOGIN", confirmCodeState.error.toString())
+        }
+        confirmCodeState.data != null -> {
+            TokenManager.saveToken(confirmCodeState.data!!.token)
+            Toast.makeText(context, "Код верный", Toast.LENGTH_LONG).show()
+            navController.navigate(Screen.ResetPasswordScreen.route)
+        }
+    }
     BackHandler {
         viewModel.clearUserData.invoke()
     }
@@ -80,21 +98,7 @@ fun VerificationScreen(
             }
 
             PrimaryButton(value = "Подтвердить", color = ButtonColor.COLORFUL) {
-                AuthServer.confirmCode(
-                    authUseCase = authUseCase,
-                    model= ConfirmCodeModel(viewModel.restoreCode, viewModel.userEmail),
-                    coroutineScope = scope,
-                    onLoading = {},
-                    onResult = {
-                        TokenManager.saveToken(it!!.token)
-                        Toast.makeText(context, "Код верный", Toast.LENGTH_LONG).show()
-                        navController.navigate(Screen.ResetPasswordScreen.route)
-                    },
-                    onError = {
-                        Toast.makeText(context, "Не удалось связаться с сервером", Toast.LENGTH_LONG).show()
-                        Log.e("Tag", it)
-                    }
-                )
+                viewModel.confirmCode(ConfirmCodeModel(viewModel.restoreCode, viewModel.userEmail))
             }
         }
 

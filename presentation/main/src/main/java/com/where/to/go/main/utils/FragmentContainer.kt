@@ -64,6 +64,7 @@ import com.where.to.go.component.colorContainerBg
 import com.where.to.go.component.colorGray
 import com.where.to.go.component.primaryClip
 import com.where.to.go.component.primaryFillWidth
+import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.main.R
 import com.where.to.go.main.navigation.Screen
 import com.where.to.go.main.vms.NavigationViewModel
@@ -95,6 +96,7 @@ fun FragmentContainer(
                         Screen.SchedulePartyScreen.route -> R.string.top_bar_schedule
                         Screen.FavoritePartyScreen.route -> R.string.top_bar_favorite
                         Screen.ProfileScreen.route -> R.string.top_bar_profile
+                        Screen.EditProfileScreen.route -> R.string.top_bar_edit_profile
                         else -> R.string.error
                     }
                 ),
@@ -356,6 +358,7 @@ fun HamburgerMenu(
                             }
 
                             HamburgerMenuButton(img = null, text = "Logout") {
+                                TokenManager.clearToken()
                                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse("myapp://moduleAuth/auth"))
                                 context.startActivity(intent)
 

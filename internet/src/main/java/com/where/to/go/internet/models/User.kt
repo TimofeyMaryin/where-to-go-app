@@ -19,6 +19,6 @@ data class User(
     val phone: String?,
     val region: String?,
     val town: String?,
-    val created: List<Int> // LocalDateTime
+    val created: String // LocalDateTime
 )
 

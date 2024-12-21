@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,18 +30,30 @@ import com.where.to.go.component.TextFieldType
 import com.where.to.go.component.TextSize
 import com.where.to.go.component.TextWeight
 import com.where.to.go.internet.cases.AuthUseCase
+import com.where.to.go.internet.models.RequestState
 import com.where.to.go.internet.models.RestorePasswordModel
-import com.where.to.go.internet.servers.AuthServer
+import com.where.to.go.internet.plugins.TokenManager
 
 @Composable
 fun RestoreScreen(
-    authUseCase: AuthUseCase,
     navController: NavController,
     viewModel: AuthViewModel,
 ) {
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
+    val restorePasswordState by viewModel.restorePasswordState.observeAsState(RequestState())
 
+    when {
+        restorePasswordState.isLoading -> {
+            // Показать индикатор загрузки
+        }
+        restorePasswordState.error != null -> {
+            Log.e("AUTOLOGIN", restorePasswordState.error.toString())
+        }
+        restorePasswordState.data != null -> {
+            navController.navigate(Screen.VerificationScreen.route)
+            Toast.makeText(context, "Код отправлен", Toast.LENGTH_LONG).show()
+        }
+    }
     BackHandler {
         viewModel.clearUserData.invoke()
     }
@@ -81,21 +95,7 @@ fun RestoreScreen(
             }
 
             PrimaryButton(value = "Отправить код", color = ButtonColor.COLORFUL) {
-                Log.e("TESTTAGE", "CLICK")
-                AuthServer.restorePassword(
-                    authUseCase = authUseCase,
-                    model= RestorePasswordModel(viewModel.userEmail),
-                    coroutineScope = scope,
-                    onLoading = {},
-                    onResult = {
-                        navController.navigate(Screen.VerificationScreen.route)
-                        Toast.makeText(context, "Код отправлен", Toast.LENGTH_LONG).show()
-                    },
-                    onError = {
-                        Toast.makeText(context, "Не удалось связаться с сервером", Toast.LENGTH_LONG).show()
-                        Log.e("Tag", it)
-                    }
-                )
+                viewModel.restorePassword(RestorePasswordModel(viewModel.userEmail))
             }
 
         }

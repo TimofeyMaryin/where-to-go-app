@@ -1,13 +1,5 @@
 package com.where.to.go.main.fragment
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
-import android.os.Bundle
-import android.text.TextUtils.replace
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.DrawableRes
@@ -55,8 +47,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
 import com.where.to.go.component.AppText
 import com.where.to.go.component.AppTextField
 import com.where.to.go.component.ButtonColor
@@ -76,12 +66,7 @@ import com.where.to.go.component.primaryFillWidth
 import com.where.to.go.internet.cases.UserUseCase
 import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.main.R
-import com.where.to.go.main.navigation.Screen
-import com.where.to.go.main.utils.ImagePicker
-import com.where.to.go.main.vms.ImageEditorViewModel
-import com.where.to.go.main.vms.NavigationViewModel
 import com.where.to.go.main.vms.ProfileViewModel
-import com.where.to.go.main.vms.RecommendedViewModel
 import com.where.to.go.main.vms.UserDataChangedCallback
 
 @Composable

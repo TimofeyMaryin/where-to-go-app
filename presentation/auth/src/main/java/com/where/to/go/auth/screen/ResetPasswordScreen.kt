@@ -1,5 +1,6 @@
 package com.where.to.go.auth.screen
 
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
@@ -8,6 +9,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,17 +32,31 @@ import com.where.to.go.component.TextFieldType
 import com.where.to.go.component.TextSize
 import com.where.to.go.component.TextWeight
 import com.where.to.go.internet.cases.AuthUseCase
+import com.where.to.go.internet.models.RequestState
 import com.where.to.go.internet.models.ResetPasswordModel
-import com.where.to.go.internet.servers.AuthServer
+import com.where.to.go.main.MainActivity
 
 @Composable
 fun ResetPasswordScreen(
-    authUseCase: AuthUseCase,
     navController: NavController,
     viewModel: AuthViewModel,
 ) {
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
+
+    val resetPasswordState by viewModel.resetPasswordState.observeAsState(RequestState())
+
+    when {
+        resetPasswordState.isLoading -> {
+            // Показать индикатор загрузки
+        }
+        resetPasswordState.error != null -> {
+            Toast.makeText(context, "Ошибка сервера ${resetPasswordState.error}", Toast.LENGTH_LONG).show()
+        }
+        resetPasswordState.data != null -> {
+            Toast.makeText(context, "Пароль изменен", Toast.LENGTH_LONG).show()
+            navController.navigate(Screen.LoginScreen.route)
+        }
+    }
 
     BackHandler {
         viewModel.clearUserData.invoke()
@@ -81,21 +98,7 @@ fun ResetPasswordScreen(
 
 
             PrimaryButton(value = "Сменить пароль", color = ButtonColor.COLORFUL) {
-                AuthServer.resetPassword(
-                    authUseCase = authUseCase,
-                    tokenManager = TokenManager,
-                    model = ResetPasswordModel(viewModel.userEmail, viewModel.userPassword),
-                    coroutineScope = scope,
-                    onLoading = {},
-                    onResult = {
-                        Toast.makeText(context, "Пароль изменен", Toast.LENGTH_LONG).show()
-                        navController.navigate(Screen.LoginScreen.route)
-                    },
-                    onError = {
-                        Toast.makeText(context, "Авторизация провалилась", Toast.LENGTH_LONG).show()
-                        Log.e("Tag", it)
-                    }
-                )
+                viewModel.resetPassword(ResetPasswordModel(viewModel.userEmail, viewModel.userPassword))
             }
         }
 

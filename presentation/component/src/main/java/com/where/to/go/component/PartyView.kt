@@ -35,9 +35,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColor
+import com.where.to.go.internet.models.Party
 
 @Composable
-fun LargsePartyView(
+fun PartyView(
     title: String,
     date: String,
     guestCount: Int,
@@ -49,9 +50,9 @@ fun LargsePartyView(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(285.dp) // Высота контейнера
+            .height(285.dp)
             .width(350.dp)
-            .clickable(onClick = onClick) // Обработчик клика на весь контейнер
+            .clickable(onClick = onClick)
             .padding(start = 7.dp, end = 7.dp)
             .clip(RoundedCornerShape(25.dp))
     ) {
@@ -143,10 +144,7 @@ fun LargsePartyView(
 
 @Composable
 fun LargePartyView(
-    title: String,
-    date: String,
-    guestCount: Int,
-    price: String,
+    party: Party,
     backgroundImageResId: Int,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
@@ -188,13 +186,13 @@ fun LargePartyView(
             verticalArrangement = Arrangement.Bottom
         ) {
             AppText(
-                text = title,
+                text = party.name,
                 modifier = Modifier.padding(bottom = 4.dp),
                 weight = TextWeight.BOLD,
                 size = TextSize.TITLE_MEDIUM,
             )
             AppText(
-                text = date,
+                text = party.date,
                 modifier = Modifier.padding(bottom = 8.dp),
                 weight = TextWeight.REGULAR,
                 size = TextSize.BODY_LARGE,
@@ -214,13 +212,13 @@ fun LargePartyView(
                         .clip(RoundedCornerShape(5.dp))
                 ) {
                     AppText(
-                        text = "$guestCount гостей",
+                        text = "${party.maxGuests} гостей",
                         weight = TextWeight.MEDIUM,
                         size = TextSize.BODY_LARGE,
                     )
                 }
                 AppText(
-                    text = price,
+                    text = party.price.toString(),
                     weight = TextWeight.MEDIUM,
                     size = TextSize.TITLE_LARGE,
                     modifier = Modifier.align(Alignment.CenterVertically)
@@ -246,15 +244,3 @@ fun LargePartyView(
     }
 }
 
-@Preview
-@Composable
-fun PartyViewPreview() {
-    LargePartyView(
-        title = "Название события",
-        date = "12 декабря 2024",
-        guestCount = 5,
-        price = "$100",
-        backgroundImageResId = R.drawable.test,
-        onClick = {}
-    )
-}

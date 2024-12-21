@@ -1,5 +1,6 @@
 package com.where.to.go.auth.screen
 
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
@@ -17,6 +18,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -50,7 +52,10 @@ import com.where.to.go.component.pink
 import com.where.to.go.component.primaryClip
 import com.where.to.go.internet.cases.AuthUseCase
 import com.where.to.go.internet.cases.UserUseCase
-import com.where.to.go.internet.servers.AuthServer
+import com.where.to.go.internet.models.AuthRequestModel
+import com.where.to.go.internet.models.RequestState
+import com.where.to.go.internet.plugins.TokenManager
+import com.where.to.go.main.MainActivity
 
 @Composable
 fun AuthScreen(
@@ -59,9 +64,22 @@ fun AuthScreen(
     navController: NavController,
     viewModel: AuthViewModel,
 ) {
-    var showAlertForFillPersonalData by remember { mutableStateOf<PersonalType?>(null) }
-    val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    var showAlertForFillPersonalData by remember { mutableStateOf<PersonalType?>(null) }
+    val signupState by viewModel.signupState.observeAsState(RequestState())
+
+    when {
+        signupState.isLoading -> {
+            // Показать индикатор загрузки
+        }
+        signupState.error != null -> {
+            Toast.makeText(context, signupState.error, Toast.LENGTH_LONG).show()
+        }
+        signupState.data != null -> {
+            navController.navigate(Screen.LoginScreen.route)
+            Toast.makeText(context, "Аккаунт создан, авторизуйтесь", Toast.LENGTH_LONG).show()
+        }
+    }
 
     BackHandler {
         navController.popBackStack()
@@ -151,28 +169,9 @@ fun AuthScreen(
                     color = ButtonColor.COLORFUL
                 ) {
                     if(viewModel.sendable){
-                        AuthServer.handleSignup(
-                            authUseCase = authUseCase,
-                            role = viewModel.userRole,
-                            coroutineScope = scope,
-                            email = viewModel.userEmail,
-                            password = viewModel.userPassword,
-                            onLoading = {
-                                Log.e("TAG - Auth", "AuthScreen load: $it", )
-                                // TODO Start/stop loading
-                            },
-                            onResult = {
-                                navController.navigate(Screen.LoginScreen.route)
-                                Toast.makeText(context, "Аккаунт создан, авторизуйтесь", Toast.LENGTH_LONG).show()
-                            },
-                            onError = {
-                                // TODO show error
-                            }
-                            //phone = viewModel.userPhone,
-                        )
+                        viewModel.signup(AuthRequestModel(viewModel.userRole, viewModel.userEmail, viewModel.userPassword))
                     }
                     else{
-                        //test(userUseCase, scope, {Log.e("TEST", " $it")})
                         Toast.makeText(context, "Не все поля правильно заполнены", Toast.LENGTH_LONG).show()
                     }
                 }

@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -26,15 +25,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -45,35 +39,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.core.text.isDigitsOnly
-import androidx.navigation.NavController
 import com.where.to.go.component.AppText
-import com.where.to.go.component.AppTextField
-import com.where.to.go.component.ButtonColor
-import com.where.to.go.component.PersonalType
-import com.where.to.go.component.PrimaryButton
-import com.where.to.go.component.TextFieldType
 import com.where.to.go.component.TextSize
 import com.where.to.go.component.TextWeight
-import com.where.to.go.component.animateIconColor
 import com.where.to.go.component.animatedColorPrimary
-import com.where.to.go.component.colorBg
 import com.where.to.go.component.colorContainerBg
 import com.where.to.go.component.primaryClip
 import com.where.to.go.component.primaryFillWidth
 import com.where.to.go.internet.cases.UserUseCase
 import com.where.to.go.internet.plugins.TokenManager
-import com.where.to.go.internet.servers.UserServer
 import com.where.to.go.main.R
-import com.where.to.go.main.navigation.Screen
 import com.where.to.go.main.utils.ImagePicker
-import com.where.to.go.main.vms.ImageEditorViewModel
-import com.where.to.go.main.vms.NavigationViewModel
+import com.where.to.go.main.vms.EditProfileViewModel
 import com.where.to.go.main.vms.ProfileViewModel
-import com.where.to.go.main.vms.UserDataChangedCallback
 import com.yalantis.ucrop.UCrop
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -83,7 +62,7 @@ import java.io.File
 @Composable
 fun EditProfileFragment(
     profileViewModel: ProfileViewModel,
-    editorViewModel: ImageEditorViewModel,
+    editorViewModel: EditProfileViewModel,
     userUseCase: UserUseCase
 ) {
     val context = LocalContext.current
@@ -101,11 +80,11 @@ fun EditProfileFragment(
                     RequestBody.create(MediaType.parse("image/jpeg"), File(resultUri.path!!))
                 )
 
-                UserServer.uploadAvatar(userUseCase, file, TokenManager, scope, {}, {
+                /*UserServer.uploadAvatar(userUseCase, file, TokenManager, scope, {}, {
                     Log.e("TAG", it)
                 },{
                     Log.e("TAG", it)
-                })
+                })*/
             }
         } else if (result.resultCode == UCrop.RESULT_ERROR) {
             val cropError = UCrop.getError(result.data!!)

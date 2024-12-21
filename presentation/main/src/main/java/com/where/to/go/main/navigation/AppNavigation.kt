@@ -13,7 +13,7 @@ import com.where.to.go.main.fragment.RecommendsFragment
 import com.where.to.go.main.fragment.SchedulePartyFragment
 import com.where.to.go.main.utils.AnimateFragmentContainer
 import com.where.to.go.main.utils.FragmentContainer
-import com.where.to.go.main.vms.ImageEditorViewModel
+import com.where.to.go.main.vms.EditProfileViewModel
 import com.where.to.go.main.vms.NavigationViewModel
 import com.where.to.go.main.vms.ProfileViewModel
 import com.where.to.go.main.vms.RecommendedViewModel
@@ -23,7 +23,7 @@ import com.where.to.go.main.vms.RecommendedViewModel
 fun AppNavigation(
     recommendsViewModel: RecommendedViewModel,
     profileViewModel: ProfileViewModel,
-    editorViewModel: ImageEditorViewModel
+    editorViewModel: EditProfileViewModel
 ) {
     val navController = rememberNavController()
     val navigationViewModel: NavigationViewModel = viewModel()

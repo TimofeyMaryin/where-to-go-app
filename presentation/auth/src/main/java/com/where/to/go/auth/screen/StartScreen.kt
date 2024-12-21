@@ -2,7 +2,6 @@ package com.where.to.go.auth.screen
 
 import android.content.Intent
 import android.util.Log
-import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.InfiniteRepeatableSpec
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.rememberInfiniteTransition
@@ -26,9 +25,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,7 +37,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.where.to.go.auth.R
-import com.where.to.go.auth.autoLogin
 import com.where.to.go.auth.navigation.Screen
 import com.where.to.go.auth.vms.AuthViewModel
 import com.where.to.go.component.AnimateText
@@ -51,22 +47,33 @@ import com.where.to.go.component.SquareButton
 import com.where.to.go.component.TextSize
 import com.where.to.go.component.TextWeight
 import com.where.to.go.component.animatedColorPrimary
-import com.where.to.go.internet.cases.AuthUseCase
-import com.where.to.go.internet.cases.UserUseCase
+import com.where.to.go.internet.models.RequestState
+import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.main.MainActivity
-import kotlinx.coroutines.delay
 import kotlin.system.exitProcess
 
 @Composable
 fun StartScreen(
     navController: NavController,
-    viewModel: AuthViewModel,
-    authUseCase: AuthUseCase,
-    userUseCase: UserUseCase
+    viewModel: AuthViewModel
 ) {
 
-    var loadInfoState by remember { mutableStateOf<Boolean?>(null) }
     val context = LocalContext.current
+    val autoLoginState by viewModel.autoLoginState.observeAsState(RequestState())
+
+    when {
+        autoLoginState.isLoading -> {
+            // Показать индикатор загрузки
+        }
+        autoLoginState.error != null -> {
+            Log.e("AUTOLOGIN", autoLoginState.error.toString())
+        }
+        autoLoginState.data != null -> {
+            TokenManager.saveToken(autoLoginState.data.toString())
+            val intent = Intent(context, MainActivity::class.java)
+            context.startActivity(intent)
+        }
+    }
 
     val transition = rememberInfiniteTransition()
     val progressIndicatorState = transition.animateFloat(
@@ -76,23 +83,9 @@ fun StartScreen(
             tween(400)
         ), label = ""
     )
-
     LaunchedEffect(key1 = Unit) {
-        autoLogin(
-            context = context,
-            authUseCase = authUseCase,
-        ) {
-            if (it) {
-                Log.e("TAG", "StartScreen: it = true", )
-                val intent = Intent(context, MainActivity::class.java)
-                context.startActivity(intent)
-            } else {
-                Log.e("TAG", "StartScreen: it = false", )
-                loadInfoState = false
-            }
-        }
+        if(!TokenManager.getToken().isNullOrEmpty() && !autoLoginState.isLoading) viewModel.autoLogin()
     }
-
     Box(modifier = Modifier
         .padding(bottom = 18.dp)
         .fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -123,7 +116,7 @@ fun StartScreen(
 
                 AppText(text = stringResource(id = R.string.start_screen_label), weight = TextWeight.REGULAR, size = TextSize.TITLE_MEDIUM)
 
-                if (loadInfoState != null) {
+                if (!autoLoginState.isLoading) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,

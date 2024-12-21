@@ -66,5 +66,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(libs.custom.shadow)
+    implementation(project(":internet"))
 
 }

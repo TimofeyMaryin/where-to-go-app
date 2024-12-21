@@ -1,7 +1,6 @@
 package com.where.to.go.auth
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.core.content.ContextCompat.startActivity
 import com.where.to.go.auth.navigation.AppNavigation
 import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.auth.vms.AuthViewModel
@@ -25,15 +23,10 @@ import com.where.to.go.component.WhereToGoApplicationTheme
 import com.where.to.go.component.colorBg
 import com.where.to.go.internet.cases.AuthUseCase
 import com.where.to.go.internet.cases.UserUseCase
-import com.where.to.go.internet.models.RestorePasswordModel
-import com.where.to.go.internet.servers.AuthServer.Companion.updateToken
-import com.where.to.go.internet.servers.UserServer.Companion.findUser
-import com.where.to.go.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -44,6 +37,7 @@ class AuthActivity: ComponentActivity(), CoroutineScope by MainScope()  {
         super.onCreate(savedInstanceState)
         authUseCase = AuthUseCase()
         val userUseCase = UserUseCase()
+        TokenManager.init(this)
 
         enableEdgeToEdge()
         setContent {
@@ -67,33 +61,5 @@ class AuthActivity: ComponentActivity(), CoroutineScope by MainScope()  {
         }
 
 
-    }
-}
-
-fun autoLogin(
-    context: Context,
-    authUseCase: AuthUseCase,
-    onResult: (Boolean) -> Unit,
-) {
-    TokenManager.init(context)
-
-    if(TokenManager.getToken().isNotEmpty()){
-        updateToken(
-            authUseCase= authUseCase,
-            tokenManager= TokenManager,
-            coroutineScope = MainScope(),
-            onLoading = {},
-            onResult = {
-                Log.e("TAG", "autoLogin: good", )
-                TokenManager.saveToken(it)
-                onResult(true)
-            },
-            onError = {
-                Log.e("TAG", "autoLogin: not good ;(", )
-                onResult(false)
-            })
-    } else {
-        Log.e("TAG", "autoLogin: !TokenManager.getToken().isNullOrEmpty() cannot enter", )
-        onResult(false)
     }
 }

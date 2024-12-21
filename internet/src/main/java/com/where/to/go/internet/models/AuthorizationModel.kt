@@ -1,3 +1,4 @@
+
 package com.where.to.go.internet.models
 
 import com.google.gson.annotations.SerializedName

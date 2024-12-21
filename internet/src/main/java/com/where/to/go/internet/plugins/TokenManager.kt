@@ -47,6 +47,10 @@ object TokenManager {
         return "${sharedPreferences.getString(TOKEN_KEY, "")}"
     }
 
+    fun getHeaderToken(): String {
+        return "Bearer ${sharedPreferences.getString(TOKEN_KEY, "")}"
+    }
+
     /*     fun getToken(): String {
         return "Bearer ${sharedPreferences.getString(TOKEN_KEY, "")}"
     }*/

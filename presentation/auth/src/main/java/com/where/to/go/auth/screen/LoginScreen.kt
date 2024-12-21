@@ -1,7 +1,6 @@
 package com.where.to.go.auth.screen
 
 import android.content.Intent
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateFloatAsState
@@ -18,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,17 +43,33 @@ import com.where.to.go.component.colorContainerBg
 import com.where.to.go.component.colorWhite
 import com.where.to.go.component.primaryClip
 import com.where.to.go.internet.cases.AuthUseCase
-import com.where.to.go.internet.servers.AuthServer
+import com.where.to.go.internet.models.AuthRequestModel
+import com.where.to.go.internet.models.RequestState
 import com.where.to.go.main.MainActivity
 
 @Composable
 fun LoginScreen(
-    authUseCase: AuthUseCase,
     navController: NavController,
     viewModel: AuthViewModel,
 ) {
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
+    val loginState by viewModel.loginState.observeAsState(RequestState())
+
+    when {
+        loginState.isLoading -> {
+            // Показать индикатор загрузки
+        }
+        loginState.error != null -> {
+            Toast.makeText(context, loginState.error, Toast.LENGTH_LONG).show()
+        }
+        loginState.data != null -> {
+            TokenManager.saveToken(loginState.data!!.token)
+            TokenManager.saveEmail(viewModel.userEmail)
+            Toast.makeText(context, "Вы вошли", Toast.LENGTH_LONG).show()
+            val intent = Intent(context, MainActivity::class.java)
+            context.startActivity(intent)
+        }
+    }
 
     BackHandler {
         viewModel.clearUserData.invoke()
@@ -101,14 +117,6 @@ fun LoginScreen(
                     viewModel.checkSendable()
                 }
 
-                /*AppTextField(
-                    hint = stringResource(id = R.string.phone),
-                    value = viewModel.userPhone,
-                    type = TextFieldType.PHONE
-                ) {
-                    viewModel.userPhone = it
-                }*/
-
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -146,30 +154,16 @@ fun LoginScreen(
                 }
             }
 
-
             PrimaryButton(value = "Продолжить", color = ButtonColor.COLORFUL) {
                 if(viewModel.sendable){
-                    AuthServer.handleLogin(
-                        authUseCase = authUseCase,
-                        email = viewModel.userEmail,
-                        password = viewModel.userPassword,
-                        role = viewModel.userRole,
-                        coroutineScope = scope,
-                        onLoading = {},
-                        onResult = {
-                            TokenManager.saveToken(it)
-                            TokenManager.saveEmail(viewModel.userEmail)
-                            Toast.makeText(context, "Вы вошли", Toast.LENGTH_LONG).show()
-                            val intent = Intent(context, MainActivity::class.java)
-                            context.startActivity(intent)
-                        },
-                        onError = {
-                            Toast.makeText(context, "Авторизация провалилась", Toast.LENGTH_LONG).show()
-                            Log.e("Tag", it)
-                        }
+                    viewModel.login(
+                        AuthRequestModel(
+                            role = viewModel.userRole,
+                            email = viewModel.userEmail,
+                            password = viewModel.userPassword
+                        )
                     )
                 } else{
-                    //test(userUseCase, scope, {Log.e("TEST", " $it")})
                     Toast.makeText(context, "Не все поля правильно заполнены", Toast.LENGTH_LONG).show()
                 }
             }

@@ -70,6 +70,7 @@ import com.where.to.go.component.WhereToGoApplicationTheme
 import com.where.to.go.component.colorBg
 import com.where.to.go.component.colorContainerBg
 import com.where.to.go.component.colorGray
+import com.where.to.go.internet.models.Party
 import com.where.to.go.main.R
 import com.where.to.go.main.utils.RecommendTape
 import com.where.to.go.main.vms.RecommendedViewModel
@@ -79,14 +80,15 @@ import com.where.to.go.main.vms.RecommendedViewModel
 fun RecommendsFragment(
     viewModel: RecommendedViewModel,
 ) {
-    var search by remember { mutableStateOf("") }
     val categories = remember { mutableStateListOf(false, false, false, false) }
     val context = LocalContext.current
+    var search by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(),
+            .fillMaxHeight()
+            .padding(start = 20.dp, end= 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
@@ -107,7 +109,7 @@ fun RecommendsFragment(
                 CategoryToggle(
                     isChecked = categories[index],
                     onToggle = { newState ->
-                        categories[index] = newState // Обновляем состояние
+                        categories[index] = newState
                         Log.e("ONTOGGLE", categories[index].toString())
                     },
                     label = "Category ${index + 1}"
@@ -118,7 +120,7 @@ fun RecommendsFragment(
             modifier = Modifier
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween // Распределяет элементы по краям
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             AppText(
                 text = "Рекомендованные",
@@ -128,7 +130,8 @@ fun RecommendsFragment(
             )
 
             SelectedTapeButton(status = viewModel.recommendedTapeState) {
-                viewModel.changeRecommendedTapeState
+                viewModel.changeRecommendedTapeState()
+                Log.e("TESTASG", "${viewModel.recommendedTapeState}")
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -194,22 +197,21 @@ private fun RecommendedTape(
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         AnimatedVisibility(
             visible = viewModel.recommendedTapeState == RecommendTape.HORIZONTAL,
-            enter = fadeIn(tween(400)),
+            enter = fadeIn(tween(800)),
             exit = fadeOut(tween(400))
         ) {
             LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                items(viewModel.categories.size) { index ->
-                    LargePartyView(
-                        title = "Test party",
-                        date = "Tommorow",
-                        guestCount = 25,
-                        price = "1/2",
-                        backgroundImageResId = com.where.to.go.component.R.drawable.test
-                    ) {
-                        onSelectedCurrentItem()
+                viewModel.recommendedParties?.let {
+                    items(it.size) { index ->
+                        LargePartyView(
+                            viewModel.recommendedParties!![index],
+                            backgroundImageResId = com.where.to.go.component.R.drawable.test
+                        ) {
+                            onSelectedCurrentItem()
+                        }
                     }
                 }
             }

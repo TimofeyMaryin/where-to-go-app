@@ -33,7 +33,7 @@ fun AppNavigation(
             route = Screen.StartScreen.route,
 
         ) {
-            StartScreen(navController = navController, viewModel = viewModel, authUseCase = authUseCase, userUseCase = userUseCase)
+            StartScreen(navController = navController, viewModel = viewModel)
         }
 
         this.composable(
@@ -45,7 +45,7 @@ fun AppNavigation(
         this.composable(
             route = Screen.LoginScreen.route
         ) {
-            LoginScreen(navController = navController, viewModel = viewModel, authUseCase = authUseCase)
+            LoginScreen(navController = navController, viewModel = viewModel)
         }
 
         this.composable(
@@ -62,7 +62,7 @@ fun AppNavigation(
         this.composable(
             route = Screen.ResetPasswordScreen.route
         ) {
-            ResetPasswordScreen(navController = navController, viewModel = viewModel, authUseCase = authUseCase)
+            ResetPasswordScreen(navController = navController, viewModel = viewModel)
         }
 
     }
