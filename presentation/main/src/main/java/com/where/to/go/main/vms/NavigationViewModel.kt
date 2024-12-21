@@ -10,6 +10,7 @@ import com.where.to.go.main.navigation.Screen
 
 class NavigationViewModel : ViewModel() {
     var currentNavDestination by mutableStateOf(Screen.RecommendedScreen.route)
+        private set
 
     var navController: NavController? = null
 

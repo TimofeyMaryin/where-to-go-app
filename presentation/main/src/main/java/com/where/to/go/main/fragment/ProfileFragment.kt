@@ -66,12 +66,15 @@ import com.where.to.go.component.primaryFillWidth
 import com.where.to.go.internet.cases.UserUseCase
 import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.main.R
+import com.where.to.go.main.navigation.Screen
+import com.where.to.go.main.vms.NavigationViewModel
 import com.where.to.go.main.vms.ProfileViewModel
 import com.where.to.go.main.vms.UserDataChangedCallback
 
 @Composable
 fun ProfileFragment(
     viewModel: ProfileViewModel,
+    navigationViewModel: NavigationViewModel,
     userUseCase: UserUseCase
 ) {
     val context = LocalContext.current
@@ -133,7 +136,8 @@ fun ProfileFragment(
                                 color = animatedColorPrimary(),
                                 shape = primaryClip()
                             )
-                            .size(100.dp),
+                            .size(100.dp)
+                            .clickable { navigationViewModel.navigate(Screen.EditProfileScreen.route) },
                         contentScale = ContentScale.Crop
                     )
 

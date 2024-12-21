@@ -27,6 +27,7 @@ fun AppNavigation(
 ) {
     val navController = rememberNavController()
     val navigationViewModel: NavigationViewModel = viewModel()
+    recommendsViewModel.navController = navController
     navigationViewModel.navController = navController
     val userUseCase = UserUseCase()
 
@@ -47,7 +48,7 @@ fun AppNavigation(
                 route = Screen.SchedulePartyScreen.route
             ) {
                 AnimateFragmentContainer(enable = navigationViewModel.isCurrentNavDestination.invoke(Screen.SchedulePartyScreen.route)) {
-                    SchedulePartyFragment(viewModel = recommendsViewModel)
+                    SchedulePartyFragment(navigateViewModel = navigationViewModel)
                 }
             }
 
@@ -65,7 +66,7 @@ fun AppNavigation(
                 AnimateFragmentContainer(enable = navigationViewModel.isCurrentNavDestination.invoke(Screen.ProfileScreen.route)) {
                     ProfileFragment(
                         viewModel = profileViewModel,
-                        userUseCase = userUseCase)
+                        userUseCase = userUseCase, navigationViewModel = navigationViewModel)
                 }
             }
 

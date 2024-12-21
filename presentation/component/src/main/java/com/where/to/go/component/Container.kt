@@ -29,13 +29,14 @@ fun ColumnScope.Container(
 fun RowScope.Container(
     weight: Float,
     modifier: Modifier = Modifier,
+    alignment: Alignment = Alignment.Center,
     content: @Composable () -> Unit,
 ) {
     Box(
         modifier = Modifier
             .weight(weight)
             .then(modifier),
-        contentAlignment = Alignment.Center
+        contentAlignment = alignment
     ) {
         content()
     }

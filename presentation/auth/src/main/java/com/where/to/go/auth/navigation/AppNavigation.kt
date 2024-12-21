@@ -51,7 +51,7 @@ fun AppNavigation(
         this.composable(
             route = Screen.RestoreScreen.route
         ) {
-            RestoreScreen(navController = navController, viewModel = viewModel, authUseCase = authUseCase)
+            RestoreScreen(navController = navController, viewModel = viewModel)
         }
 
         this.composable(

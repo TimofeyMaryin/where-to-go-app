@@ -1,5 +1,6 @@
 package com.where.to.go.main.fragment
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,5 +14,13 @@ import com.where.to.go.main.vms.RecommendedViewModel
 fun FavoritePartyFragment(
     viewModel: RecommendedViewModel,
 ) {
-    Box(modifier = Modifier.fillMaxSize().background(Color.Green))
+
+    BackHandler {
+
+    }
+
+
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.Green))
 }
