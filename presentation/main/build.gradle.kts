@@ -92,6 +92,8 @@ dependencies {
     implementation("com.github.TimofeyMaryin:gufo-shadow:1.0.0")
     implementation ("androidx.compose.runtime:runtime-livedata:1.7.6")
 
+    implementation(libs.androidx.compose.foundation)
+
 }
 
 

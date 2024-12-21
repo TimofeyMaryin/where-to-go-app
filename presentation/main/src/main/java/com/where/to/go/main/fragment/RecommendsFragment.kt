@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
@@ -83,6 +84,10 @@ fun RecommendsFragment(
     val categories = remember { mutableStateListOf(false, false, false, false) }
     val context = LocalContext.current
     var search by remember { mutableStateOf("") }
+
+    BackHandler {
+        
+    }
 
     Column(
         modifier = Modifier

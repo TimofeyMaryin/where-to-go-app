@@ -1,8 +1,5 @@
 package com.where.to.go.auth.vms
 
-import android.content.Context
-import android.content.Intent
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.internet.cases.AuthUseCase
-import com.where.to.go.internet.cases.PartyUseCase
 import com.where.to.go.internet.models.AuthRequestModel
 import com.where.to.go.internet.models.AuthResponseModel
 import com.where.to.go.internet.models.ConfirmCodeModel
@@ -19,9 +15,7 @@ import com.where.to.go.internet.models.RequestState
 import com.where.to.go.internet.models.ResetPasswordModel
 import com.where.to.go.internet.models.ResponseModel
 import com.where.to.go.internet.models.RestorePasswordModel
-import com.where.to.go.main.MainActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

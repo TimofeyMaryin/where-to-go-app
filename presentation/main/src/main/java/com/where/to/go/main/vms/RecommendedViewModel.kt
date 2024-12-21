@@ -25,6 +25,7 @@ class RecommendedViewModel: ViewModel() {
     private val partyUseCase = PartyUseCase()
 
     var loginUser by mutableStateOf<User?>(null)
+    var navController: NavController? = null
 
     var recommendedTapeState by mutableStateOf(RecommendTape.VERTICAL)
         private set
@@ -63,5 +64,9 @@ class RecommendedViewModel: ViewModel() {
             recommendsState.value = RequestState(error = "Ошибка: ${e.message}")
             null
         }
+    }
+
+    fun navigate(dest: String) {
+        navController?.navigate(dest) ?: throw IllegalArgumentException("nav controller has not init")
     }
 }
