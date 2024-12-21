@@ -97,6 +97,7 @@ fun FragmentContainer(
                         Screen.FavoritePartyScreen.route -> R.string.top_bar_favorite
                         Screen.ProfileScreen.route -> R.string.top_bar_profile
                         Screen.EditProfileScreen.route -> R.string.top_bar_edit_profile
+                        Screen.SettingsScreen.route -> R.string.top_bar_settings
                         else -> R.string.error
                     }
                 ),
@@ -116,7 +117,7 @@ fun FragmentContainer(
                 }
                 else -> {
                     SquareButton(icon = R.drawable.ic_top_bar_settings) {
-                        // TODO: Действие для других экранов
+                        navigationViewModel.navigate(Screen.SettingsScreen.route)
                     }
                 }
             }

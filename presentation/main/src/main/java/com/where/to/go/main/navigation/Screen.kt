@@ -6,4 +6,5 @@ sealed class Screen(val route: String) {
     data object FavoritePartyScreen : Screen("favorite-party-screen")
     data object SchedulePartyScreen : Screen("schedule-party-screen")
     data object EditProfileScreen : Screen("edit-profile-profile")
+    data object SettingsScreen : Screen("settings-screen")
 }
