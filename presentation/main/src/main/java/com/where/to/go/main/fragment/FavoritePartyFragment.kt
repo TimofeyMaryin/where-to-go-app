@@ -11,7 +11,6 @@ import com.where.to.go.main.vms.RecommendedViewModel
 
 @Composable
 fun FavoritePartyFragment(
-    navController: NavController,
     viewModel: RecommendedViewModel,
 ) {
     Box(modifier = Modifier.fillMaxSize().background(Color.Green))

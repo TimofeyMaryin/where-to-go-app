@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -29,6 +30,7 @@ import com.where.to.go.main.vms.ImageEditorViewModel
 import com.yalantis.ucrop.UCrop
 import java.io.File
 import androidx.compose.runtime.livedata.observeAsState
+import java.io.FileNotFoundException
 
 @Composable
 fun ImageEditorFragment(
@@ -37,7 +39,7 @@ fun ImageEditorFragment(
     val imageUri by viewModel.imageUri.observeAsState() // Наблюдаем за изменениями в URI
 
     val context = LocalContext.current
-
+    Log.e("TESTAG", "${viewModel.imageUri.value}");
     val cropLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val resultUri = UCrop.getOutput(result.data!!)
@@ -58,11 +60,18 @@ fun ImageEditorFragment(
         verticalArrangement = Arrangement.Center
     ) {
         if (imageUri != null) {
-            Image(
-                bitmap = BitmapFactory.decodeFile(imageUri!!.path).asImageBitmap(),
-                contentDescription = null,
-                modifier = Modifier.size(200.dp)
-            )
+                // Use ContentResolver to open an InputStream
+                val inputStream = context.contentResolver.openInputStream(imageUri!!)
+                val bitmap = BitmapFactory.decodeStream(inputStream)
+                if (bitmap != null) {
+                    Image(
+                        bitmap = bitmap.asImageBitmap(),
+                        contentDescription = null,
+                        modifier = Modifier.size(200.dp)
+                    )
+                } else {
+                    Text("Не удалось загрузить изображение")
+                }
         } else {
             Text("Изображение не выбрано")
         }

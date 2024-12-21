@@ -13,7 +13,6 @@ import com.where.to.go.main.vms.RecommendedViewModel
 
 @Composable
 fun SchedulePartyFragment(
-    navController: NavController,
     viewModel: RecommendedViewModel
 ) {
     Box(modifier = Modifier
@@ -26,7 +25,6 @@ fun SchedulePartyFragment(
 @Composable
 private fun SchedulePartyFragmentPreview() {
     SchedulePartyFragment(
-        navController = rememberNavController(),
         viewModel = RecommendedViewModel()
     )
 }

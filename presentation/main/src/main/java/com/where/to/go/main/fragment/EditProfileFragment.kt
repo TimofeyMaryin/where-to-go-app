@@ -1,16 +1,14 @@
 package com.where.to.go.main.fragment
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
-import android.text.TextUtils.replace
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import android.util.Log
-import android.widget.Toast
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -19,13 +17,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -35,7 +31,6 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -52,15 +47,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import com.where.to.go.component.AppText
 import com.where.to.go.component.AppTextField
 import com.where.to.go.component.ButtonColor
-import com.where.to.go.component.Container
 import com.where.to.go.component.PersonalType
 import com.where.to.go.component.PrimaryButton
 import com.where.to.go.component.TextFieldType
@@ -70,7 +62,6 @@ import com.where.to.go.component.animateIconColor
 import com.where.to.go.component.animatedColorPrimary
 import com.where.to.go.component.colorBg
 import com.where.to.go.component.colorContainerBg
-import com.where.to.go.component.colorGray
 import com.where.to.go.component.primaryClip
 import com.where.to.go.component.primaryFillWidth
 import com.where.to.go.internet.cases.UserUseCase
@@ -81,15 +72,33 @@ import com.where.to.go.main.utils.ImagePicker
 import com.where.to.go.main.vms.ImageEditorViewModel
 import com.where.to.go.main.vms.NavigationViewModel
 import com.where.to.go.main.vms.ProfileViewModel
-import com.where.to.go.main.vms.RecommendedViewModel
 import com.where.to.go.main.vms.UserDataChangedCallback
+import com.yalantis.ucrop.UCrop
+import java.io.File
 
 @Composable
-fun ProfileFragment(
-    viewModel: ProfileViewModel,
+fun EditProfileFragment(
+    profileViewModel: ProfileViewModel,
+    editorViewModel: ImageEditorViewModel,
     userUseCase: UserUseCase
 ) {
     val context = LocalContext.current
+    val imagePicker = remember { ImagePicker() }
+
+    val getImageLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val uri: Uri? = result.data?.data
+            uri?.let {
+                context.contentResolver.openInputStream(it)?.let { inputStream ->
+                    imagePicker.loadImage(it, inputStream)
+                    val encodedUri = Uri.encode(uri.toString())
+                    Log.e("MAIN", "encoded $encodedUri")
+                    editorViewModel.setImageUri(uri)
+                }
+            }
+        }
+    }
+
 
     var openDialogFillPersonalData by remember { mutableStateOf<PersonalType?>(null) }
     var userPersonalData by remember { mutableStateOf("") }
@@ -138,7 +147,7 @@ fun ProfileFragment(
                         .height(100.dp)
                 ) {
                     Image(
-                        painter = painterResource(id = viewModel.loginUser?.avatar?.toIntOrNull() ?: R.drawable.avatar_placeholder),
+                        painter = painterResource(id = profileViewModel.loginUser?.avatar?.toIntOrNull() ?: R.drawable.avatar_placeholder),
                         contentDescription = null,
                         modifier = Modifier
                             .align(Alignment.TopStart) // Align the image to the top
@@ -148,7 +157,10 @@ fun ProfileFragment(
                                 color = animatedColorPrimary(),
                                 shape = primaryClip()
                             )
-                            .size(100.dp),
+                            .size(100.dp)
+                            .clickable {
+                                imagePicker.pickImage(context as Activity, getImageLauncher)
+                            },
                         contentScale = ContentScale.Crop
                     )
 
@@ -167,7 +179,7 @@ fun ProfileFragment(
                             verticalArrangement = Arrangement.SpaceBetween,
                         ) {
                             AppText(
-                                text = viewModel.loginUser?.name ?: "User${viewModel.loginUser?.id}",
+                                text = profileViewModel.loginUser?.name ?: "User${profileViewModel.loginUser?.id}",
                                 weight = TextWeight.BOLD,
                                 size = TextSize.TITLE_MEDIUM
                             )
@@ -189,7 +201,7 @@ fun ProfileFragment(
                                 )
 
                                 AppText(
-                                    text = viewModel.loginUser?.region ?: "---",
+                                    text = profileViewModel.loginUser?.region ?: "---",
                                     weight = TextWeight.REGULAR,
                                     size = TextSize.BODY_LARGE
                                 )
@@ -200,208 +212,24 @@ fun ProfileFragment(
             }
 
             item {
-
-                Row {
-                    SocialInfoBanner(
-                        img = com.where.to.go.component.R.drawable.telegram,
-                        value = viewModel.loginUser?.tg
-                    ) {
-                        openDialogFillPersonalData = PersonalType.TG
-                    }
-
-                    SocialInfoBanner(
-                        img = com.where.to.go.component.R.drawable.vk,
-                        value = viewModel.loginUser?.vk
-                    ) {
-                        openDialogFillPersonalData = PersonalType.VK
-                    }
-
-                    SocialInfoBanner(
-                        img = com.where.to.go.component.R.drawable.phone,
-                        value = viewModel.loginUser?.phone
-                    ) {
-                        openDialogFillPersonalData = PersonalType.PHONE
-                    }
-                }
-            }
-
-            item {
-                ProfilePersonalData(
-                    theme = stringResource(id = R.string.about),
-                    value = viewModel.loginUser?.status ?: "---"
-                )
-            }
-
-            item {
                 Spacer(modifier = Modifier.height(1000.dp))
             }
 
         }
 
     }
-
-    if (openDialogFillPersonalData != null) {
-        AlertDialog(
-            onDismissRequest = {
-                openDialogFillPersonalData = null
-                userPersonalData = ""
-            },
-            shape = primaryClip(),
-            containerColor = colorBg,
-            confirmButton = {
-                PrimaryButton(value = "Отмена", color = ButtonColor.BORDER) {
-                    openDialogFillPersonalData = null
-                    userPersonalData = ""
-                }
-            },
-            dismissButton = {
-                PrimaryButton(value = "Сохранить", color = ButtonColor.COLORFUL) {
-
-                }
-                try{
-                    viewModel.updateUserData(
-                        newUser = viewModel.
-                        loginUser?.
-                        copy(
-                            tg = userPersonalData
-                        ) ?: throw IllegalArgumentException("Compose cannot update user"),
-                        callback = object : UserDataChangedCallback {
-                            override fun onError(msg: String) {
-                                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
-                                Log.e("TAG", "onError updateUserData compose: $msg", )
-                                openDialogFillPersonalData = null
-                                userPersonalData = ""
-                            }
-
-                            override fun onSuccess(msg: String) {
-                                Toast.makeText(context, "Success $msg", Toast.LENGTH_SHORT).show()
-                            }
-
-                        }
-                    )
-                }catch(e: Exception){
-                    Log.e("TESTAG", e.toString())
-                }
-            },
-            title = {
-                AppText(
-                    text = "Добавление персональных данных",
-                    weight = TextWeight.BOLD,
-                    size = TextSize.TITLE_MEDIUM,
-                    textAlign = TextAlign.Center
-                )
-            },
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.Info,
-                    contentDescription = null,
-                    tint = animateIconColor()
-                )
-            },
-            text = {
-                AppTextField(
-                    hint = when (openDialogFillPersonalData) {
-                        PersonalType.TG -> "Введите свой ID"
-                        PersonalType.VK -> "Введите свой ID"
-                        PersonalType.PHONE -> "Введите номер телефона"
-                        null -> "Error"
-                    },
-                    value = userPersonalData,
-                    type = when (openDialogFillPersonalData) {
-                        PersonalType.TG -> TextFieldType.TEXT
-                        PersonalType.VK -> TextFieldType.TEXT
-                        PersonalType.PHONE -> TextFieldType.PHONE
-                        null -> TextFieldType.TEXT
-                    }
-                ) {
-                    if (openDialogFillPersonalData == PersonalType.PHONE) {
-                        if (it.isDigitsOnly() && it.length <= 11) {
-                            userPersonalData = it
-                        }
-                    } else {
-                        userPersonalData = it
-                    }
-                }
-            }
-        )
-
-    }
 }
 
-
-@Composable
-private fun ProfilePersonalData(
-    theme: String,
-    value: String,
-) {
-
-
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        AppText(text = theme, weight = TextWeight.MEDIUM, size = TextSize.BODY_LARGE)
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        Box(
-            modifier = Modifier
-                .clip(primaryClip())
-                .fillMaxWidth()
-                .background(colorGray),
-            contentAlignment = Alignment.Center
-        ) {
-            AppText(
-                text = value,
-                weight = TextWeight.REGULAR,
-                size = TextSize.BODY_LARGE,
-                modifier = Modifier
-                    .fillMaxWidth(primaryFillWidth)
-                    .padding(vertical = 16.dp),
-                color = colorBg,
-                textAlign = TextAlign.Center
-            )
-        }
+private fun editImage(sourceUri: Uri, cropLauncher: ActivityResultLauncher<Intent>, context: Context) {
+    val destinationUri = Uri.fromFile(File(context.cacheDir, "cropped_image.png"))
+    val options = UCrop.Options().apply {
+        setCompressionQuality(100)
     }
-
-}
-
-@Composable
-private fun RowScope.SocialInfoBanner(
-    @DrawableRes img: Int,
-    value: String?,
-    onClick: () -> Unit
-) {
-
-    Container(weight = 1f) {
-        Box(
-            modifier = Modifier
-                .clip(primaryClip())
-                .background(colorGray)
-                .size(120.dp)
-                .clickable { onClick() },
-            contentAlignment = Alignment.Center
-        ) {
-            Column(
-                modifier = Modifier.fillMaxSize(primaryFillWidth),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Image(
-                    painter = painterResource(id = img),
-                    contentDescription = "Social img",
-                    modifier = Modifier.size(40.dp),
-                    contentScale = ContentScale.Crop
-                )
-
-                AppText(
-                    text = value ?: "Добавить",
-                    weight = TextWeight.REGULAR,
-                    size = TextSize.BODY_LARGE,
-                    textDecoration = if (value == null) TextDecoration.Underline else null
-                )
-            }
+    UCrop.of(sourceUri, destinationUri)
+        .withAspectRatio(1f, 1f)
+        .withMaxResultSize(800, 800)
+        .withOptions(options)
+        .getIntent(context).also { intent ->
+            cropLauncher.launch(intent) // Use the launcher to start the crop activity
         }
-
-    }
-
 }

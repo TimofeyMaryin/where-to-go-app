@@ -104,9 +104,19 @@ fun FragmentContainer(
 
 
         },
+
         topBarEnd = {
-            SquareButton(icon = R.drawable.ic_top_bar_settings) {
-                // TODO Settings
+            when (navigationViewModel.currentNavDestination) {
+                Screen.ProfileScreen.route -> {
+                    SquareButton(icon = R.drawable.ic_edit) {
+                        navigationViewModel.navigate(Screen.EditProfileScreen.route)
+                    }
+                }
+                else -> {
+                    SquareButton(icon = R.drawable.ic_top_bar_settings) {
+                        // TODO: Действие для других экранов
+                    }
+                }
             }
         },
     ) {
@@ -160,38 +170,38 @@ private fun BottomMenu(
         ) {
 
             BottomMenuItem(
-                ic = R.drawable.ic_bottom_bar_rec,
+                ic = R.drawable.ic_party,
                 selected = viewModel.isCurrentNavDestination.invoke(Screen.RecommendedScreen.route)
             ) {
                 if (viewModel.currentNavDestination != Screen.RecommendedScreen.route) {
-                    viewModel.navigate(navController, Screen.RecommendedScreen.route)
+                    viewModel.navigate(Screen.RecommendedScreen.route)
                 }
             }
 
             BottomMenuItem(
-                ic = R.drawable.ic_bottom_bar_calendar,
+                ic = R.drawable.ic_calendar,
                 selected = viewModel.isCurrentNavDestination.invoke(Screen.SchedulePartyScreen.route)
             ) {
                 if (viewModel.currentNavDestination != Screen.SchedulePartyScreen.route) {
-                    viewModel.navigate(navController, Screen.SchedulePartyScreen.route)
+                    viewModel.navigate(Screen.SchedulePartyScreen.route)
                 }
             }
 
             BottomMenuItem(
-                ic = R.drawable.ic_bottom_bar_heart,
+                ic = R.drawable.ic_heart,
                 selected = viewModel.isCurrentNavDestination.invoke(Screen.FavoritePartyScreen.route)
             ) {
                 if (viewModel.currentNavDestination != Screen.FavoritePartyScreen.route) {
-                    viewModel.navigate(navController, Screen.FavoritePartyScreen.route)
+                    viewModel.navigate(Screen.FavoritePartyScreen.route)
                 }
             }
 
             BottomMenuItem(
-                ic = R.drawable.ic_bottom_bar_profile,
+                ic = R.drawable.ic_profile,
                 selected = viewModel.isCurrentNavDestination.invoke(Screen.ProfileScreen.route)
             ) {
                 if (viewModel.currentNavDestination != Screen.ProfileScreen.route) {
-                    viewModel.navigate(navController, Screen.ProfileScreen.route)
+                    viewModel.navigate(Screen.ProfileScreen.route)
                 }
             }
             
@@ -329,7 +339,7 @@ fun HamburgerMenu(
 
                             HamburgerMenuButton(img = null, text = "Профиль") {
                                 if (viewModel.currentNavDestination != Screen.ProfileScreen.route) {
-                                    viewModel.navigate(navController, Screen.ProfileScreen.route)
+                                    viewModel.navigate(Screen.ProfileScreen.route)
                                 }
                                 onChangeState(false)
                             }

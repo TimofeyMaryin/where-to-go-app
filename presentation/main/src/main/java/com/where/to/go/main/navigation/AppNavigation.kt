@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.where.to.go.internet.cases.UserUseCase
+import com.where.to.go.main.fragment.EditProfileFragment
 import com.where.to.go.main.fragment.FavoritePartyFragment
 import com.where.to.go.main.fragment.ImageEditorFragment
 import com.where.to.go.main.fragment.ProfileFragment
@@ -31,6 +32,7 @@ fun AppNavigation(
 ) {
     val navController = rememberNavController()
     val navigationViewModel: NavigationViewModel = viewModel()
+    navigationViewModel.navController = navController
     val userUseCase = UserUseCase()
 
     FragmentContainer(navController = navController, navigationViewModel) {
@@ -50,7 +52,7 @@ fun AppNavigation(
                 route = Screen.SchedulePartyScreen.route
             ) {
                 AnimateFragmentContainer(enable = navigationViewModel.isCurrentNavDestination.invoke(Screen.SchedulePartyScreen.route)) {
-                    SchedulePartyFragment(navController = navController, viewModel = recommendsViewModel)
+                    SchedulePartyFragment(viewModel = recommendsViewModel)
                 }
             }
 
@@ -58,7 +60,7 @@ fun AppNavigation(
                 route = Screen.FavoritePartyScreen.route
             ) {
                 AnimateFragmentContainer(enable = navigationViewModel.isCurrentNavDestination.invoke(Screen.FavoritePartyScreen.route)) {
-                    FavoritePartyFragment(navController = navController, viewModel = recommendsViewModel)
+                    FavoritePartyFragment(viewModel = recommendsViewModel)
                 }
             }
 
@@ -67,9 +69,7 @@ fun AppNavigation(
             ) {
                 AnimateFragmentContainer(enable = navigationViewModel.isCurrentNavDestination.invoke(Screen.ProfileScreen.route)) {
                     ProfileFragment(
-                        navController = navController,
                         viewModel = profileViewModel,
-                        navigationViewModel = navigationViewModel,
                         userUseCase = userUseCase)
                 }
             }
@@ -79,6 +79,14 @@ fun AppNavigation(
             ) {
                 AnimateFragmentContainer(enable = navigationViewModel.isCurrentNavDestination.invoke(Screen.ImageEditorScreen.route)) {
                     ImageEditorFragment(editorViewModel)
+                }
+            }
+
+            composable(
+                route = Screen.EditProfileScreen.route
+            ) {
+                AnimateFragmentContainer(enable = navigationViewModel.isCurrentNavDestination.invoke(Screen.EditProfileScreen.route)) {
+                    EditProfileFragment(profileViewModel, editorViewModel, userUseCase)
                 }
             }
 
