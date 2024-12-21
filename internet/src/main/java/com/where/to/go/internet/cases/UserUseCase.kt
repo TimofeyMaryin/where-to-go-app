@@ -4,6 +4,7 @@ import com.where.to.go.internet.RetrofitClient
 import com.where.to.go.internet.dao.UserService
 import com.where.to.go.internet.models.AuthRequestModel
 import com.where.to.go.internet.models.AuthResponseModel
+import com.where.to.go.internet.models.ResponseModel
 import com.where.to.go.internet.models.RestorePasswordModel
 import com.where.to.go.internet.models.User
 import okhttp3.MultipartBody
@@ -23,7 +24,7 @@ class UserUseCase: UserService {
         return RetrofitClient.userService.findUser(email)
     }
 
-    override suspend fun uploadAvatar(userId: Int, file: MultipartBody.Part, authToken: String): Response<String> {
+    override suspend fun uploadAvatar(userId: Int, file: MultipartBody.Part, authToken: String): Response<ResponseModel> {
         return RetrofitClient.userService.uploadAvatar(userId, file, authToken)
     }
 

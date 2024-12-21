@@ -1,11 +1,16 @@
 package com.where.to.go.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.lifecycleScope
 import com.where.to.go.internet.cases.UserUseCase
+import com.where.to.go.internet.models.RequestState
 import com.where.to.go.internet.models.RestorePasswordModel
 import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.main.vms.EditProfileViewModel
@@ -24,23 +29,24 @@ class MainActivity: ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         mainFragment(viewModel, profileViewModel, editorViewModel)
+        profileViewModel.findUser()
+
+        profileViewModel.findUserState.observe(this) { state ->
+            when {
+                state.isLoading -> {
+                }
+                state.data != null -> {
+                    Toast.makeText(this, "User okay ${profileViewModel.loginUser == null}", Toast.LENGTH_LONG).show()
+                    editorViewModel.loginUser = profileViewModel.loginUser
+                }
+                state.error != null -> {
+                    Toast.makeText(this, "User not okay ${state.error}", Toast.LENGTH_LONG).show()
+                    Log.e("USER", state.error.toString())
+                }
+            }
+        }
     }
 
     init {
-        /*UserServer.findUser(
-            userUseCase = UserUseCase(),
-            model = RestorePasswordModel(email = TokenManager.getEmail()),
-            coroutineScope = lifecycleScope,
-            onLoading = {
-                Log.e("TAG", "MainActivity - onLoading: $it", )
-            },
-            onResult = {
-                Log.e("TAG", "MainActivity - onResult: $it", )
-                profileViewModel.loginUser = it
-            },
-            onError = {
-                Log.e("TAG", "MainActivity - onError: $it", )
-            }
-        )*/
     }
 }

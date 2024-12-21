@@ -1,6 +1,7 @@
 package com.where.to.go.internet.dao
 
 import com.where.to.go.internet.models.AuthResponseModel
+import com.where.to.go.internet.models.ResponseModel
 import com.where.to.go.internet.models.RestorePasswordModel
 import com.where.to.go.internet.models.User
 import okhttp3.MultipartBody
@@ -25,7 +26,7 @@ interface UserService {
     @Multipart
     @POST("users/{id}/avatar") suspend fun uploadAvatar(@Path("id") userId: Int,
                                                         @Part file: MultipartBody.Part,
-                                                        @Header("Authorization") authToken: String): Response<String>
+                                                        @Header("Authorization") authToken: String): Response<ResponseModel>
 
     @DELETE("users/{id}") suspend fun deleteUser(
         @Path("id") id: Int,

@@ -73,7 +73,7 @@ fun AppNavigation(
                 route = Screen.EditProfileScreen.route
             ) {
                 AnimateFragmentContainer(enable = navigationViewModel.isCurrentNavDestination.invoke(Screen.EditProfileScreen.route)) {
-                    EditProfileFragment(profileViewModel, editorViewModel, userUseCase)
+                    EditProfileFragment(profileViewModel, editorViewModel)
                 }
             }
 

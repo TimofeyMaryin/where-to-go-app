@@ -63,19 +63,18 @@ class AuthViewModel @Inject constructor(): ViewModel() {
 
     var enterUserAccType: (Int) -> Unit = { type -> userRole = type }
 
+    /*** Server ***/
     private val authUseCase = AuthUseCase()
     private val tokenManager = TokenManager
 
-    /*** Server ***/
-
-    val resetPasswordState = MutableLiveData<RequestState<Unit>>()
+    val resetPasswordState = MutableLiveData<RequestState<ResponseModel>>()
     fun resetPassword(model: ResetPasswordModel) {
         resetPasswordState.value = RequestState(isLoading = true)
         viewModelScope.launch {
             try {
                 val response = authUseCase.resetPassword(model, tokenManager.getToken())
                 if (response.isSuccessful) {
-                    resetPasswordState.value = RequestState(data = Unit)
+                    resetPasswordState.value = RequestState(data = response.body())
                 } else {
                     resetPasswordState.value = RequestState(error = "Ошибка: ${response.errorBody()?.string()}")
                 }
@@ -128,6 +127,7 @@ class AuthViewModel @Inject constructor(): ViewModel() {
             try {
                 val model = AuthResponseModel(tokenManager.getToken())
                 val header = tokenManager.getHeaderToken()
+                Log.e("TOKENTAG", model.toString())
                 val response = authUseCase.tokenUpdate(model, header)
                 if (response.isSuccessful) {
                     autoLoginState.value = RequestState(data = response.body())

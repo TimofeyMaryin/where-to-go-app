@@ -9,7 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
-    private const val BASE_URL = "http://80-78-241-166.cloudvps.regruhosting.ru:8081"
+    private const val BASE_URL = "http://10.0.2.2:8080"
     //"http://176.192.150.45:8080" "http://192.168.1.107:8080" "http://10.0.2.2:8080" "http://80-78-241-166.cloudvps.regruhosting.ru:8081"
 
 
@@ -25,7 +25,7 @@ object RetrofitClient {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gsonBuilder))
             .build()
 
     }

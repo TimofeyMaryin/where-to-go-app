@@ -72,7 +72,7 @@ fun LoginScreen(
     }
 
     BackHandler {
-        viewModel.clearUserData.invoke()
+        //viewModel.clearUserData.invoke()
     }
 
     GlobalContainer(

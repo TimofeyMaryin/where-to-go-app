@@ -69,7 +69,8 @@ fun StartScreen(
             Log.e("AUTOLOGIN", autoLoginState.error.toString())
         }
         autoLoginState.data != null -> {
-            TokenManager.saveToken(autoLoginState.data.toString())
+            TokenManager.clearToken()
+            TokenManager.saveToken(autoLoginState.data!!.token)
             val intent = Intent(context, MainActivity::class.java)
             context.startActivity(intent)
         }

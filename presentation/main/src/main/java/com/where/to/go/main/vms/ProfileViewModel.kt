@@ -4,12 +4,15 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.where.to.go.internet.RetrofitClient
 import com.where.to.go.internet.cases.AuthUseCase
 import com.where.to.go.internet.cases.UserUseCase
 import com.where.to.go.internet.models.AuthRequestModel
+import com.where.to.go.internet.models.RequestState
+import com.where.to.go.internet.models.ResetPasswordModel
 import com.where.to.go.internet.models.ResponseModel
 import com.where.to.go.internet.models.RestorePasswordModel
 import com.where.to.go.internet.models.User
@@ -91,7 +94,28 @@ class ProfileViewModel: ViewModel() {
 
     }
 
+    private val userUseCase = UserUseCase()
+    private val tokenManager = TokenManager
 
+    val findUserState = MutableLiveData<RequestState<User>>()
+    fun findUser() {
+        findUserState.value = RequestState(isLoading = true)
+        viewModelScope.launch {
+            try {
+                val response = userUseCase.findUser(RestorePasswordModel(tokenManager.getEmail()))
+                if (response.isSuccessful) {
+                    val user = response.body()
+                    loginUser = user
+                    findUserState.value = RequestState(data = user)
+                    Log.e("USERCHECK", "${user}")
+                } else {
+                    findUserState.value = RequestState(error = "Ошибка: ${response.errorBody()?.string()}")
+                }
+            } catch (e: Exception) {
+                findUserState.value = RequestState(error = "Ошибка: ${e.message}")
+            }
+        }
+    }
 
 }
 

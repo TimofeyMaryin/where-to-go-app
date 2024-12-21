@@ -55,14 +55,14 @@ fun RestoreScreen(
         }
     }
     BackHandler {
-        viewModel.clearUserData.invoke()
+        //viewModel.clearUserData.invoke()
     }
 
     GlobalContainer(
         topBarStart = {
             SquareButton(icon = R.drawable.ic_back) {
                 navController.navigate(Screen.StartScreen.route)
-                viewModel.clearUserData.invoke()
+                //viewModel.clearUserData.invoke()
             }
 
             AppText(text = stringResource(id = R.string.restore), weight = TextWeight.REGULAR, size = TextSize.TITLE_MEDIUM)

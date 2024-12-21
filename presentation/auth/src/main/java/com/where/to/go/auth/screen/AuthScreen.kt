@@ -59,8 +59,6 @@ import com.where.to.go.main.MainActivity
 
 @Composable
 fun AuthScreen(
-    authUseCase: AuthUseCase,
-    userUseCase: UserUseCase,
     navController: NavController,
     viewModel: AuthViewModel,
 ) {
@@ -83,7 +81,7 @@ fun AuthScreen(
 
     BackHandler {
         navController.popBackStack()
-        viewModel.clearUserData.invoke()
+        //viewModel.clearUserData.invoke()
     }
 
     GlobalContainer(

@@ -17,10 +17,6 @@ data class AuthResponseModel(
     val token: String
 )
 
-@Serializable
-data class ResponseModel(
-    val response: String
-)
 
 data class RestorePasswordModel(val email: String)
 data class ConfirmCodeModel(val code: String, val email: String)

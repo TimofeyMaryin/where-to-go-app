@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -28,6 +29,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -48,7 +50,9 @@ import com.where.to.go.component.colorContainerBg
 import com.where.to.go.component.primaryClip
 import com.where.to.go.component.primaryFillWidth
 import com.where.to.go.internet.cases.UserUseCase
+import com.where.to.go.internet.models.RequestState
 import com.where.to.go.internet.plugins.TokenManager
+import com.where.to.go.main.MainActivity
 import com.where.to.go.main.R
 import com.where.to.go.main.utils.ImagePicker
 import com.where.to.go.main.vms.EditProfileViewModel
@@ -62,29 +66,35 @@ import java.io.File
 @Composable
 fun EditProfileFragment(
     profileViewModel: ProfileViewModel,
-    editorViewModel: EditProfileViewModel,
-    userUseCase: UserUseCase
+    viewModel: EditProfileViewModel
 ) {
     val context = LocalContext.current
     val imagePicker = remember { ImagePicker() }
 
-    val scope = rememberCoroutineScope()
-    Log.e("TOKENTAG", TokenManager.getToken())
+    val uploadAvatarState by viewModel.uploadAvatarState.observeAsState(RequestState())
+
+    when {
+        uploadAvatarState.isLoading -> {
+            // Показать индикатор загрузки
+        }
+        uploadAvatarState.error != null -> {
+            Toast.makeText(context, uploadAvatarState.error, Toast.LENGTH_LONG).show()
+        }
+        uploadAvatarState.data != null -> {
+            Toast.makeText(context, "УСПЕШНО ${uploadAvatarState.data!!.response}", Toast.LENGTH_LONG).show()
+        }
+    }
+
     val cropLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val resultUri = UCrop.getOutput(result.data!!)
             resultUri?.let {
                 val file = MultipartBody.Part.createFormData(
-                    "avatar",
-                    "avatar.jpg", // Имя файла
+                    viewModel.loginUser!!.email,
+                    "${viewModel.loginUser!!.email}.jpg",
                     RequestBody.create(MediaType.parse("image/jpeg"), File(resultUri.path!!))
                 )
-
-                /*UserServer.uploadAvatar(userUseCase, file, TokenManager, scope, {}, {
-                    Log.e("TAG", it)
-                },{
-                    Log.e("TAG", it)
-                })*/
+                viewModel.uploadAvatar(file)
             }
         } else if (result.resultCode == UCrop.RESULT_ERROR) {
             val cropError = UCrop.getError(result.data!!)
@@ -102,8 +112,6 @@ fun EditProfileFragment(
             }
         }
     }
-
-
 
     val lazyListState = rememberLazyListState()
     var totalWeightForBackgroundElement by remember { mutableFloatStateOf(0f) }
