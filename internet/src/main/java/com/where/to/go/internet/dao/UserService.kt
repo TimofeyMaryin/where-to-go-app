@@ -9,6 +9,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
@@ -16,8 +17,12 @@ import retrofit2.http.Path
 
 interface UserService {
     @GET("/users") suspend fun getAllUsers(): Response<List<User>>
+
     @GET("users/{id}") suspend fun getUser(@Path("id") id: Int): Response<User>
+
     @POST("users/find") suspend fun findUser(@Body email: RestorePasswordModel): Response<User?>
+
+    @Multipart
     @POST("users/{id}/avatar") suspend fun uploadAvatar(@Path("id") userId: Int,
                                                         @Part file: MultipartBody.Part,
                                                         @Header("Authorization") authToken: String): Response<String>

@@ -44,9 +44,12 @@ object TokenManager {
     }
 
     fun getToken(): String {
-        return sharedPreferences.getString(TOKEN_KEY, "") ?: ""
+        return "${sharedPreferences.getString(TOKEN_KEY, "")}"
     }
 
+    /*     fun getToken(): String {
+        return "Bearer ${sharedPreferences.getString(TOKEN_KEY, "")}"
+    }*/
 
     fun clearToken() {
         sharedPreferences.edit().remove(TOKEN_KEY).apply()

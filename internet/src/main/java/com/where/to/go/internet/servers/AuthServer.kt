@@ -78,7 +78,6 @@ class AuthServer {
         override fun handleSignup(
             authUseCase: AuthUseCase,
             email: String,
-            //phone: String,
             role: Int,
             password: String,
             coroutineScope: CoroutineScope,

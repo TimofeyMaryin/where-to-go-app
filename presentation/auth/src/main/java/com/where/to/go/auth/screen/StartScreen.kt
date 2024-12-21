@@ -81,7 +81,6 @@ fun StartScreen(
         autoLogin(
             context = context,
             authUseCase = authUseCase,
-            userUseCase = userUseCase,
         ) {
             if (it) {
                 Log.e("TAG", "StartScreen: it = true", )

@@ -66,6 +66,7 @@ import com.where.to.go.component.primaryClip
 import com.where.to.go.component.primaryFillWidth
 import com.where.to.go.internet.cases.UserUseCase
 import com.where.to.go.internet.plugins.TokenManager
+import com.where.to.go.internet.servers.UserServer
 import com.where.to.go.main.R
 import com.where.to.go.main.navigation.Screen
 import com.where.to.go.main.utils.ImagePicker
@@ -74,6 +75,9 @@ import com.where.to.go.main.vms.NavigationViewModel
 import com.where.to.go.main.vms.ProfileViewModel
 import com.where.to.go.main.vms.UserDataChangedCallback
 import com.yalantis.ucrop.UCrop
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.io.File
 
 @Composable
@@ -85,25 +89,43 @@ fun EditProfileFragment(
     val context = LocalContext.current
     val imagePicker = remember { ImagePicker() }
 
+    val scope = rememberCoroutineScope()
+    Log.e("TOKENTAG", TokenManager.getToken())
+    val cropLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val resultUri = UCrop.getOutput(result.data!!)
+            resultUri?.let {
+                val file = MultipartBody.Part.createFormData(
+                    "avatar",
+                    "avatar.jpg", // Имя файла
+                    RequestBody.create(MediaType.parse("image/jpeg"), File(resultUri.path!!))
+                )
+
+                UserServer.uploadAvatar(userUseCase, file, TokenManager, scope, {}, {
+                    Log.e("TAG", it)
+                },{
+                    Log.e("TAG", it)
+                })
+            }
+        } else if (result.resultCode == UCrop.RESULT_ERROR) {
+            val cropError = UCrop.getError(result.data!!)
+        }
+    }
+
     val getImageLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val uri: Uri? = result.data?.data
             uri?.let {
                 context.contentResolver.openInputStream(it)?.let { inputStream ->
                     imagePicker.loadImage(it, inputStream)
-                    val encodedUri = Uri.encode(uri.toString())
-                    Log.e("MAIN", "encoded $encodedUri")
-                    editorViewModel.setImageUri(uri)
+                    editImage(uri, cropLauncher, context)
                 }
             }
         }
     }
 
 
-    var openDialogFillPersonalData by remember { mutableStateOf<PersonalType?>(null) }
-    var userPersonalData by remember { mutableStateOf("") }
 
-    val scope = rememberCoroutineScope()
     val lazyListState = rememberLazyListState()
     var totalWeightForBackgroundElement by remember { mutableFloatStateOf(0f) }
 

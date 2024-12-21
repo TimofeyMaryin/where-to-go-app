@@ -72,15 +72,10 @@ class AuthActivity: ComponentActivity(), CoroutineScope by MainScope()  {
 
 fun autoLogin(
     context: Context,
-    userUseCase: UserUseCase,
     authUseCase: AuthUseCase,
     onResult: (Boolean) -> Unit,
 ) {
     TokenManager.init(context)
-
-    findUser(userUseCase, RestorePasswordModel(email=TokenManager.getEmail()), MainScope(),
-        {},{Log.e("EGTAG", "mail ${it.email}")},{Log.e("EGTAG", it)})
-
 
     if(TokenManager.getToken().isNotEmpty()){
         updateToken(
@@ -90,10 +85,10 @@ fun autoLogin(
             onLoading = {},
             onResult = {
                 Log.e("TAG", "autoLogin: good", )
+                TokenManager.saveToken(it)
                 onResult(true)
             },
             onError = {
-                Log.e("EGTAG", it)
                 Log.e("TAG", "autoLogin: not good ;(", )
                 onResult(false)
             })
