@@ -1,21 +1,14 @@
 package com.where.to.go.main.fragment
 
-import android.annotation.SuppressLint
-import android.provider.Telephony.Mms.Part
 import android.util.Log
-import android.widget.SearchView
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,25 +16,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -50,28 +34,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.where.to.go.component.AppText
-import com.where.to.go.component.AppTextField
 import com.where.to.go.component.CategoryToggle
 import com.where.to.go.component.CustomSearchView
-import com.where.to.go.component.GlobalContainer
 import com.where.to.go.component.LargePartyView
-import com.where.to.go.component.SearchTextField
-import com.where.to.go.component.SquareButton
-import com.where.to.go.component.TextFieldType
-import com.where.to.go.component.TextSize
-import com.where.to.go.component.TextWeight
-import com.where.to.go.component.WhereToGoApplicationTheme
-import com.where.to.go.component.colorBg
-import com.where.to.go.component.colorContainerBg
-import com.where.to.go.component.colorGray
-import com.where.to.go.internet.models.Party
+import com.where.to.go.component.values.TextSize
+import com.where.to.go.component.values.TextWeight
+import com.where.to.go.component.values.colorContainerBg
+import com.where.to.go.component.values.colorGray
 import com.where.to.go.main.R
 import com.where.to.go.main.utils.RecommendTape
 import com.where.to.go.main.vms.RecommendedViewModel
@@ -92,23 +65,22 @@ fun RecommendsFragment(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight()
-            .padding(start = 20.dp, end= 20.dp),
+            .fillMaxHeight(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
         CustomSearchView(
             hint = "Поиск",
             value = search,
-            onValueChange = { search = it }, // Обновляем состояние
+            onValueChange = { search = it },
             onSearchClick = {
                 // TODO Search
             }
         )
-        LazyRow(
+        /*LazyRow(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 20.dp, bottom = 20.dp)
+                .wrapContentWidth()
+                .padding(vertical = 20.dp)
         ) {
             items(categories.size) { index ->
                 CategoryToggle(
@@ -120,7 +92,7 @@ fun RecommendsFragment(
                     label = "Category ${index + 1}"
                 )
             }
-        }
+        }*/
         Row(
             modifier = Modifier
                 .fillMaxWidth(),

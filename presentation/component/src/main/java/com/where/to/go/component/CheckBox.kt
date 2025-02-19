@@ -30,6 +30,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.where.to.go.component.values.TextSize
+import com.where.to.go.component.values.TextWeight
+import com.where.to.go.component.values.animateBrushPrimary
+import com.where.to.go.component.values.colorBg
+import com.where.to.go.component.values.colorWhite
 
 @Composable
 fun AppCheckBox(

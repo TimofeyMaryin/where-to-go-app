@@ -44,9 +44,9 @@ import com.where.to.go.component.AppText
 import com.where.to.go.component.ButtonColor
 import com.where.to.go.component.PrimaryButton
 import com.where.to.go.component.SquareButton
-import com.where.to.go.component.TextSize
-import com.where.to.go.component.TextWeight
-import com.where.to.go.component.animatedColorPrimary
+import com.where.to.go.component.values.TextSize
+import com.where.to.go.component.values.TextWeight
+import com.where.to.go.component.values.animatedColorPrimary
 import com.where.to.go.internet.models.RequestState
 import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.main.MainActivity
@@ -157,21 +157,6 @@ fun StartScreen(
                 }
             }
         }
-
-        Box(
-            modifier = Modifier
-                .height(30.dp)
-                .width(150.dp)
-                .align(Alignment.BottomCenter)
-
-                .background(Color(0xFF27273F))
-                .clip(RoundedCornerShape(5.dp))
-                .clickable { navController.navigate(Screen.RestoreScreen.route) },
-            contentAlignment = Alignment.Center
-        ){
-            AppText(text = "Я забыл пароль", weight = TextWeight.REGULAR, size = TextSize.BODY_LARGE)
-        }
-
     }
 
 

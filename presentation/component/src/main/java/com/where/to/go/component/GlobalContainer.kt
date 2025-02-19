@@ -3,19 +3,19 @@ package com.where.to.go.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ComposeCompilerApi
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.where.to.go.component.values.offset
 
 @Composable
 fun GlobalContainer(
@@ -62,7 +62,8 @@ fun GlobalContainer(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .weight(10f),
+                    .weight(10f)
+                    .padding(horizontal = offset),
                 contentAlignment = Alignment.Center
             ) {
                 content()

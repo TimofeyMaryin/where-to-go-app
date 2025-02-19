@@ -29,8 +29,8 @@ import com.where.to.go.component.GlobalContainer
 import com.where.to.go.component.PrimaryButton
 import com.where.to.go.component.SquareButton
 import com.where.to.go.component.TextFieldType
-import com.where.to.go.component.TextSize
-import com.where.to.go.component.TextWeight
+import com.where.to.go.component.values.TextSize
+import com.where.to.go.component.values.TextWeight
 import com.where.to.go.internet.cases.AuthUseCase
 import com.where.to.go.internet.models.RequestState
 import com.where.to.go.internet.models.ResetPasswordModel
@@ -59,14 +59,12 @@ fun ResetPasswordScreen(
     }
 
     BackHandler {
-        //viewModel.clearUserData.invoke()
     }
 
     GlobalContainer(
         topBarStart = {
             SquareButton(icon = R.drawable.ic_back) {
                 navController.navigate(Screen.StartScreen.route)
-                //viewModel.clearUserData.invoke()
             }
 
             AppText(text = stringResource(id = R.string.reset_password), weight = TextWeight.REGULAR, size = TextSize.TITLE_MEDIUM)

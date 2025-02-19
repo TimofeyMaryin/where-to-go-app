@@ -35,6 +35,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColor
+import com.where.to.go.component.values.TextSize
+import com.where.to.go.component.values.TextWeight
 import com.where.to.go.internet.models.Party
 
 @Composable
@@ -102,7 +104,6 @@ fun PartyView(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Контейнер с количеством гостей
                 Box(
                     modifier = Modifier
                         .background(Color(0xFF27273F))

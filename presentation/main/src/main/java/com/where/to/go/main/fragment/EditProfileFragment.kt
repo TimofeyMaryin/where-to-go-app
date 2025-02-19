@@ -22,8 +22,10 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
@@ -32,7 +34,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -41,19 +42,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.where.to.go.component.AppText
-import com.where.to.go.component.TextSize
-import com.where.to.go.component.TextWeight
-import com.where.to.go.component.animatedColorPrimary
-import com.where.to.go.component.colorContainerBg
+import com.where.to.go.component.ProfileBackground
+import com.where.to.go.component.values.animatedColorPrimary
+import com.where.to.go.component.values.colorContainerBg
 import com.where.to.go.component.primaryClip
 import com.where.to.go.component.primaryFillWidth
-import com.where.to.go.internet.cases.UserUseCase
+import com.where.to.go.component.values.TextSize
+import com.where.to.go.component.values.TextWeight
+import com.where.to.go.component.values.shortOffset
 import com.where.to.go.internet.models.RequestState
 import com.where.to.go.internet.plugins.TokenManager
-import com.where.to.go.main.MainActivity
 import com.where.to.go.main.R
+import com.where.to.go.main.navigation.Screen
 import com.where.to.go.main.utils.ImagePicker
 import com.where.to.go.main.vms.EditProfileViewModel
 import com.where.to.go.main.vms.ProfileViewModel
@@ -124,23 +127,102 @@ fun EditProfileFragment(
             }
 
     }
-    Column(
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .weight(1f - totalWeightForBackgroundElement))
+    val avatarSize = 120.dp
+    val paddingTop = 80.dp
 
-        Box(modifier = Modifier
-            .clip(primaryClip())
-            .fillMaxWidth(1f)
-            .weight(7f)
-            .fillMaxHeight()
-            .background(
-                colorContainerBg
-            ))
+    ProfileBackground(modifier = Modifier.padding(top = paddingTop))
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = paddingTop - avatarSize / 2)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Image(
+                painter = painterResource(id = viewModel.loginUser?.avatar?.toIntOrNull() ?: R.drawable.avatar_placeholder),
+                contentDescription = null,
+                modifier = Modifier
+                    .clip(primaryClip())
+                    .border(
+                        width = 1.dp,
+                        color = animatedColorPrimary(),
+                        shape = primaryClip()
+                    )
+                    .size(avatarSize)
+                    .clickable {
+                        imagePicker.pickImage(context as Activity, getImageLauncher)
+                    },
+                contentScale = ContentScale.Crop
+            )
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .height(avatarSize) ){
+                Column(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .align(Alignment.TopStart)
+                        .padding(
+                            start = shortOffset,
+                            top = shortOffset,
+                            bottom = shortOffset
+                        ),
+                    verticalArrangement = Arrangement.Top,
+                ) {
+                    AppText(
+                        text = viewModel.loginUser?.name ?: "User${viewModel.loginUser?.id}",
+                        weight = TextWeight.BOLD,
+                        size = TextSize.TITLE_MEDIUM
+                    )
+                    AppText(
+                        text = "email: ${TokenManager.getEmail()}",
+                        weight = TextWeight.REGULAR,
+                        size = TextSize.BODY_LARGE
+                    )
+
+                    Spacer(Modifier.height(30.dp))
+                }
+                Row(
+                    modifier = Modifier
+                        .padding(top = paddingTop, start = shortOffset)
+                        .align(Alignment.TopStart),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.geo_tag),
+                        contentDescription = null,
+                        modifier = Modifier.size(25.dp),
+                        contentScale = ContentScale.FillWidth
+                    )
+
+                    AppText(
+                        text = viewModel.loginUser?.region ?: "---",
+                        weight = TextWeight.REGULAR,
+                        size = TextSize.BODY_LARGE
+                    )
+                }
+            }
+
+        }
+        Spacer(Modifier.height(1.dp))
+        AppText(
+            text =  stringResource(id = R.string.about),
+            weight = TextWeight.BOLD,
+            size = TextSize.TITLE_MEDIUM
+        )
+        /*ProfilePersonalData(
+            theme = stringResource(id = R.string.about),
+            value = viewModel.loginUser?.status ?: "---"
+        )*/
+        viewModel.loginUser?.description?.let { AppText(text = it) }
     }
 
+/*
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(primaryFillWidth),
@@ -226,7 +308,7 @@ fun EditProfileFragment(
 
         }
 
-    }
+    }*/
 }
 
 private fun editImage(sourceUri: Uri, cropLauncher: ActivityResultLauncher<Intent>, context: Context) {
@@ -239,6 +321,6 @@ private fun editImage(sourceUri: Uri, cropLauncher: ActivityResultLauncher<Inten
         .withMaxResultSize(800, 800)
         .withOptions(options)
         .getIntent(context).also { intent ->
-            cropLauncher.launch(intent) // Use the launcher to start the crop activity
+            cropLauncher.launch(intent)
         }
 }

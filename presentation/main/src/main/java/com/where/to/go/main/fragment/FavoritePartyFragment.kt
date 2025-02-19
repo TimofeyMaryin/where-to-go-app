@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import com.where.to.go.component.AppText
-import com.where.to.go.component.TextSize
-import com.where.to.go.component.TextWeight
+import com.where.to.go.component.values.TextSize
+import com.where.to.go.component.values.TextWeight
 import com.where.to.go.main.vms.RecommendedViewModel
 
 @Composable

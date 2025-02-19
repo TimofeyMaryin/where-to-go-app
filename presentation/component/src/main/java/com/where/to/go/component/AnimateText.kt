@@ -7,6 +7,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.where.to.go.component.values.TextSize
+import com.where.to.go.component.values.TextWeight
 import kotlinx.coroutines.delay
 
 @Composable
@@ -21,9 +23,9 @@ fun AnimateText(
         for (i in fullText.indices) {
             animatedText.animateTo(
                 targetValue = (i + 1).toFloat(),
-                animationSpec = tween(durationMillis = 100) // Длительность анимации для каждой буквы
+                animationSpec = tween(durationMillis = 100)
             )
-            delay(100) // Задержка между буквами
+            delay(100)
         }
     }
 

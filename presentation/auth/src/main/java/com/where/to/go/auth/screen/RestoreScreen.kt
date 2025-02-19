@@ -27,8 +27,8 @@ import com.where.to.go.component.GlobalContainer
 import com.where.to.go.component.PrimaryButton
 import com.where.to.go.component.SquareButton
 import com.where.to.go.component.TextFieldType
-import com.where.to.go.component.TextSize
-import com.where.to.go.component.TextWeight
+import com.where.to.go.component.values.TextSize
+import com.where.to.go.component.values.TextWeight
 import com.where.to.go.internet.cases.AuthUseCase
 import com.where.to.go.internet.models.RequestState
 import com.where.to.go.internet.models.RestorePasswordModel
@@ -55,14 +55,12 @@ fun RestoreScreen(
         }
     }
     BackHandler {
-        //viewModel.clearUserData.invoke()
     }
 
     GlobalContainer(
         topBarStart = {
             SquareButton(icon = R.drawable.ic_back) {
-                navController.navigate(Screen.StartScreen.route)
-                //viewModel.clearUserData.invoke()
+                navController.popBackStack()
             }
 
             AppText(text = stringResource(id = R.string.restore), weight = TextWeight.REGULAR, size = TextSize.TITLE_MEDIUM)
@@ -94,7 +92,7 @@ fun RestoreScreen(
 
             }
 
-            PrimaryButton(value = "Отправить код", color = ButtonColor.COLORFUL) {
+            PrimaryButton(value = stringResource(id = R.string.send_code), color = ButtonColor.COLORFUL) {
                 viewModel.restorePassword(RestorePasswordModel(viewModel.userEmail))
             }
 

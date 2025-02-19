@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.where.to.go.auth.R
+import com.where.to.go.auth.navigation.Screen
 import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.auth.vms.AuthViewModel
 import com.where.to.go.component.AppText
@@ -36,13 +36,13 @@ import com.where.to.go.component.GlobalContainer
 import com.where.to.go.component.PrimaryButton
 import com.where.to.go.component.SquareButton
 import com.where.to.go.component.TextFieldType
-import com.where.to.go.component.TextSize
-import com.where.to.go.component.TextWeight
-import com.where.to.go.component.animateBrushPrimary
-import com.where.to.go.component.colorContainerBg
-import com.where.to.go.component.colorWhite
+import com.where.to.go.component.UnnoticeableButton
+import com.where.to.go.component.values.animateBrushPrimary
+import com.where.to.go.component.values.colorContainerBg
+import com.where.to.go.component.values.colorWhite
 import com.where.to.go.component.primaryClip
-import com.where.to.go.internet.cases.AuthUseCase
+import com.where.to.go.component.values.TextSize
+import com.where.to.go.component.values.TextWeight
 import com.where.to.go.internet.models.AuthRequestModel
 import com.where.to.go.internet.models.RequestState
 import com.where.to.go.main.MainActivity
@@ -72,7 +72,6 @@ fun LoginScreen(
     }
 
     BackHandler {
-        //viewModel.clearUserData.invoke()
     }
 
     GlobalContainer(
@@ -116,7 +115,10 @@ fun LoginScreen(
                     viewModel.enterUserPassword.invoke(it)
                     viewModel.checkSendable()
                 }
-
+                UnnoticeableButton(stringResource(id = R.string.forgot_password),
+                    onClick = {
+                        navController.navigate(Screen.RestoreScreen.route)
+                    })
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(8.dp)

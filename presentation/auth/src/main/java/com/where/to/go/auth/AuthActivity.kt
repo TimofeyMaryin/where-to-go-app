@@ -1,8 +1,7 @@
 package com.where.to.go.auth
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -17,16 +16,15 @@ import com.where.to.go.auth.navigation.AppNavigation
 import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.auth.vms.AuthViewModel
 import com.where.to.go.component.AppText
-import com.where.to.go.component.TextSize
-import com.where.to.go.component.TextWeight
-import com.where.to.go.component.WhereToGoApplicationTheme
-import com.where.to.go.component.colorBg
+import com.where.to.go.component.values.TextSize
+import com.where.to.go.component.values.TextWeight
+import com.where.to.go.component.values.WhereToGoApplicationTheme
+import com.where.to.go.component.values.colorBg
 import com.where.to.go.internet.cases.AuthUseCase
 import com.where.to.go.internet.cases.UserUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.coroutineScope
 
 
 @AndroidEntryPoint
@@ -38,7 +36,10 @@ class AuthActivity: ComponentActivity(), CoroutineScope by MainScope()  {
         authUseCase = AuthUseCase()
         val userUseCase = UserUseCase()
         TokenManager.init(this)
-
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
         enableEdgeToEdge()
         setContent {
             WhereToGoApplicationTheme {

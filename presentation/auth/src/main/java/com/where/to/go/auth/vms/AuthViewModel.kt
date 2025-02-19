@@ -121,7 +121,6 @@ class AuthViewModel @Inject constructor(): ViewModel() {
             try {
                 val model = AuthResponseModel(tokenManager.getToken())
                 val header = tokenManager.getHeaderToken()
-                Log.e("TOKENTAG", model.toString())
                 val response = authUseCase.tokenUpdate(model, header)
                 if (response.isSuccessful) {
                     autoLoginState.value = RequestState(data = response.body())

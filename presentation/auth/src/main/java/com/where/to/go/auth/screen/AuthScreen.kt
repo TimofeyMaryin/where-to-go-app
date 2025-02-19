@@ -1,7 +1,5 @@
 package com.where.to.go.auth.screen
 
-import android.content.Intent
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateColor
@@ -21,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,18 +41,14 @@ import com.where.to.go.component.PersonalType
 import com.where.to.go.component.PrimaryButton
 import com.where.to.go.component.SquareButton
 import com.where.to.go.component.TextFieldType
-import com.where.to.go.component.TextSize
-import com.where.to.go.component.TextWeight
-import com.where.to.go.component.blue
-import com.where.to.go.component.colorBg
-import com.where.to.go.component.pink
+import com.where.to.go.component.values.blue
+import com.where.to.go.component.values.colorBg
+import com.where.to.go.component.values.pink
 import com.where.to.go.component.primaryClip
-import com.where.to.go.internet.cases.AuthUseCase
-import com.where.to.go.internet.cases.UserUseCase
+import com.where.to.go.component.values.TextSize
+import com.where.to.go.component.values.TextWeight
 import com.where.to.go.internet.models.AuthRequestModel
 import com.where.to.go.internet.models.RequestState
-import com.where.to.go.internet.plugins.TokenManager
-import com.where.to.go.main.MainActivity
 
 @Composable
 fun AuthScreen(

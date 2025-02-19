@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,9 +21,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.where.to.go.component.values.TextSize
+import com.where.to.go.component.values.TextWeight
+import com.where.to.go.component.values.animateBrushPrimary
+import com.where.to.go.component.values.colorBg
+import com.where.to.go.component.values.colorBgBrush
 
 enum class ButtonColor { COLORFUL, BORDER }
 
@@ -86,7 +94,26 @@ fun SquareButton(
             modifier = Modifier.size(25.dp)
         )
     }
+}
 
+@Composable
+fun UnnoticeableButton(
+    text: String,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+){
+    Box(
+        modifier = modifier
+            .height(30.dp)
+            .width(150.dp)
+            //.align(Alignment.BottomCenter)
+            .background(Color(0xFF27273F))
+            .clip(RoundedCornerShape(5.dp))
+            .clickable { onClick.invoke()/*navController.navigate(Screen.RestoreScreen.route)*/ },
+        contentAlignment = Alignment.Center
+    ){
+        AppText(text = text, weight = TextWeight.REGULAR, size = TextSize.BODY_LARGE)
+    }
 }
 
 @Preview

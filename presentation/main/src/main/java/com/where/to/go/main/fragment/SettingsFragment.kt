@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.where.to.go.component.AppText
-import com.where.to.go.component.TextSize
-import com.where.to.go.component.TextWeight
+import com.where.to.go.component.values.TextSize
+import com.where.to.go.component.values.TextWeight
 import com.where.to.go.main.vms.NavigationViewModel
 
 @Composable

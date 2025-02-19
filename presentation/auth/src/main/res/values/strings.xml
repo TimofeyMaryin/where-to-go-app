@@ -13,6 +13,8 @@
     <string name="restore_code">Код подтверждения</string>
     <string name="password">Пароль</string>
     <string name="phone">Номер телефона</string>
+    <string name="forgot_password">Я забыл пароль</string>
+    <string name="send_code">Отправить код</string>
 
     <string name="im_guest">Я посетитель</string>
     <string name="im_organizer">Я организатор</string>

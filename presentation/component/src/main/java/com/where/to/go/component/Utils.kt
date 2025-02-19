@@ -11,6 +11,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.gufo.custom.gufoshadow.shadow
+import com.where.to.go.component.values.blue
+import com.where.to.go.component.values.pink
 
 
 @Composable fun primaryClip() = MaterialTheme.shapes.large

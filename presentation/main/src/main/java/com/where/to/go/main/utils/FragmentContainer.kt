@@ -6,10 +6,7 @@ import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
@@ -42,8 +39,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -55,20 +50,17 @@ import com.gufo.custom.gufoshadow.shadow
 import com.where.to.go.component.AppText
 import com.where.to.go.component.GlobalContainer
 import com.where.to.go.component.SquareButton
-import com.where.to.go.component.TextSize
-import com.where.to.go.component.TextWeight
-import com.where.to.go.component.animatedColorPrimary
-import com.where.to.go.component.brushHamburgerBg
-import com.where.to.go.component.colorBg
-import com.where.to.go.component.colorContainerBg
-import com.where.to.go.component.colorGray
+import com.where.to.go.component.values.animatedColorPrimary
+import com.where.to.go.component.values.colorContainerBg
+import com.where.to.go.component.values.colorGray
 import com.where.to.go.component.primaryClip
 import com.where.to.go.component.primaryFillWidth
+import com.where.to.go.component.values.TextSize
+import com.where.to.go.component.values.TextWeight
 import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.main.R
 import com.where.to.go.main.navigation.Screen
 import com.where.to.go.main.vms.NavigationViewModel
-import com.where.to.go.main.vms.RecommendedViewModel
 
 @Composable
 fun FragmentContainer(
@@ -113,6 +105,11 @@ fun FragmentContainer(
                 Screen.ProfileScreen.route -> {
                     SquareButton(icon = R.drawable.ic_edit) {
                         navigationViewModel.navigate(Screen.EditProfileScreen.route)
+                    }
+                }
+                Screen.EditProfileScreen.route -> {
+                    SquareButton(icon = R.drawable.baseline_close_24) {
+                        navigationViewModel.navigate(Screen.ProfileScreen.route)
                     }
                 }
                 else -> {

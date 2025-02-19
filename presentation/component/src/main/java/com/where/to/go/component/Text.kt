@@ -7,32 +7,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.where.to.go.component.values.TextSize
+import com.where.to.go.component.values.TextWeight
+import com.where.to.go.component.values.colorWhite
+import com.where.to.go.component.values.fontFamily
 
-private val fontFamily = FontFamily(
-    listOf(
-        Font(R.font.montserrat_regular, weight = FontWeight.Normal),
-        Font(R.font.montserrat_bold, weight = FontWeight.Bold),
-        Font(R.font.montserrat_medium, weight = FontWeight.Medium)
-    )
-)
-
-enum class TextWeight { REGULAR, MEDIUM, BOLD }
-enum class TextSize { HEADLINE, TITLE_LARGE, TITLE_MEDIUM, BODY_LARGE }
 
 @Composable
 fun AppText(
     text: String,
     modifier: Modifier = Modifier,
     color: Color = colorWhite,
-    weight: TextWeight,
+    weight: TextWeight = TextWeight.MEDIUM,
     textAlign: TextAlign = TextAlign.Start,
     textDecoration: TextDecoration? = null,
-    size: TextSize,
+    size: TextSize = TextSize.BODY_LARGE,
     lineHeight: Int? = null
 ) {
     Text(
