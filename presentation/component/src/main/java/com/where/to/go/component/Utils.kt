@@ -16,6 +16,8 @@ import com.where.to.go.component.values.pink
 
 
 @Composable fun primaryClip() = MaterialTheme.shapes.large
+
+@Composable fun largeClip() = MaterialTheme.shapes.extraLarge
 @Composable fun secondaryClip() = MaterialTheme.shapes.small
 
 @Composable

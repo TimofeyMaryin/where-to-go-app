@@ -19,10 +19,10 @@ fun ProfileBackground(modifier: Modifier) {
     Box(modifier = modifier
         .fillMaxSize()
         .background(
-            color = Color.Transparent,
+            color = colorContainerBg,
             shape = RoundedCornerShape(topEnd = 25.dp, topStart = 25.dp)
         )){
-        Box(modifier = Modifier
+        /*Box(modifier = Modifier
             .fillMaxSize()
             .offset(x = -offset)
             .background(
@@ -36,6 +36,6 @@ fun ProfileBackground(modifier: Modifier) {
                 colorContainerBg,
                 shape = RoundedCornerShape(topEnd = 25.dp, topStart = 25.dp)
             ),
-        )
+        )*/
     }
 }

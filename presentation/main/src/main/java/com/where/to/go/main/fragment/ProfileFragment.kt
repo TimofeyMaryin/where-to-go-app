@@ -58,6 +58,7 @@ import com.where.to.go.component.PersonalType
 import com.where.to.go.component.PrimaryButton
 import com.where.to.go.component.ProfileBackground
 import com.where.to.go.component.TextFieldType
+import com.where.to.go.component.largeClip
 import com.where.to.go.component.values.animateIconColor
 import com.where.to.go.component.values.animatedColorPrimary
 import com.where.to.go.component.values.colorBg
@@ -102,7 +103,7 @@ fun ProfileFragment(
 
     }
 
-    val avatarSize = 120.dp
+    val avatarSize = 140.dp
     val paddingTop = 80.dp
 
     ProfileBackground(modifier = Modifier.padding(top = paddingTop))
@@ -122,11 +123,11 @@ fun ProfileFragment(
                 painter = painterResource(id = viewModel.loginUser?.avatar?.toIntOrNull() ?: R.drawable.avatar_placeholder),
                 contentDescription = null,
                 modifier = Modifier
-                    .clip(primaryClip())
+                    .clip(largeClip())
                     .border(
                         width = 1.dp,
                         color = animatedColorPrimary(),
-                        shape = primaryClip()
+                        shape = largeClip()
                     )
                     .size(avatarSize)
                     .clickable {  },
@@ -144,6 +145,7 @@ fun ProfileFragment(
                             top = shortOffset,
                             bottom = shortOffset
                         ),
+
                     verticalArrangement = Arrangement.Top,
                 ) {
                     AppText(
@@ -152,7 +154,7 @@ fun ProfileFragment(
                         size = TextSize.TITLE_MEDIUM
                     )
                     AppText(
-                        text = "email: ${TokenManager.getEmail()}",
+                        text = "status: ${1}",
                         weight = TextWeight.REGULAR,
                         size = TextSize.BODY_LARGE
                     )
@@ -161,7 +163,7 @@ fun ProfileFragment(
                 }
                 Row(
                     modifier = Modifier
-                        .padding(top = paddingTop, start = shortOffset)
+                        .padding(top = paddingTop - 4.dp, start = shortOffset)
                         .align(Alignment.TopStart),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -182,16 +184,12 @@ fun ProfileFragment(
             }
 
         }
-        Spacer(Modifier.height(1.dp))
+        Spacer(Modifier.height(20.dp))
         AppText(
             text =  stringResource(id = R.string.about),
             weight = TextWeight.BOLD,
             size = TextSize.TITLE_MEDIUM
         )
-        /*ProfilePersonalData(
-            theme = stringResource(id = R.string.about),
-            value = viewModel.loginUser?.status ?: "---"
-        )*/
             viewModel.loginUser?.description?.let { AppText(text = it) }
     }
 
