@@ -52,6 +52,7 @@ import com.where.to.go.component.primaryClip
 import com.where.to.go.component.primaryFillWidth
 import com.where.to.go.component.values.TextSize
 import com.where.to.go.component.values.TextWeight
+import com.where.to.go.component.values.offset
 import com.where.to.go.component.values.shortOffset
 import com.where.to.go.internet.models.RequestState
 import com.where.to.go.internet.plugins.TokenManager
@@ -135,7 +136,7 @@ fun EditProfileFragment(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = paddingTop - avatarSize / 2)
+            .padding(top = paddingTop - avatarSize / 2, start = offset, end = offset)
     ) {
         Row(
             modifier = Modifier

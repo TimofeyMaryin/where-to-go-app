@@ -67,7 +67,8 @@ fun AppNavigation(
             composable(
                 route = Screen.ProfileScreen.route
             ) {
-                AnimateFragmentContainer(enable = navigationViewModel.isCurrentNavDestination.invoke(Screen.ProfileScreen.route)) {
+
+                AnimateFragmentContainer(enable = navigationViewModel.isCurrentNavDestination.invoke(Screen.ProfileScreen.route), 0) {
                     ProfileFragment(
                         viewModel = profileViewModel,
                         userUseCase = userUseCase, navigationViewModel = navigationViewModel)
@@ -77,7 +78,7 @@ fun AppNavigation(
             composable(
                 route = Screen.EditProfileScreen.route
             ) {
-                AnimateFragmentContainer(enable = navigationViewModel.isCurrentNavDestination.invoke(Screen.EditProfileScreen.route)) {
+                AnimateFragmentContainer(enable = navigationViewModel.isCurrentNavDestination.invoke(Screen.EditProfileScreen.route), 10000) {
                     EditProfileFragment(profileViewModel, editorViewModel)
                 }
             }

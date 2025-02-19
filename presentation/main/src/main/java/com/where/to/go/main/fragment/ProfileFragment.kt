@@ -110,7 +110,7 @@ fun ProfileFragment(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = paddingTop - avatarSize / 2)
+            .padding(top = paddingTop - avatarSize / 2, start = offset, end = offset)
     ) {
         Row(
             modifier = Modifier

@@ -14,11 +14,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.where.to.go.component.values.offset
 
 @Composable
 fun GlobalContainer(
+    horizontalOffset: Dp = offset,
     topBarStart: @Composable RowScope.() -> Unit,
     topBarEnd: (@Composable () -> Unit)? = null,
     content: @Composable () -> Unit
@@ -63,7 +65,7 @@ fun GlobalContainer(
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(10f)
-                    .padding(horizontal = offset),
+                    .padding(horizontal = horizontalOffset),
                 contentAlignment = Alignment.Center
             ) {
                 content()

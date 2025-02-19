@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
@@ -39,6 +40,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -57,6 +59,7 @@ import com.where.to.go.component.primaryClip
 import com.where.to.go.component.primaryFillWidth
 import com.where.to.go.component.values.TextSize
 import com.where.to.go.component.values.TextWeight
+import com.where.to.go.component.values.offset
 import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.main.R
 import com.where.to.go.main.navigation.Screen
@@ -72,8 +75,22 @@ fun FragmentContainer(
 
     val hamburgerMenuTimeMs = 400
     var hamburgerMenuState by remember { mutableStateOf(false) }
-
-
+    var padding = 0.dp
+    when (navigationViewModel.currentNavDestination) {
+        Screen.ProfileScreen.route -> {
+            padding = 0.dp
+        }
+        Screen.EditProfileScreen.route -> {
+            padding = 0.dp
+        }
+        else -> {
+            padding = offset
+        }
+    }
+    val animatedPadding by animateDpAsState(
+        targetValue = padding,
+        animationSpec = tween(durationMillis = 400), label = ""
+    )
     GlobalContainer(
         topBarStart = {
 
@@ -99,7 +116,6 @@ fun FragmentContainer(
 
 
         },
-
         topBarEnd = {
             when (navigationViewModel.currentNavDestination) {
                 Screen.ProfileScreen.route -> {
@@ -119,29 +135,32 @@ fun FragmentContainer(
                 }
             }
         },
+        horizontalOffset = animatedPadding
     ) {
 
+
+
         content()
+    }
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
 
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier.fillMaxSize(primaryFillWidth),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            BottomMenu(navController = navController, viewModel = navigationViewModel,)
+        }
 
-            Box(
-                modifier = Modifier.fillMaxSize(primaryFillWidth),
-                contentAlignment = Alignment.BottomCenter
-            ) {
-                BottomMenu(navController = navController, viewModel = navigationViewModel,)
-            }
-
-            HamburgerMenu(
-                enable = hamburgerMenuState,
-                timeAnim = hamburgerMenuTimeMs,
-                navController = navController,
-                viewModel = navigationViewModel,
-            ) {
-                hamburgerMenuState = it
-            }
+        HamburgerMenu(
+            enable = hamburgerMenuState,
+            timeAnim = hamburgerMenuTimeMs,
+            navController = navController,
+            viewModel = navigationViewModel,
+        ) {
+            hamburgerMenuState = it
         }
     }
+
 }
 
 
