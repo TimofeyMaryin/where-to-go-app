@@ -14,6 +14,14 @@ import com.gufo.custom.gufoshadow.shadow
 import com.where.to.go.component.values.blue
 import com.where.to.go.component.values.pink
 
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Matrix
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.vector.PathParser
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
 
 @Composable fun primaryClip() = MaterialTheme.shapes.large
 
@@ -60,3 +68,23 @@ fun Modifier.toggleShadow(): Modifier {
     )
 }
 
+class CustomSvgShape(private val pathData: String) : Shape {
+    override fun createOutline(
+        size: Size,
+        layoutDirection: LayoutDirection,
+        density: Density
+    ): Outline {
+        val path = PathParser().parsePathString(pathData).toPath()
+
+        val originalWidth = 842f
+        val originalHeight = 188f
+
+        val scaleX = size.width / originalWidth
+        val scaleY = size.height / originalHeight
+        val matrix = Matrix()
+        matrix.scale(scaleX, scaleY)
+        path.transform(matrix)
+
+        return Outline.Generic(path)
+    }
+}

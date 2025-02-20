@@ -142,38 +142,42 @@ fun ProfileFragment(
                     verticalArrangement = Arrangement.Top,
                 ) {
                     AppText(
-                        text = viewModel.loginUser?.name ?: "User${viewModel.loginUser?.id}",
+                        text = viewModel.loginUser?.name ?: "User №${viewModel.loginUser?.id}",
                         weight = TextWeight.BOLD,
                         size = TextSize.TITLE
                     )
                     AppText(
-                        text = "status: ${1}",
+                        text = viewModel.loginUser?.status ?: "",
                         weight = TextWeight.REGULAR,
                         size = TextSize.BODY_LARGE
                     )
 
                     Spacer(Modifier.height(30.dp))
                 }
-                Row(
-                    modifier = Modifier
-                        .padding(top = paddingTop - 4.dp, start = shortOffset)
-                        .align(Alignment.TopStart),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.geo_tag),
-                        contentDescription = null,
-                        modifier = Modifier.size(25.dp),
-                        contentScale = ContentScale.FillWidth
-                    )
 
-                    AppText(
-                        text = viewModel.loginUser?.region ?: "---",
-                        weight = TextWeight.REGULAR,
-                        size = TextSize.BODY_LARGE
-                    )
+                Column(modifier = Modifier
+                    .padding(top = paddingTop - 4.dp, start = shortOffset)
+                    .align(Alignment.TopStart)){
+                    Row(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.geo_tag),
+                            contentDescription = null,
+                            modifier = Modifier.size(25.dp),
+                            contentScale = ContentScale.FillWidth
+                        )
+
+                        AppText(
+                            text = viewModel.loginUser?.region ?: "---",
+                            weight = TextWeight.REGULAR,
+                            size = TextSize.BODY_LARGE
+                        )
+                    }
                 }
+
             }
 
         }

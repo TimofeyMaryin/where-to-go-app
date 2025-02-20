@@ -36,7 +36,7 @@ class ProfileViewModel: ViewModel() {
                 UserUseCase()
                     .findUser(
                         RestorePasswordModel(
-                            email = loginUser?.email ?: throw IllegalArgumentException("Cannot get email from logend user")
+                            email = TokenManager.getEmail()
                         )
                     )
 

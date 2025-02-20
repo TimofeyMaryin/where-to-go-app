@@ -8,8 +8,12 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,6 +33,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,12 +45,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.PathParser
 import androidx.navigation.NavController
 import com.gufo.custom.gufoshadow.shadow
 import com.where.to.go.component.AppText
@@ -58,11 +66,15 @@ import com.where.to.go.component.primaryClip
 import com.where.to.go.component.primaryFillWidth
 import com.where.to.go.component.values.TextSize
 import com.where.to.go.component.values.TextWeight
+import com.where.to.go.component.values.colorBg
 import com.where.to.go.component.values.offset
 import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.main.R
 import com.where.to.go.main.navigation.Screen
 import com.where.to.go.main.vms.NavigationViewModel
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.Shape
+import com.where.to.go.component.CustomSvgShape
 
 @Composable
 fun FragmentContainer(
@@ -70,20 +82,28 @@ fun FragmentContainer(
     navigationViewModel: NavigationViewModel,
     content: @Composable () -> Unit
 ) {
-
-
     val hamburgerMenuTimeMs = 400
     var hamburgerMenuState by remember { mutableStateOf(false) }
-    var padding = 0.dp
-    when (navigationViewModel.currentNavDestination) {
+    val bottomNavState =  when (navigationViewModel.currentNavDestination) {
         Screen.ProfileScreen.route -> {
-            padding = 0.dp
+            BottomNavState(colorBg, true)
         }
         Screen.EditProfileScreen.route -> {
-            padding = 0.dp
+            BottomNavState(colorContainerBg, false)
         }
         else -> {
-            padding = offset
+            BottomNavState(colorContainerBg, true)
+        }
+    }
+    val padding = when (navigationViewModel.currentNavDestination) {
+        Screen.ProfileScreen.route -> {
+            0.dp
+        }
+        Screen.EditProfileScreen.route -> {
+            0.dp
+        }
+        else -> {
+            offset
         }
     }
     val animatedPadding by animateDpAsState(
@@ -112,8 +132,6 @@ fun FragmentContainer(
                 weight = TextWeight.REGULAR,
                 size = TextSize.TITLE
             )
-
-
         },
         topBarEnd = {
             when (navigationViewModel.currentNavDestination) {
@@ -141,12 +159,27 @@ fun FragmentContainer(
 
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        if(bottomNavState.color != colorBg){
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth().height(150.dp).align(Alignment.BottomCenter)
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Transparent,
+                                Color.Black.copy(alpha = 0.23f)
+                            )
+                        )
+                    )
+            )
+        }
 
         Box(
-            modifier = Modifier.fillMaxSize(primaryFillWidth),
+            modifier = Modifier.fillMaxSize().padding(bottom = 24.dp),
             contentAlignment = Alignment.BottomCenter
         ) {
-            BottomMenu(navController = navController, viewModel = navigationViewModel,)
+
+            BottomMenu(viewModel = navigationViewModel, state = bottomNavState)
         }
 
         HamburgerMenu(
@@ -161,72 +194,80 @@ fun FragmentContainer(
 
 }
 
+data class BottomNavState(
+    val color: Color,
+    val isOpen: Boolean
+)
 
 @Composable
 private fun BottomMenu(
-    navController: NavController,
+    state: BottomNavState,
     viewModel: NavigationViewModel,
+    modifier: Modifier = Modifier
 ) {
-    Box(
-        modifier = Modifier
-            .shadow(
-                color = animatedColorPrimary(),
-                borderRadius = 16.dp,
-                blurRadius = 5.dp
-            )
-            .clip(primaryClip())
-            .fillMaxWidth()
-            .height(70.dp)
-            .background(colorContainerBg),
-        contentAlignment = Alignment.Center,
+    val svgPathData = "M0 53.9438C0 29.5073 19.5018 9.53677 43.9314 8.9565L421 0L798.069 8.9565C822.498 9.53677 842 29.5073 842 53.9438V134.056C842 158.493 822.498 178.463 798.069 179.044L421 188L43.9314 179.044C19.5018 178.463 0 158.493 0 134.056V53.9438Z"
+
+    val customShape = CustomSvgShape(svgPathData)
+    AnimatedVisibility(
+        visible = state.isOpen,
+        enter = fadeIn() + slideInVertically(initialOffsetY = { it }),
+        exit = fadeOut() + slideOutVertically(targetOffsetY = { it })
     ) {
-
-        Row(
-            modifier = Modifier.fillMaxSize(.9f),
-            verticalAlignment = Alignment.CenterVertically
+        Box(
+            modifier = modifier
+                /*.shadow(
+                    color = animatedColorPrimary(),
+                    borderRadius = 16.dp,
+                    blurRadius = 5.dp
+                )*/
+                .fillMaxWidth()
+                .height(90.dp)
+                .padding(horizontal = 20.dp)
+                .background(state.color, shape = customShape),
+            contentAlignment = Alignment.Center,
         ) {
-
-            BottomMenuItem(
-                ic = R.drawable.ic_party,
-                selected = viewModel.isCurrentNavDestination.invoke(Screen.RecommendedScreen.route)
+            Row(
+                modifier = Modifier.fillMaxSize(.9f),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                if (viewModel.currentNavDestination != Screen.RecommendedScreen.route) {
-                    viewModel.navigate(Screen.RecommendedScreen.route)
+                BottomMenuItem(
+                    ic = R.drawable.ic_party,
+                    selected = viewModel.isCurrentNavDestination.invoke(Screen.RecommendedScreen.route)
+                ) {
+                    if (viewModel.currentNavDestination != Screen.RecommendedScreen.route) {
+                        viewModel.navigate(Screen.RecommendedScreen.route)
+                    }
+                }
+
+                BottomMenuItem(
+                    ic = R.drawable.ic_calendar,
+                    selected = viewModel.isCurrentNavDestination.invoke(Screen.SchedulePartyScreen.route)
+                ) {
+                    if (viewModel.currentNavDestination != Screen.SchedulePartyScreen.route) {
+                        viewModel.navigate(Screen.SchedulePartyScreen.route)
+                    }
+                }
+
+                BottomMenuItem(
+                    ic = R.drawable.ic_heart,
+                    selected = viewModel.isCurrentNavDestination.invoke(Screen.FavoritePartyScreen.route)
+                ) {
+                    if (viewModel.currentNavDestination != Screen.FavoritePartyScreen.route) {
+                        viewModel.navigate(Screen.FavoritePartyScreen.route)
+                    }
+                }
+
+                BottomMenuItem(
+                    ic = R.drawable.ic_profile,
+                    selected = viewModel.isCurrentNavDestination.invoke(Screen.ProfileScreen.route)
+                ) {
+                    if (viewModel.currentNavDestination != Screen.ProfileScreen.route) {
+                        viewModel.navigate(Screen.ProfileScreen.route)
+                    }
                 }
             }
-
-            BottomMenuItem(
-                ic = R.drawable.ic_calendar,
-                selected = viewModel.isCurrentNavDestination.invoke(Screen.SchedulePartyScreen.route)
-            ) {
-                if (viewModel.currentNavDestination != Screen.SchedulePartyScreen.route) {
-                    viewModel.navigate(Screen.SchedulePartyScreen.route)
-                }
-            }
-
-            BottomMenuItem(
-                ic = R.drawable.ic_heart,
-                selected = viewModel.isCurrentNavDestination.invoke(Screen.FavoritePartyScreen.route)
-            ) {
-                if (viewModel.currentNavDestination != Screen.FavoritePartyScreen.route) {
-                    viewModel.navigate(Screen.FavoritePartyScreen.route)
-                }
-            }
-
-            BottomMenuItem(
-                ic = R.drawable.ic_profile,
-                selected = viewModel.isCurrentNavDestination.invoke(Screen.ProfileScreen.route)
-            ) {
-                if (viewModel.currentNavDestination != Screen.ProfileScreen.route) {
-                    viewModel.navigate(Screen.ProfileScreen.route)
-                }
-            }
-            
         }
-
-
     }
-
 }
 
 @Composable
@@ -240,7 +281,7 @@ private fun RowScope.BottomMenuItem(
             animatedColorPrimary()
         } else {
             colorGray
-        }
+        }, label = ""
     )
 
     Box(
