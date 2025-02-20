@@ -31,7 +31,6 @@ import androidx.navigation.NavController
 import com.where.to.go.auth.R
 import com.where.to.go.auth.navigation.Screen
 import com.where.to.go.auth.vms.AuthViewModel
-import com.where.to.go.component.AddPersonalData
 import com.where.to.go.component.AppText
 import com.where.to.go.component.AppTextField
 import com.where.to.go.component.ButtonColor
@@ -39,6 +38,8 @@ import com.where.to.go.component.CheckBoxParent
 import com.where.to.go.component.GlobalContainer
 import com.where.to.go.component.PersonalType
 import com.where.to.go.component.PrimaryButton
+import com.where.to.go.component.SmallCheckBox
+import com.where.to.go.component.SocialLink
 import com.where.to.go.component.SquareButton
 import com.where.to.go.component.TextFieldType
 import com.where.to.go.component.values.blue
@@ -87,7 +88,7 @@ fun AuthScreen(
             AppText(
                 text = stringResource(id = R.string.auth),
                 weight = TextWeight.REGULAR,
-                size = TextSize.TITLE_MEDIUM
+                size = TextSize.TITLE
             )
         }
     ) {
@@ -138,20 +139,28 @@ fun AuthScreen(
 
             }
             item {
-                AddPersonalData(img = com.where.to.go.component.R.drawable.telegram, value = viewModel.userTelegram) {
-                    showAlertForFillPersonalData = PersonalType.TG
-                }
+                SocialLink(img = com.where.to.go.component.R.drawable.telegram, viewModel.userTelegram,
+                    end = { SmallCheckBox(status = viewModel.userTelegram.isNotEmpty()) },
+                    onAdd = {
+                        showAlertForFillPersonalData = PersonalType.TG
+                    })
+
             }
             item {
-                AddPersonalData(img = com.where.to.go.component.R.drawable.vk, value = viewModel.userVK) {
-                    showAlertForFillPersonalData = PersonalType.VK
-                }
+                SocialLink(img = com.where.to.go.component.R.drawable.vk, viewModel.userVK,
+                    end = { SmallCheckBox(status = viewModel.userVK.isNotEmpty()) },
+                    onAdd = {
+                        showAlertForFillPersonalData = PersonalType.VK
+                    })
+
             }
 
             item {
-                AddPersonalData(img = com.where.to.go.component.R.drawable.phone, value = viewModel.userPhone) {
-                    showAlertForFillPersonalData = PersonalType.PHONE
-                }
+                SocialLink(img = com.where.to.go.component.R.drawable.phone, viewModel.userPhone,
+                    end = { SmallCheckBox(status = viewModel.userPhone.isNotEmpty()) },
+                    onAdd = {
+                        showAlertForFillPersonalData = PersonalType.PHONE
+                    })
             }
 
             item {
@@ -218,7 +227,7 @@ fun AuthScreen(
                     AppText(
                         text = "Добавление персональных данных",
                         weight = TextWeight.BOLD,
-                        size = TextSize.TITLE_MEDIUM,
+                        size = TextSize.TITLE,
                         textAlign = TextAlign.Center
                     )
             },

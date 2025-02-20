@@ -84,7 +84,7 @@ fun SchedulePartyFragment(
                             AppText(
                                 text = allMonth[pagerState.currentPage],
                                 weight = TextWeight.REGULAR,
-                                size = TextSize.TITLE_MEDIUM,
+                                size = TextSize.TITLE,
                                 textAlign = TextAlign.Center
                             )
 

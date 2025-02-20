@@ -10,7 +10,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,17 +17,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,17 +44,12 @@ import com.where.to.go.component.AppText
 import com.where.to.go.component.ProfileBackground
 import com.where.to.go.component.largeClip
 import com.where.to.go.component.values.animatedColorPrimary
-import com.where.to.go.component.values.colorContainerBg
-import com.where.to.go.component.primaryClip
-import com.where.to.go.component.primaryFillWidth
 import com.where.to.go.component.values.TextSize
 import com.where.to.go.component.values.TextWeight
 import com.where.to.go.component.values.offset
 import com.where.to.go.component.values.shortOffset
 import com.where.to.go.internet.models.RequestState
-import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.main.R
-import com.where.to.go.main.navigation.Screen
 import com.where.to.go.main.utils.ImagePicker
 import com.where.to.go.main.vms.EditProfileViewModel
 import com.where.to.go.main.vms.ProfileViewModel
@@ -179,7 +169,7 @@ fun EditProfileFragment(
                     AppText(
                         text = viewModel.loginUser?.name ?: "User${viewModel.loginUser?.id}",
                         weight = TextWeight.BOLD,
-                        size = TextSize.TITLE_MEDIUM
+                        size = TextSize.TITLE
                     )
                     AppText(
                         text = "status: ${1}",
@@ -216,7 +206,7 @@ fun EditProfileFragment(
         AppText(
             text =  stringResource(id = R.string.about),
             weight = TextWeight.BOLD,
-            size = TextSize.TITLE_MEDIUM
+            size = TextSize.TITLE
         )
         /*ProfilePersonalData(
             theme = stringResource(id = R.string.about),

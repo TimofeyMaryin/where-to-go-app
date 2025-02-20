@@ -13,4 +13,4 @@ val fontFamily = FontFamily(
     )
 )
 enum class TextWeight { REGULAR, MEDIUM, BOLD }
-enum class TextSize { HEADLINE, TITLE_LARGE, TITLE_MEDIUM, BODY_LARGE }
+enum class TextSize { HEADLINE, TITLE_LARGE, TITLE, BODY_LARGE }

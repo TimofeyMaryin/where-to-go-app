@@ -2,6 +2,7 @@ package com.where.to.go.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -9,7 +10,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -21,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,6 +33,8 @@ import com.where.to.go.component.values.colorBg
 import com.where.to.go.component.values.colorContainerBg
 import com.where.to.go.component.values.colorError
 import com.where.to.go.component.values.colorWhite
+import com.where.to.go.component.values.offset
+import com.where.to.go.component.values.shortOffset
 
 val size: Int = 55
 @Composable
@@ -37,6 +43,7 @@ fun CustomSearchView(
     value: String,
     onValueChange: (String) -> Unit,
     onSearchClick: () -> Unit,
+    onFiltersClick: () -> Unit,
     isError: Boolean = false,
 ) {
     Row(
@@ -45,15 +52,37 @@ fun CustomSearchView(
             .height(size.dp),
         verticalAlignment = Alignment.Top
     ) {
-        SearchTextField(
-            hint = hint,
-            value = value,
-            onValueChange = onValueChange,
-            isError = isError,
-            modifier = Modifier.weight(1f)
-        )
+        Box(
+            Modifier
+                .fillMaxSize()
+                .weight(1f)){
+            SearchTextField(
+                hint = hint,
+                value = value,
+                onValueChange = onValueChange,
+                isError = isError,
+                modifier = Modifier.fillMaxSize()
+            )
+            Box(modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .padding(end = offset)
 
-        SquareButton(icon = R.drawable.ic_filters, size = size.dp) {
+            ){
+                Icon(painter = painterResource(id = R.drawable.ic_filters),
+                    contentDescription = "",
+                    tint = Color.White.copy(alpha = 0.25f),
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable {
+                            onFiltersClick.invoke()
+                        }
+                )
+            }
+
+        }
+
+
+        SquareButton(icon = R.drawable.baseline_search_24, size = size.dp, iconSize = 34.dp) {
             onSearchClick()
         }
     }
@@ -122,6 +151,7 @@ private fun SearchViewPreview() {
             value = value,
             onValueChange = { value = it },
             onSearchClick = {  },
+            onFiltersClick = {  },
             isError = value.contains("1")
         )
     }

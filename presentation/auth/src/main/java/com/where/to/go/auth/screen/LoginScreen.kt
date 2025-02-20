@@ -81,7 +81,7 @@ fun LoginScreen(
                 viewModel.clearUserData.invoke()
             }
 
-            AppText(text = stringResource(id = R.string.enter), weight = TextWeight.REGULAR, size = TextSize.TITLE_MEDIUM)
+            AppText(text = stringResource(id = R.string.enter), weight = TextWeight.REGULAR, size = TextSize.TITLE)
         }
     ) {
 

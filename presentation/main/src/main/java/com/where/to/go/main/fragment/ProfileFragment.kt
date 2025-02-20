@@ -13,17 +13,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
@@ -41,7 +37,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -57,12 +52,12 @@ import com.where.to.go.component.Container
 import com.where.to.go.component.PersonalType
 import com.where.to.go.component.PrimaryButton
 import com.where.to.go.component.ProfileBackground
+import com.where.to.go.component.SocialLink
 import com.where.to.go.component.TextFieldType
 import com.where.to.go.component.largeClip
 import com.where.to.go.component.values.animateIconColor
 import com.where.to.go.component.values.animatedColorPrimary
 import com.where.to.go.component.values.colorBg
-import com.where.to.go.component.values.colorContainerBg
 import com.where.to.go.component.values.colorGray
 import com.where.to.go.component.primaryClip
 import com.where.to.go.component.primaryFillWidth
@@ -71,9 +66,7 @@ import com.where.to.go.component.values.TextWeight
 import com.where.to.go.component.values.offset
 import com.where.to.go.component.values.shortOffset
 import com.where.to.go.internet.cases.UserUseCase
-import com.where.to.go.internet.plugins.TokenManager
 import com.where.to.go.main.R
-import com.where.to.go.main.navigation.Screen
 import com.where.to.go.main.vms.NavigationViewModel
 import com.where.to.go.main.vms.ProfileViewModel
 import com.where.to.go.main.vms.UserDataChangedCallback
@@ -130,7 +123,7 @@ fun ProfileFragment(
                         shape = largeClip()
                     )
                     .size(avatarSize)
-                    .clickable {  },
+                    .clickable { },
                 contentScale = ContentScale.Crop
             )
             Box(modifier = Modifier
@@ -151,7 +144,7 @@ fun ProfileFragment(
                     AppText(
                         text = viewModel.loginUser?.name ?: "User${viewModel.loginUser?.id}",
                         weight = TextWeight.BOLD,
-                        size = TextSize.TITLE_MEDIUM
+                        size = TextSize.TITLE
                     )
                     AppText(
                         text = "status: ${1}",
@@ -185,12 +178,39 @@ fun ProfileFragment(
 
         }
         Spacer(Modifier.height(20.dp))
+
         AppText(
             text =  stringResource(id = R.string.about),
-            weight = TextWeight.BOLD,
-            size = TextSize.TITLE_MEDIUM
+            weight = TextWeight.MEDIUM,
+            size = TextSize.BODY_LARGE
         )
-            viewModel.loginUser?.description?.let { AppText(text = it) }
+        Spacer(Modifier.height(10.dp))
+
+        AppText(
+            text =  viewModel.loginUser?.description ?:stringResource(id = R.string.about_empty),
+            weight = TextWeight.REGULAR,
+            size = TextSize.BODY_LARGE
+        )
+        Spacer(Modifier.height(20.dp))
+        SocialLink(img = com.where.to.go.component.R.drawable.telegram,
+            value = viewModel.loginUser?.tg ?: "",
+            end = {  },
+            onAdd = {
+                openDialogFillPersonalData = PersonalType.TG
+            })
+        SocialLink(img = com.where.to.go.component.R.drawable.vk,
+            value = viewModel.loginUser?.vk ?: "",
+            end = {  },
+            onAdd = {
+                openDialogFillPersonalData = PersonalType.VK
+            })
+        SocialLink(img = com.where.to.go.component.R.drawable.phone,
+            value = viewModel.loginUser?.phone ?: "",
+            end = {  },
+            onAdd = {
+                openDialogFillPersonalData = PersonalType.PHONE
+            })
+
     }
 
 
@@ -237,38 +257,38 @@ fun ProfileFragment(
             },
             dismissButton = {
                 PrimaryButton(value = "Сохранить", color = ButtonColor.COLORFUL) {
+                    try{
+                        viewModel.updateUserData(
+                            newUser = viewModel.
+                            loginUser?.
+                            copy(
+                                tg = userPersonalData
+                            ) ?: throw IllegalArgumentException("Compose cannot update user"),
+                            callback = object : UserDataChangedCallback {
+                                override fun onError(msg: String) {
+                                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+                                    Log.e("TAG", "onError updateUserData compose: $msg", )
+                                    openDialogFillPersonalData = null
+                                    userPersonalData = ""
+                                }
 
-                }
-                try{
-                    viewModel.updateUserData(
-                        newUser = viewModel.
-                        loginUser?.
-                        copy(
-                            tg = userPersonalData
-                        ) ?: throw IllegalArgumentException("Compose cannot update user"),
-                        callback = object : UserDataChangedCallback {
-                            override fun onError(msg: String) {
-                                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
-                                Log.e("TAG", "onError updateUserData compose: $msg", )
-                                openDialogFillPersonalData = null
-                                userPersonalData = ""
+                                override fun onSuccess(msg: String) {
+                                    Toast.makeText(context, "Success $msg", Toast.LENGTH_SHORT).show()
+                                }
+
                             }
-
-                            override fun onSuccess(msg: String) {
-                                Toast.makeText(context, "Success $msg", Toast.LENGTH_SHORT).show()
-                            }
-
-                        }
-                    )
-                }catch(e: Exception){
-                    Log.e("TESTAG", e.toString())
+                        )
+                    }catch(e: Exception){
+                        Log.e("TESTAG", e.toString())
+                    }
                 }
+
             },
             title = {
                 AppText(
                     text = "Добавление персональных данных",
                     weight = TextWeight.BOLD,
-                    size = TextSize.TITLE_MEDIUM,
+                    size = TextSize.TITLE,
                     textAlign = TextAlign.Center
                 )
             },

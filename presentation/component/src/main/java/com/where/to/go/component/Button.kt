@@ -74,6 +74,7 @@ fun PrimaryButton(
 @Composable
 fun SquareButton(
     size: Dp = 40.dp,
+    iconSize: Dp = 25.dp,
     @DrawableRes icon: Int,
     onClick: () -> Unit,
 ) {
@@ -88,10 +89,11 @@ fun SquareButton(
         contentAlignment = Alignment.Center,
     ) {
         Icon(
+
             painter = painterResource(id = icon),
             contentDescription = null,
             tint = colorBg,
-            modifier = Modifier.size(25.dp)
+            modifier = Modifier.size(iconSize)
         )
     }
 }

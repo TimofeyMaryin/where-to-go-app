@@ -1,6 +1,5 @@
 package com.where.to.go.auth.screen
 
-import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -34,7 +32,6 @@ import com.where.to.go.component.values.TextWeight
 import com.where.to.go.internet.cases.AuthUseCase
 import com.where.to.go.internet.models.ConfirmCodeModel
 import com.where.to.go.internet.models.RequestState
-import com.where.to.go.main.MainActivity
 
 @Composable
 fun VerificationScreen(
@@ -69,7 +66,7 @@ fun VerificationScreen(
                 //viewModel.clearUserData.invoke()
             }
 
-            AppText(text = stringResource(id = R.string.verification), weight = TextWeight.REGULAR, size = TextSize.TITLE_MEDIUM)
+            AppText(text = stringResource(id = R.string.verification), weight = TextWeight.REGULAR, size = TextSize.TITLE)
         }
     ) {
 

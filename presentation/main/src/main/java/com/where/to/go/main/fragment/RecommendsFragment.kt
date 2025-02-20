@@ -18,10 +18,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Icon
@@ -38,7 +35,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.where.to.go.component.AppText
-import com.where.to.go.component.CategoryToggle
 import com.where.to.go.component.CustomSearchView
 import com.where.to.go.component.LargePartyView
 import com.where.to.go.component.values.TextSize
@@ -73,6 +69,9 @@ fun RecommendsFragment(
             hint = "Поиск",
             value = search,
             onValueChange = { search = it },
+            onFiltersClick = {
+
+            },
             onSearchClick = {
                 // TODO Search
             }
@@ -103,7 +102,7 @@ fun RecommendsFragment(
                 text = "Рекомендованные",
                 modifier = Modifier,
                 weight = TextWeight.REGULAR,
-                size = TextSize.TITLE_MEDIUM,
+                size = TextSize.TITLE,
             )
 
             SelectedTapeButton(status = viewModel.recommendedTapeState) {

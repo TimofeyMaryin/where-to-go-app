@@ -40,7 +40,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -111,7 +110,7 @@ fun FragmentContainer(
                     }
                 ),
                 weight = TextWeight.REGULAR,
-                size = TextSize.TITLE_MEDIUM
+                size = TextSize.TITLE
             )
 
 

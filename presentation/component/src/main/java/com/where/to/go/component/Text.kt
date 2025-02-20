@@ -4,8 +4,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -38,7 +36,7 @@ fun AppText(
         fontSize = when (size) {
             TextSize.HEADLINE -> 38.sp
             TextSize.TITLE_LARGE -> 28.sp
-            TextSize.TITLE_MEDIUM -> 20.sp
+            TextSize.TITLE -> 20.sp
             TextSize.BODY_LARGE -> 14.sp
         },
         textAlign = textAlign,

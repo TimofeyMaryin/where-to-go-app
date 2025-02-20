@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -29,10 +28,8 @@ import com.where.to.go.component.SquareButton
 import com.where.to.go.component.TextFieldType
 import com.where.to.go.component.values.TextSize
 import com.where.to.go.component.values.TextWeight
-import com.where.to.go.internet.cases.AuthUseCase
 import com.where.to.go.internet.models.RequestState
 import com.where.to.go.internet.models.RestorePasswordModel
-import com.where.to.go.internet.plugins.TokenManager
 
 @Composable
 fun RestoreScreen(
@@ -63,7 +60,7 @@ fun RestoreScreen(
                 navController.popBackStack()
             }
 
-            AppText(text = stringResource(id = R.string.restore), weight = TextWeight.REGULAR, size = TextSize.TITLE_MEDIUM)
+            AppText(text = stringResource(id = R.string.restore), weight = TextWeight.REGULAR, size = TextSize.TITLE)
         }
     ) {
 

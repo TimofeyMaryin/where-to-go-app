@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.where.to.go.component.values.colorBg
 import com.where.to.go.component.values.offset
 
 @Composable
@@ -29,7 +30,7 @@ fun GlobalContainer(
 ) {
     
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().background(color = colorBg),
         contentAlignment = Alignment.Center
     ) {
         

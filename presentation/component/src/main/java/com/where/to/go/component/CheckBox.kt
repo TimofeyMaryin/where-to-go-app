@@ -34,6 +34,7 @@ import com.where.to.go.component.values.TextSize
 import com.where.to.go.component.values.TextWeight
 import com.where.to.go.component.values.animateBrushPrimary
 import com.where.to.go.component.values.colorBg
+import com.where.to.go.component.values.colorContainerBg
 import com.where.to.go.component.values.colorWhite
 
 @Composable
@@ -170,7 +171,7 @@ fun SmallCheckBox(
                     brush = animateBrushPrimary(animateBorderAlpha),
                     shape = CircleShape,
                 )
-                .background(colorBg)
+                .background(colorContainerBg)
                 .size(20.dp),
         )
         AnimatedVisibility(
