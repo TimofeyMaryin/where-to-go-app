@@ -10,6 +10,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,8 +23,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Create
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,6 +42,8 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -42,7 +51,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.where.to.go.component.AppText
 import com.where.to.go.component.ProfileBackground
+import com.where.to.go.component.TextFieldToggle
 import com.where.to.go.component.largeClip
+import com.where.to.go.component.values.TextFieldType
 import com.where.to.go.component.values.animatedColorPrimary
 import com.where.to.go.component.values.TextSize
 import com.where.to.go.component.values.TextWeight
@@ -135,23 +146,53 @@ fun EditProfileFragment(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
+
         ) {
-            Image(
-                painter = painterResource(id = viewModel.loginUser?.avatar?.toIntOrNull() ?: R.drawable.avatar_placeholder),
-                contentDescription = null,
-                modifier = Modifier
-                    .clip(largeClip())
-                    .border(
-                        width = 1.dp,
-                        color = animatedColorPrimary(),
-                        shape = largeClip()
-                    )
-                    .size(avatarSize)
-                    .clickable {
-                        imagePicker.pickImage(context as Activity, getImageLauncher)
-                    },
-                contentScale = ContentScale.Crop
-            )
+            Box(modifier = Modifier
+                .clip(largeClip())
+                .border(
+                    width = 1.dp,
+                    color = animatedColorPrimary(),
+                    shape = largeClip()
+                )
+                .size(avatarSize)
+                .clickable {
+                    imagePicker.pickImage(context as Activity, getImageLauncher)
+                }){
+                Image(
+                    painter = painterResource(id = viewModel.loginUser?.avatar?.toIntOrNull() ?: R.drawable.avatar_placeholder),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .clip(largeClip())
+                        .fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .align(Alignment.BottomCenter)
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    Color.Transparent,
+                                    Color.Black.copy(alpha = 0.23f)
+                                )
+                            )
+                        )
+                ){
+                    Box(modifier = Modifier.size(60.dp)
+                        .background(color = Color.White.copy(alpha = 0.8f), shape = RoundedCornerShape(15.dp))
+                        .align(Alignment.Center)){
+                        Icon(imageVector = Icons.Rounded.Edit,
+                            contentDescription = "",
+                            tint = Color.Black.copy(alpha = 0.45f),
+                            modifier = Modifier.size(34.dp)
+                                .align(Alignment.Center))
+
+                    }
+                }
+            }
+
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .height(avatarSize) ){
@@ -166,16 +207,18 @@ fun EditProfileFragment(
                         ),
                     verticalArrangement = Arrangement.Top,
                 ) {
-                    AppText(
-                        text = viewModel.loginUser?.name ?: "User${viewModel.loginUser?.id}",
-                        weight = TextWeight.BOLD,
-                        size = TextSize.TITLE
-                    )
-                    AppText(
-                        text = "status: ${1}",
+                    TextFieldToggle(
+                        value = viewModel.loginUser?.name ?: "User №${viewModel.loginUser?.id}",
+                        onSave = {},
+                        modifier = Modifier.height(20.dp),
+                        size = TextSize.TITLE,
+                        weight = TextWeight.BOLD)
+
+                    TextFieldToggle(
+                        value = viewModel.loginUser?.status ?: "Вы можете написать свой статус",
+                        onSave = {},
                         weight = TextWeight.REGULAR,
-                        size = TextSize.BODY_LARGE
-                    )
+                        modifier = Modifier.height(20.dp))
 
                     Spacer(Modifier.height(30.dp))
                 }

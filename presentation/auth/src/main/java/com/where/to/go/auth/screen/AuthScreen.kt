@@ -36,16 +36,16 @@ import com.where.to.go.component.AppTextField
 import com.where.to.go.component.ButtonColor
 import com.where.to.go.component.CheckBoxParent
 import com.where.to.go.component.GlobalContainer
-import com.where.to.go.component.PersonalType
+import com.where.to.go.component.ContactType
 import com.where.to.go.component.PrimaryButton
 import com.where.to.go.component.SmallCheckBox
 import com.where.to.go.component.SocialLink
 import com.where.to.go.component.SquareButton
-import com.where.to.go.component.TextFieldType
 import com.where.to.go.component.values.blue
 import com.where.to.go.component.values.colorBg
 import com.where.to.go.component.values.pink
 import com.where.to.go.component.primaryClip
+import com.where.to.go.component.values.TextFieldType
 import com.where.to.go.component.values.TextSize
 import com.where.to.go.component.values.TextWeight
 import com.where.to.go.internet.models.AuthRequestModel
@@ -57,7 +57,7 @@ fun AuthScreen(
     viewModel: AuthViewModel,
 ) {
     val context = LocalContext.current
-    var showAlertForFillPersonalData by remember { mutableStateOf<PersonalType?>(null) }
+    var showAlertForFillPersonalData by remember { mutableStateOf<ContactType?>(null) }
     val signupState by viewModel.signupState.observeAsState(RequestState())
 
     when {
@@ -142,7 +142,7 @@ fun AuthScreen(
                 SocialLink(img = com.where.to.go.component.R.drawable.telegram, viewModel.userTelegram,
                     end = { SmallCheckBox(status = viewModel.userTelegram.isNotEmpty()) },
                     onAdd = {
-                        showAlertForFillPersonalData = PersonalType.TG
+                        showAlertForFillPersonalData = ContactType.TG
                     })
 
             }
@@ -150,7 +150,7 @@ fun AuthScreen(
                 SocialLink(img = com.where.to.go.component.R.drawable.vk, viewModel.userVK,
                     end = { SmallCheckBox(status = viewModel.userVK.isNotEmpty()) },
                     onAdd = {
-                        showAlertForFillPersonalData = PersonalType.VK
+                        showAlertForFillPersonalData = ContactType.VK
                     })
 
             }
@@ -159,7 +159,7 @@ fun AuthScreen(
                 SocialLink(img = com.where.to.go.component.R.drawable.phone, viewModel.userPhone,
                     end = { SmallCheckBox(status = viewModel.userPhone.isNotEmpty()) },
                     onAdd = {
-                        showAlertForFillPersonalData = PersonalType.PHONE
+                        showAlertForFillPersonalData = ContactType.PHONE
                     })
             }
 
@@ -185,9 +185,9 @@ fun AuthScreen(
         var personalData by remember {
             mutableStateOf(
                 when (showAlertForFillPersonalData) {
-                    PersonalType.TG -> viewModel.userTelegram
-                    PersonalType.VK -> viewModel.userVK
-                    PersonalType.PHONE -> viewModel.userPhone
+                    ContactType.TG -> viewModel.userTelegram
+                    ContactType.VK -> viewModel.userVK
+                    ContactType.PHONE -> viewModel.userPhone
                     null -> ""
                 }
             )
@@ -215,9 +215,9 @@ fun AuthScreen(
             dismissButton = {
                 PrimaryButton(value = "Сохранить", color = ButtonColor.COLORFUL) {
                     when (showAlertForFillPersonalData) {
-                        PersonalType.TG -> viewModel.userTelegram = personalData
-                        PersonalType.VK -> viewModel.userVK = personalData
-                        PersonalType.PHONE -> viewModel.userPhone = personalData
+                        ContactType.TG -> viewModel.userTelegram = personalData
+                        ContactType.VK -> viewModel.userVK = personalData
+                        ContactType.PHONE -> viewModel.userPhone = personalData
                         null -> throw IllegalArgumentException("Долбаеб?")
                     }
                     showAlertForFillPersonalData = null
@@ -241,20 +241,20 @@ fun AuthScreen(
             text = {
                 AppTextField(
                     hint = when (showAlertForFillPersonalData) {
-                        PersonalType.TG -> "Введите свой ID"
-                        PersonalType.VK -> "Введите свой ID"
-                        PersonalType.PHONE -> "Введите номер телефона"
+                        ContactType.TG -> "Введите свой ID"
+                        ContactType.VK -> "Введите свой ID"
+                        ContactType.PHONE -> "Введите номер телефона"
                         null -> "Error"
                     },
                     value = personalData,
                     type = when (showAlertForFillPersonalData) {
-                        PersonalType.TG -> TextFieldType.TEXT
-                        PersonalType.VK -> TextFieldType.TEXT
-                        PersonalType.PHONE -> TextFieldType.PHONE
+                        ContactType.TG -> TextFieldType.TEXT
+                        ContactType.VK -> TextFieldType.TEXT
+                        ContactType.PHONE -> TextFieldType.PHONE
                         null -> throw IllegalArgumentException("Еблан?")
                     }
                 ) {
-                    if (showAlertForFillPersonalData == PersonalType.PHONE) {
+                    if (showAlertForFillPersonalData == ContactType.PHONE) {
                         if (it.isDigitsOnly() && it.length <= 11) {
                             personalData = it
                         }

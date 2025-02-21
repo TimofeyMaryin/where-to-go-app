@@ -4,9 +4,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import com.where.to.go.component.values.TextSize
 import com.where.to.go.component.values.TextWeight
@@ -28,21 +30,14 @@ fun AppText(
     Text(
         text = text,
         color = color,
-        fontWeight = when (weight) {
-            TextWeight.REGULAR -> FontWeight.Normal
-            TextWeight.MEDIUM -> FontWeight.Medium
-            TextWeight.BOLD -> FontWeight.Bold
-        },
-        fontSize = when (size) {
-            TextSize.HEADLINE -> 38.sp
-            TextSize.TITLE_LARGE -> 28.sp
-            TextSize.TITLE -> 20.sp
-            TextSize.BODY_LARGE -> 14.sp
-        },
+        fontWeight = weight.weight,
+        fontSize = size.size,
         textAlign = textAlign,
         fontFamily = fontFamily,
         textDecoration = textDecoration,
         modifier = modifier,
-        lineHeight = lineHeight?.sp ?: 28.sp
+        lineHeight = lineHeight?.sp ?: 28.sp,
+        softWrap = true,
+        overflow = TextOverflow.Visible
     )
 }

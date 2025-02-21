@@ -49,11 +49,10 @@ import com.where.to.go.component.AppText
 import com.where.to.go.component.AppTextField
 import com.where.to.go.component.ButtonColor
 import com.where.to.go.component.Container
-import com.where.to.go.component.PersonalType
+import com.where.to.go.component.ContactType
 import com.where.to.go.component.PrimaryButton
 import com.where.to.go.component.ProfileBackground
 import com.where.to.go.component.SocialLink
-import com.where.to.go.component.TextFieldType
 import com.where.to.go.component.largeClip
 import com.where.to.go.component.values.animateIconColor
 import com.where.to.go.component.values.animatedColorPrimary
@@ -61,6 +60,7 @@ import com.where.to.go.component.values.colorBg
 import com.where.to.go.component.values.colorGray
 import com.where.to.go.component.primaryClip
 import com.where.to.go.component.primaryFillWidth
+import com.where.to.go.component.values.TextFieldType
 import com.where.to.go.component.values.TextSize
 import com.where.to.go.component.values.TextWeight
 import com.where.to.go.component.values.offset
@@ -79,7 +79,7 @@ fun ProfileFragment(
 ) {
     val context = LocalContext.current
 
-    var openDialogFillPersonalData by remember { mutableStateOf<PersonalType?>(null) }
+    var openDialogFillPersonalData by remember { mutableStateOf<ContactType?>(null) }
     var userPersonalData by remember { mutableStateOf("") }
 
     val scope = rememberCoroutineScope()
@@ -141,6 +141,7 @@ fun ProfileFragment(
 
                     verticalArrangement = Arrangement.Top,
                 ) {
+
                     AppText(
                         text = viewModel.loginUser?.name ?: "User №${viewModel.loginUser?.id}",
                         weight = TextWeight.BOLD,
@@ -200,19 +201,19 @@ fun ProfileFragment(
             value = viewModel.loginUser?.tg ?: "",
             end = {  },
             onAdd = {
-                openDialogFillPersonalData = PersonalType.TG
+                openDialogFillPersonalData = ContactType.TG
             })
         SocialLink(img = com.where.to.go.component.R.drawable.vk,
             value = viewModel.loginUser?.vk ?: "",
             end = {  },
             onAdd = {
-                openDialogFillPersonalData = PersonalType.VK
+                openDialogFillPersonalData = ContactType.VK
             })
         SocialLink(img = com.where.to.go.component.R.drawable.phone,
             value = viewModel.loginUser?.phone ?: "",
             end = {  },
             onAdd = {
-                openDialogFillPersonalData = PersonalType.PHONE
+                openDialogFillPersonalData = ContactType.PHONE
             })
 
     }
@@ -305,21 +306,11 @@ fun ProfileFragment(
             },
             text = {
                 AppTextField(
-                    hint = when (openDialogFillPersonalData) {
-                        PersonalType.TG -> "Введите свой ID"
-                        PersonalType.VK -> "Введите свой ID"
-                        PersonalType.PHONE -> "Введите номер телефона"
-                        null -> "Error"
-                    },
+                    hint = openDialogFillPersonalData!!.hint ?: ContactType.TG.hint,
                     value = userPersonalData,
-                    type = when (openDialogFillPersonalData) {
-                        PersonalType.TG -> TextFieldType.TEXT
-                        PersonalType.VK -> TextFieldType.TEXT
-                        PersonalType.PHONE -> TextFieldType.PHONE
-                        null -> TextFieldType.TEXT
-                    }
+                    type = openDialogFillPersonalData!!.type ?: ContactType.TG.type
                 ) {
-                    if (openDialogFillPersonalData == PersonalType.PHONE) {
+                    if (openDialogFillPersonalData == ContactType.PHONE) {
                         if (it.isDigitsOnly() && it.length <= 11) {
                             userPersonalData = it
                         }

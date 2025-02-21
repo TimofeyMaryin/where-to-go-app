@@ -89,7 +89,7 @@ fun FragmentContainer(
             BottomNavState(colorBg, true)
         }
         Screen.EditProfileScreen.route -> {
-            BottomNavState(colorContainerBg, false)
+            BottomNavState(colorBg, false)
         }
         else -> {
             BottomNavState(colorContainerBg, true)

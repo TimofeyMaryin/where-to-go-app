@@ -35,12 +35,12 @@ import com.where.to.go.component.ButtonColor
 import com.where.to.go.component.GlobalContainer
 import com.where.to.go.component.PrimaryButton
 import com.where.to.go.component.SquareButton
-import com.where.to.go.component.TextFieldType
 import com.where.to.go.component.UnnoticeableButton
 import com.where.to.go.component.values.animateBrushPrimary
 import com.where.to.go.component.values.colorContainerBg
 import com.where.to.go.component.values.colorWhite
 import com.where.to.go.component.primaryClip
+import com.where.to.go.component.values.TextFieldType
 import com.where.to.go.component.values.TextSize
 import com.where.to.go.component.values.TextWeight
 import com.where.to.go.internet.models.AuthRequestModel
