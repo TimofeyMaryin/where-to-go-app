@@ -79,6 +79,9 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
 
+    //AsyncImage
+    implementation("io.coil-kt.coil3:coil-compose:3.0.1")
+
     // Custom Shadow
     implementation(libs.custom.shadow)
 

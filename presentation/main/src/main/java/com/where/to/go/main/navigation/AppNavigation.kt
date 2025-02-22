@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import com.where.to.go.internet.cases.UserUseCase
 import com.where.to.go.main.fragment.EditProfileFragment
 import com.where.to.go.main.fragment.FavoritePartyFragment
+import com.where.to.go.main.fragment.PartyFragment
 import com.where.to.go.main.fragment.ProfileFragment
 import com.where.to.go.main.fragment.RecommendsFragment
 import com.where.to.go.main.fragment.SchedulePartyFragment
@@ -18,6 +19,7 @@ import com.where.to.go.main.utils.AnimateFragmentContainer
 import com.where.to.go.main.utils.FragmentContainer
 import com.where.to.go.main.vms.EditProfileViewModel
 import com.where.to.go.main.vms.NavigationViewModel
+import com.where.to.go.main.vms.PartyViewModel
 import com.where.to.go.main.vms.ProfileViewModel
 import com.where.to.go.main.vms.RecommendedViewModel
 
@@ -26,12 +28,12 @@ import com.where.to.go.main.vms.RecommendedViewModel
 @Composable
 fun AppNavigation(
     recommendsViewModel: RecommendedViewModel,
+    partyViewModel: PartyViewModel,
     profileViewModel: ProfileViewModel,
     editorViewModel: EditProfileViewModel
 ) {
     val navController = rememberNavController()
     val navigationViewModel: NavigationViewModel = viewModel()
-    recommendsViewModel.navController = navController
     navigationViewModel.navController = navController
     val userUseCase = UserUseCase()
 
@@ -44,7 +46,9 @@ fun AppNavigation(
                 route = Screen.RecommendedScreen.route,
             ) {
                 AnimateFragmentContainer(enable = navigationViewModel.isCurrentNavDestination.invoke(Screen.RecommendedScreen.route)) {
-                    RecommendsFragment(recommendsViewModel)
+                    RecommendsFragment(navigateViewModel = navigationViewModel,
+                        rViewModel = recommendsViewModel,
+                        pViewModel = partyViewModel)
                 }
             }
 
@@ -92,6 +96,20 @@ fun AppNavigation(
                     )
                 ) {
                     SettingsFragment(navigationViewModel = navigationViewModel)
+                }
+            }
+
+            composable(
+                route = Screen.PartyScreen.route
+            ) {
+                AnimateFragmentContainer(
+                    enable = navigationViewModel.isCurrentNavDestination.invoke(
+                        Screen.PartyScreen.route
+                    )
+                ) {
+                    PartyFragment(
+                        navigationViewModel = navigationViewModel,
+                        viewModel = partyViewModel)
                 }
             }
 

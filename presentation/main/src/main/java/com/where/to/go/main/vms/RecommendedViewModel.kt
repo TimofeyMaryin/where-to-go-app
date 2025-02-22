@@ -25,7 +25,6 @@ class RecommendedViewModel: ViewModel() {
     private val partyUseCase = PartyUseCase()
 
     var loginUser by mutableStateOf<User?>(null)
-    var navController: NavController? = null
 
     var recommendedTapeState by mutableStateOf(RecommendTape.VERTICAL)
         private set
@@ -33,11 +32,86 @@ class RecommendedViewModel: ViewModel() {
     fun changeRecommendedTapeState(){
         recommendedTapeState = if (recommendedTapeState == RecommendTape.VERTICAL) RecommendTape.HORIZONTAL else RecommendTape.VERTICAL
     }
+    /*** Test ***/
 
-    // Test
     val categories = mutableStateListOf(false, false, false, false, false, false, false, false)
 
+    val partyList = listOf(
+        Party(
+            id = 1,
+            ownerId = 1001,
+            image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTRgUPG8RubS8Z3lAG1lGlwJyudTbg6KXoeEyfQHe0QktRH3ahrGyMI0FnK0tNGPuUd0w&usqp=CAU",
+            about = "Незабываемая вечеринка на крыше с видом на город!",
+            tg = "@RoofParty",
+            price = 1500,
+            theme = "Neon Nights",
+            name = "Ночная тусовка",
+            date = "2025-03-01T20:00:00",
+            maxGuests = 50,
+            status = 1,
+            created = "2025-02-21T10:00:00"
+        ),
+        Party(
+            id = 2,
+            ownerId = 1002,
+            image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmwGQR00tPmGzacLSknci2U1sHXtIWqDbpSNYrPVjsSQjdcCaOaY-u-jwjW3eVVpF3ES8&usqp=CAU",
+            about = "Темная вечеринка в стиле gothic.",
+            tg = null,
+            price = 2000,
+            theme = "Gothic Vibes",
+            name = "Тьма и тайны",
+            date = "2025-03-15T22:00:00",
+            maxGuests = 30,
+            status = 0,
+            created = "2025-02-20T15:30:00"
+        ),
+        Party(
+            id = 3,
+            ownerId = 1003,
+            image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaZFp_HtcOilLOQIgCyl2yRqCiG4TY-WyYP1RSfeReT_4T3eDOWzh77-kXpd39DBfhnmQ&usqp=CAU",
+            about = "Дневная вечеринка у бассейна с коктейлями.",
+            tg = "@PoolParty2025",
+            price = 1000,
+            theme = "Summer Splash",
+            name = "Бассейн и солнце",
+            date = "2025-06-10T14:00:00",
+            maxGuests = 100,
+            status = 1,
+            created = "2025-02-21T09:15:00"
+        ),
+        Party(
+            id = 4,
+            ownerId = 1004,
+            image = "https://images.a-a-ah.ru/uploads/list/photo/269/big_concert-2527495_960_720.jpg",
+            about = "Закрытая вечеринка для любителей техно.",
+            tg = "@TechnoRave",
+            price = 2500,
+            theme = "Techno Beats",
+            name = "Рейв до утра",
+            date = "2025-04-20T23:00:00",
+            maxGuests = 80,
+            status = 1,
+            created = "2025-02-19T20:45:00"
+        ),
+        Party(
+            id = 5,
+            ownerId = 1005,
+            image = "https://img.freepik.com/free-vector/party-crowd-purple-stars-background_1048-7508.jpg",
+            about = "Костюмированная вечеринка на Хэллоуин.",
+            tg = null,
+            price = 1800,
+            theme = "Halloween Horror",
+            name = "Страшная ночь",
+            date = "2025-10-31T19:00:00",
+            maxGuests = 60,
+            status = 1,
+            created = "2025-02-21T12:00:00"
+        )
+    )
+    /*** Test ***/
+
     var recommendedParties: List<Party>? = null
+
 
     init {
         viewModelScope.launch {
@@ -64,9 +138,5 @@ class RecommendedViewModel: ViewModel() {
             recommendsState.value = RequestState(error = "Ошибка: ${e.message}")
             null
         }
-    }
-
-    fun navigate(dest: String) {
-        navController?.navigate(dest) ?: throw IllegalArgumentException("nav controller has not init")
     }
 }

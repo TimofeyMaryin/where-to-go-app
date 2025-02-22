@@ -28,7 +28,8 @@ enum class TextSize(val size: TextUnit) {
     HEADLINE(24.sp),
     TITLE_LARGE(20.sp),
     TITLE(16.sp),
-    BODY_LARGE(14.sp)
+    BODY_LARGE(14.sp),
+    BODY(11.sp)
 }
 
 enum class TextFieldType(val visualTransformation: VisualTransformation, val keyboardType: KeyboardType) {

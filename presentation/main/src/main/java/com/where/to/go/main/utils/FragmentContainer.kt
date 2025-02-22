@@ -91,6 +91,9 @@ fun FragmentContainer(
         Screen.EditProfileScreen.route -> {
             BottomNavState(colorBg, false)
         }
+        Screen.PartyScreen.route -> {
+            BottomNavState(colorBg, false)
+        }
         else -> {
             BottomNavState(colorContainerBg, true)
         }
@@ -113,10 +116,20 @@ fun FragmentContainer(
     GlobalContainer(
         topBarStart = {
 
-            SquareButton(icon = R.drawable.ic_top_bar_menu) {
-                hamburgerMenuState = !hamburgerMenuState
-            }
 
+            when (navigationViewModel.currentNavDestination) {
+                Screen.PartyScreen.route -> {
+                    SquareButton(icon = R.drawable.baseline_close_24) {
+                        navigationViewModel.navigateBack()
+                    }
+                }
+
+                else -> {
+                    SquareButton(icon = R.drawable.ic_top_bar_menu) {
+                        hamburgerMenuState = !hamburgerMenuState
+                    }
+                }
+            }
             AppText(
                 text = stringResource(
                     id = when (navigationViewModel.currentNavDestination) {
@@ -126,6 +139,7 @@ fun FragmentContainer(
                         Screen.ProfileScreen.route -> R.string.top_bar_profile
                         Screen.EditProfileScreen.route -> R.string.top_bar_edit_profile
                         Screen.SettingsScreen.route -> R.string.top_bar_settings
+                        Screen.PartyScreen.route -> R.string.party
                         else -> R.string.error
                     }
                 ),
@@ -222,7 +236,7 @@ private fun BottomMenu(
                 )*/
                 .fillMaxWidth()
                 .height(90.dp)
-                .padding(horizontal = 20.dp)
+                .padding(horizontal = 50.dp)
                 .background(state.color, shape = customShape),
             contentAlignment = Alignment.Center,
         ) {

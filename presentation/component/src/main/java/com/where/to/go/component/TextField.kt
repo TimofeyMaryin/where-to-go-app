@@ -119,7 +119,7 @@ fun TextFieldToggle(
     weight: TextWeight = TextWeight.REGULAR,
     isError: Boolean = false,
     onSave: (String) -> Unit){
-    var edit by remember { mutableStateOf(true) }
+    var edit by remember { mutableStateOf(false) }
     var cValue by remember { mutableStateOf(value) }
     Box (modifier = modifier
         .fillMaxWidth()){

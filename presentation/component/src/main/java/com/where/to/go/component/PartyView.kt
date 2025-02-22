@@ -13,78 +13,65 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.android.volley.toolbox.ImageRequest
 import com.where.to.go.component.values.TextSize
 import com.where.to.go.component.values.TextWeight
+import com.where.to.go.component.values.colorBg
 import com.where.to.go.internet.models.Party
 
 @Composable
 fun PartyView(
-    title: String,
-    date: String,
-    guestCount: Int,
-    price: String,
-    backgroundImageResId: Int,
+    party: Party,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: (Party) -> Unit
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(285.dp)
-            .width(350.dp)
-            .clickable(onClick = onClick)
+            .height(100.dp)
+            .clickable(onClick = {onClick(party)})
             .padding(start = 7.dp, end = 7.dp)
-            .clip(RoundedCornerShape(25.dp))
+            .clip(RoundedCornerShape(10.dp))
     ) {
-        // Фоновое изображение
-        Image(
-            painter = painterResource(id = backgroundImageResId),
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
+        WebImage(url = party.image,
+            placeholderColor = Color.Gray, modifier = Modifier.height(100.dp)
+                .width(128.dp).align(Alignment.CenterStart).clip(RoundedCornerShape(10.dp))
         )
-
-        // Затемнение
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(
-                        colors = listOf(Color.Transparent, Color.Black.copy(alpha = 1.8f))
-                    )
-                )
-                .clip(RoundedCornerShape(25.dp))
-        )
-
-        // Содержимое контейнера
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(start = 136.dp),
             verticalArrangement = Arrangement.Bottom
         ) {
             AppText(
-                text = title,
+                text = party.name,
                 modifier = Modifier.padding(bottom = 4.dp),
                 weight = TextWeight.BOLD,
                 size = TextSize.TITLE,
             )
             AppText(
-                text = date,
+                text = party.date,
                 modifier = Modifier.padding(bottom = 8.dp),
                 weight = TextWeight.REGULAR,
-                size = TextSize.BODY_LARGE,
+                size = TextSize.BODY,
             )
             Row(
                 modifier = Modifier
@@ -100,15 +87,15 @@ fun PartyView(
                         .clip(RoundedCornerShape(5.dp))
                 ) {
                     AppText(
-                        text = "$guestCount гостей",
+                        text = "${party.maxGuests} гостей",
                         weight = TextWeight.MEDIUM,
-                        size = TextSize.BODY_LARGE,
+                        size = TextSize.BODY,
                     )
                 }
                 AppText(
-                    text = price,
+                    text = party.price.toString(),
                     weight = TextWeight.MEDIUM,
-                    size = TextSize.TITLE_LARGE,
+                    size = TextSize.TITLE,
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )
             }
@@ -116,15 +103,12 @@ fun PartyView(
 
         Box(
             modifier = Modifier
-                .padding(16.dp)
-                .size(55.dp)
-                .background(color = Color(0xFF27273F), shape = MaterialTheme.shapes.medium)
+                .wrapContentSize()
                 .align(Alignment.TopEnd),
-            //.clickable { /* TODO: Handle image click */ },
             contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = painterResource(id = R.drawable.heart_full), // Замените на ваше изображение
+                painter = painterResource(id = R.drawable.heart_full),
                 contentDescription = null,
                 modifier = Modifier.size(23.dp)
             )
@@ -132,31 +116,25 @@ fun PartyView(
     }
 }
 
+
+
 @Composable
 fun LargePartyView(
     party: Party,
-    backgroundImageResId: Int,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: (Party) -> Unit
 ) {
     Box(
         modifier = modifier
-            .fillMaxWidth()
-            .height(350.dp) // Высота контейнера
-            .width(350.dp)
-            .clickable(onClick = onClick) // Обработчик клика на весь контейнер
+            .height(300.dp)
+            .width(360.dp)
+            .clickable(onClick = {onClick(party)})
             .padding(start = 7.dp, end = 7.dp)
             .clip(RoundedCornerShape(25.dp))
     ) {
-        // Фоновое изображение
-        Image(
-            painter = painterResource(id = backgroundImageResId),
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
-
-        // Затемнение
+        WebImage(url = party.image,
+            placeholderColor = Color.Gray,
+            )
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -167,8 +145,6 @@ fun LargePartyView(
                 )
                 .clip(RoundedCornerShape(25.dp))
         )
-
-        // Содержимое контейнера
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -194,7 +170,6 @@ fun LargePartyView(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Контейнер с количеством гостей
                 Box(
                     modifier = Modifier
                         .background(Color(0xFF27273F))
@@ -222,7 +197,6 @@ fun LargePartyView(
                 .size(55.dp)
                 .background(color = Color(0xFF27273F), shape = MaterialTheme.shapes.medium)
                 .align(Alignment.TopEnd),
-                //.clickable { /* TODO: Handle image click */ },
             contentAlignment = Alignment.Center
         ) {
             Image(
@@ -234,3 +208,30 @@ fun LargePartyView(
     }
 }
 
+@Preview
+@Composable
+private fun PartyViewPreview() {
+    val party = Party(
+        id = 1,
+        ownerId = 1001,
+        image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTRgUPG8RubS8Z3lAG1lGlwJyudTbg6KXoeEyfQHe0QktRH3ahrGyMI0FnK0tNGPuUd0w&usqp=CAU",
+        about = "Незабываемая вечеринка на крыше с видом на город!",
+        tg = "@RoofParty",
+        price = 1500,
+        theme = "Neon Nights",
+        name = "Ночная тусовка",
+        date = "2025-03-01T20:00:00",
+        maxGuests = 50,
+        status = 1,
+        created = "2025-02-21T10:00:00"
+    )
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorBg),
+        verticalArrangement = Arrangement.Center,
+    ) {
+        LargePartyView(party){}
+    }
+}

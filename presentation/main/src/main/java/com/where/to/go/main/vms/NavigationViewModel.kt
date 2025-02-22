@@ -17,12 +17,25 @@ class NavigationViewModel : ViewModel() {
     val isCurrentNavDestination: (String) -> Boolean = { it == currentNavDestination }
 
     fun navigate(dest: String, navController: NavController? = this.navController) {
-        if(navController != null) {
+        if (navController != null) {
             currentNavDestination = dest
+            Log.e("NAVVV", currentNavDestination)
             navController.navigate(dest)
-        }else{
+        } else {
             Log.e("TAG", "NavController is null")
         }
-
     }
+
+    fun navigateBack(navController: NavController? = this.navController) {
+        if (navController != null) {
+            val previousDestination = navController.previousBackStackEntry?.destination?.route ?: ""
+            if(previousDestination.isEmpty()) return
+
+            currentNavDestination = previousDestination
+            navController.navigate(previousDestination)
+        } else {
+            Log.e("TAG", "NavController is null")
+        }
+    }
+
 }
