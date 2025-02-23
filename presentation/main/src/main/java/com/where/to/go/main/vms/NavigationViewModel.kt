@@ -1,12 +1,17 @@
 package com.where.to.go.main.vms
 
+import android.graphics.Insets.add
 import android.util.Log
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.where.to.go.main.navigation.Screen
+import com.where.to.go.main.R
 
 class NavigationViewModel : ViewModel() {
     var currentNavDestination by mutableStateOf(Screen.RecommendedScreen.route)
@@ -19,7 +24,6 @@ class NavigationViewModel : ViewModel() {
     fun navigate(dest: String, navController: NavController? = this.navController) {
         if (navController != null) {
             currentNavDestination = dest
-            Log.e("NAVVV", currentNavDestination)
             navController.navigate(dest)
         } else {
             Log.e("TAG", "NavController is null")
@@ -38,4 +42,15 @@ class NavigationViewModel : ViewModel() {
         }
     }
 
+    private val screens: Map<String, Screen> by lazy {
+        Screen::class.sealedSubclasses
+            .mapNotNull { it.objectInstance }
+            .associateBy { it.route }
+    }
+
+    private fun getScreenByRoute(route: String): Screen? = screens[route]
+
+    fun getCurrentScreenTitle(): Int {
+        return getScreenByRoute(currentNavDestination)?.titleRes ?: R.string.error
+    }
 }

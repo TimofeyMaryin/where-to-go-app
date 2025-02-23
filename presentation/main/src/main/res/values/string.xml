@@ -5,5 +5,11 @@
     <string name="top_bar_favorite">Любимые</string>
     <string name="top_bar_profile">Профиль</string>
     <string name="top_bar_edit_profile">Редактировать профиль</string>
+    <string name="top_bar_settings">Настройки</string>
+    <string name="top_bar_party">Вечеринка</string>
+
     <string name="error">Error</string>
+    <string name="about">Описание:</string>
+    <string name="about_empty">Вы ничего не написали о себе</string>
+    <string name="about_test_user">Когда человек сознательно или интуитивно выбирает себе в жизни какую-то цель, жизненную задачу, он невольно дает себе оценку. По тому, ради чего человек живет, можно судить и о его самооценке - низкой или высокой.\nЕсли человек живет, чтобы приносить людям добро, облегчать их страдания, давать людям радость.</string>
 </resources>

@@ -12,11 +12,13 @@ import com.where.to.go.main.vms.EditProfileViewModel
 import com.where.to.go.main.vms.PartyViewModel
 import com.where.to.go.main.vms.ProfileViewModel
 import com.where.to.go.main.vms.RecommendedViewModel
+import com.where.to.go.main.vms.ScheduleViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun ComponentActivity.mainFragment(
     recommendsViewModel: RecommendedViewModel,
+    scheduleViewModel: ScheduleViewModel,
     partyViewModel: PartyViewModel,
     profileViewModel: ProfileViewModel,
     editorViewModel: EditProfileViewModel
@@ -29,6 +31,7 @@ fun ComponentActivity.mainFragment(
             Scaffold {
                 AppNavigation(
                     recommendsViewModel = recommendsViewModel,
+                    scheduleViewModel = scheduleViewModel,
                     profileViewModel = profileViewModel,
                     editorViewModel = editorViewModel,
                     partyViewModel = partyViewModel)

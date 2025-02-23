@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
@@ -32,11 +33,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.where.to.go.component.AppText
 import com.where.to.go.component.Container
+import com.where.to.go.component.PartyView
 import com.where.to.go.component.values.TextSize
 import com.where.to.go.component.values.TextWeight
 import com.where.to.go.component.values.animateIconColor
 import com.where.to.go.component.values.brushPrimary
+import com.where.to.go.component.values.offset
 import com.where.to.go.main.vms.NavigationViewModel
+import com.where.to.go.main.vms.ScheduleViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -44,6 +48,7 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SchedulePartyFragment(
+    scheduleViewModel: ScheduleViewModel,
     navigateViewModel: NavigationViewModel
 ) {
     val allMonth = remember { getCurrentAndNextFiveMonths().toMutableList() }
@@ -56,7 +61,7 @@ fun SchedulePartyFragment(
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().padding(horizontal = offset),
     ) {
         
         Container(weight = 1f) {
@@ -115,14 +120,12 @@ fun SchedulePartyFragment(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    items(50) {
-                        Box(
-                            modifier = Modifier
-                                .clip(MaterialTheme.shapes.medium)
-                                .fillParentMaxWidth(.9f)
-                                .height(50.dp)
-                                .background(brushPrimary)
-                        )
+                    items(scheduleViewModel.partyList.size) { index ->
+                        PartyView(
+                            scheduleViewModel.partyList[index]
+                        ) {
+
+                        }
                     }
                 }
             }

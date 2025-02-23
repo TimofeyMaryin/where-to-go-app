@@ -1,12 +1,17 @@
 package com.where.to.go.main.navigation
 
-sealed class Screen(val route: String) {
-    data object RecommendedScreen : Screen("recommended-screen")
-    data object ProfileScreen : Screen("profile-screen")
-    data object FavoritePartyScreen : Screen("favorite-party-screen")
-    data object SchedulePartyScreen : Screen("schedule-party-screen")
-    data object EditProfileScreen : Screen("edit-profile-profile")
-    data object SettingsScreen : Screen("settings-screen")
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import com.where.to.go.component.values.offset
+import com.where.to.go.main.R
 
-    data object PartyScreen : Screen("party-screen")
+sealed class Screen(val route: String, val titleRes: Int) {
+    data object RecommendedScreen : Screen("recommended-screen", R.string.top_bar_recommend)
+    data object ProfileScreen : Screen("profile-screen", R.string.top_bar_profile)
+    data object EditProfileScreen : Screen("edit-profile-screen", R.string.top_bar_edit_profile)
+    data object FavoritePartyScreen : Screen("favorite-party-screen", R.string.top_bar_favorite)
+    data object SchedulePartyScreen : Screen("schedule-party-screen", R.string.top_bar_party)
+    data object SettingsScreen : Screen("settings-screen", R.string.top_bar_settings)
+    data object PartyScreen : Screen("party-screen", R.string.top_bar_party)
 }

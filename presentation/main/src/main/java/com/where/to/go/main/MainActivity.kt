@@ -12,12 +12,14 @@ import com.where.to.go.main.vms.EditProfileViewModel
 import com.where.to.go.main.vms.PartyViewModel
 import com.where.to.go.main.vms.ProfileViewModel
 import com.where.to.go.main.vms.RecommendedViewModel
+import com.where.to.go.main.vms.ScheduleViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 class MainActivity: ComponentActivity() {
     private val recommendsViewModel by viewModels<RecommendedViewModel>()
+    private val scheduleViewModel by viewModels<ScheduleViewModel>()
     private val profileViewModel by viewModels<ProfileViewModel>()
     private val editorViewModel by viewModels<EditProfileViewModel>()
     private val partyViewModel by viewModels<PartyViewModel>()
@@ -31,6 +33,7 @@ class MainActivity: ComponentActivity() {
         )
         mainFragment(
             recommendsViewModel = recommendsViewModel,
+            scheduleViewModel = scheduleViewModel,
             profileViewModel = profileViewModel,
             editorViewModel = editorViewModel,
             partyViewModel = partyViewModel)

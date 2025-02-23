@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -46,6 +47,7 @@ import com.where.to.go.component.PartyView
 import com.where.to.go.component.values.TextSize
 import com.where.to.go.component.values.TextWeight
 import com.where.to.go.component.values.colorGray
+import com.where.to.go.component.values.offset
 import com.where.to.go.internet.models.Party
 import com.where.to.go.main.R
 import com.where.to.go.main.navigation.Screen
@@ -73,7 +75,7 @@ fun RecommendsFragment(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .padding(top = 30.dp),
+            .padding(top = 30.dp, start = offset, end = offset),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
@@ -98,7 +100,6 @@ fun RecommendsFragment(
                     isChecked = categories[index],
                     onToggle = { newState ->
                         categories[index] = newState
-                        Log.e("ONTOGGLE", categories[index].toString())
                     },
                     label = "Category ${index + 1}"
                 )
@@ -129,6 +130,9 @@ fun RecommendsFragment(
             pViewModel.party = it
             navigateViewModel.navigate(Screen.PartyScreen.route)
         }
+
+    }
+    Box(modifier = Modifier.fillMaxSize()){
 
     }
 

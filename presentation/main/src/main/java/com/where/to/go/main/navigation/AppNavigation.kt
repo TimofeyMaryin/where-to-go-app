@@ -22,12 +22,14 @@ import com.where.to.go.main.vms.NavigationViewModel
 import com.where.to.go.main.vms.PartyViewModel
 import com.where.to.go.main.vms.ProfileViewModel
 import com.where.to.go.main.vms.RecommendedViewModel
+import com.where.to.go.main.vms.ScheduleViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavigation(
     recommendsViewModel: RecommendedViewModel,
+    scheduleViewModel: ScheduleViewModel,
     partyViewModel: PartyViewModel,
     profileViewModel: ProfileViewModel,
     editorViewModel: EditProfileViewModel
@@ -56,7 +58,7 @@ fun AppNavigation(
                 route = Screen.SchedulePartyScreen.route
             ) {
                 AnimateFragmentContainer(enable = navigationViewModel.isCurrentNavDestination.invoke(Screen.SchedulePartyScreen.route)) {
-                    SchedulePartyFragment(navigateViewModel = navigationViewModel)
+                    SchedulePartyFragment(navigateViewModel = navigationViewModel, scheduleViewModel = scheduleViewModel)
                 }
             }
 

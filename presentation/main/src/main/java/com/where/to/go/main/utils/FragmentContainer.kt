@@ -98,25 +98,8 @@ fun FragmentContainer(
             BottomNavState(colorContainerBg, true)
         }
     }
-    val padding = when (navigationViewModel.currentNavDestination) {
-        Screen.ProfileScreen.route -> {
-            0.dp
-        }
-        Screen.EditProfileScreen.route -> {
-            0.dp
-        }
-        else -> {
-            offset
-        }
-    }
-    val animatedPadding by animateDpAsState(
-        targetValue = padding,
-        animationSpec = tween(durationMillis = 400), label = ""
-    )
     GlobalContainer(
         topBarStart = {
-
-
             when (navigationViewModel.currentNavDestination) {
                 Screen.PartyScreen.route -> {
                     SquareButton(icon = R.drawable.baseline_close_24) {
@@ -131,18 +114,7 @@ fun FragmentContainer(
                 }
             }
             AppText(
-                text = stringResource(
-                    id = when (navigationViewModel.currentNavDestination) {
-                        Screen.RecommendedScreen.route -> R.string.top_bar_recommend
-                        Screen.SchedulePartyScreen.route -> R.string.top_bar_schedule
-                        Screen.FavoritePartyScreen.route -> R.string.top_bar_favorite
-                        Screen.ProfileScreen.route -> R.string.top_bar_profile
-                        Screen.EditProfileScreen.route -> R.string.top_bar_edit_profile
-                        Screen.SettingsScreen.route -> R.string.top_bar_settings
-                        Screen.PartyScreen.route -> R.string.party
-                        else -> R.string.error
-                    }
-                ),
+                text = stringResource(id = navigationViewModel.getCurrentScreenTitle()),
                 weight = TextWeight.REGULAR,
                 size = TextSize.TITLE
             )
@@ -166,7 +138,7 @@ fun FragmentContainer(
                 }
             }
         },
-        horizontalOffset = animatedPadding
+        horizontalOffset = 0.dp
     ) {
         content()
     }
@@ -176,7 +148,9 @@ fun FragmentContainer(
         if(bottomNavState.color != colorBg){
             Box(
                 modifier = Modifier
-                    .fillMaxWidth().height(150.dp).align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .height(150.dp)
+                    .align(Alignment.BottomCenter)
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
@@ -189,7 +163,9 @@ fun FragmentContainer(
         }
 
         Box(
-            modifier = Modifier.fillMaxSize().padding(bottom = 24.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 24.dp),
             contentAlignment = Alignment.BottomCenter
         ) {
 

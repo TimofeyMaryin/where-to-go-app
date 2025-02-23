@@ -96,6 +96,7 @@ dependencies {
     implementation ("androidx.compose.runtime:runtime-livedata:1.7.6")
 
     implementation(libs.androidx.compose.foundation)
+    implementation(kotlin("reflect"))
 
 }
 
