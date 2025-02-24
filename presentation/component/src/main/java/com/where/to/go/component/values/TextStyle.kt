@@ -26,17 +26,19 @@ enum class TextWeight(val weight: FontWeight) {
 }
 enum class TextSize(val size: TextUnit) {
     HEADLINE(24.sp),
-    TITLE_LARGE(20.sp),
     TITLE(16.sp),
-    BODY_LARGE(14.sp),
-    BODY(11.sp)
+    TITLE_LARGE(20.sp),
+    BODY(11.sp),
+    BODY_LARGE(14.sp)
 }
 
-enum class TextFieldType(val visualTransformation: VisualTransformation, val keyboardType: KeyboardType) {
-    TEXT(VisualTransformation.None, KeyboardType.Text),
-    PASSWORD(PasswordVisualTransformation(), KeyboardType.Password),
-    EMAIL( VisualTransformation.None, KeyboardType.Email),
-    PHONE(MaskVisualTransformation("# (###) ###-##-##"), KeyboardType.Number)
+enum class TextFieldType(val visualTransformation: VisualTransformation, val keyboardType: KeyboardType, val length: Int) {
+    TEXT(VisualTransformation.None, KeyboardType.Text, 255),
+    PASSWORD(PasswordVisualTransformation(), KeyboardType.Password, 255),
+    EMAIL( VisualTransformation.None, KeyboardType.Email, 255),
+    PHONE(MaskVisualTransformation("# (###) ###-##-##"), KeyboardType.Number, 15),
+    NUMBER(MaskVisualTransformation(""), KeyboardType.Number, 10),
+    DATE(MaskVisualTransformation("##.##.####"), KeyboardType.Number, 10)
 }
 
 

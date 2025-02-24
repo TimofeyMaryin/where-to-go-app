@@ -74,7 +74,7 @@ fun CustomSearchView(
                     modifier = Modifier
                         .size(24.dp)
                         .clickable {
-                            onFiltersClick.invoke()
+                            onFiltersClick()
                         }
                 )
             }

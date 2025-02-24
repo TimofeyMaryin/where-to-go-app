@@ -1,16 +1,22 @@
 package com.where.to.go.main.fragment
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +27,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -29,34 +36,49 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.where.to.go.component.AppText
 import com.where.to.go.component.CategoryToggle
 import com.where.to.go.component.CustomSearchView
 import com.where.to.go.component.LargePartyView
+import com.where.to.go.component.PartyFilters
 import com.where.to.go.component.PartyView
 import com.where.to.go.component.values.TextSize
 import com.where.to.go.component.values.TextWeight
+import com.where.to.go.component.values.colorBg
+import com.where.to.go.component.values.colorContainerBg
 import com.where.to.go.component.values.colorGray
 import com.where.to.go.component.values.offset
 import com.where.to.go.internet.models.Party
 import com.where.to.go.main.R
 import com.where.to.go.main.navigation.Screen
 import com.where.to.go.main.utils.RecommendTape
+import com.where.to.go.main.vms.BottomNavState
 import com.where.to.go.main.vms.NavigationViewModel
 import com.where.to.go.main.vms.PartyViewModel
 import com.where.to.go.main.vms.RecommendedViewModel
+import kotlinx.coroutines.launch
 
-
+var partyFilters by mutableStateOf(false)
+enum class FiltersState(val padding: Dp){
+    Active(110.dp),
+    Inactive(900.dp)
+}
+@SuppressLint("UseOfNonLambdaOffsetOverload")
 @Composable
 fun RecommendsFragment(
     rViewModel: RecommendedViewModel,
@@ -65,11 +87,14 @@ fun RecommendsFragment(
 ) {
     val categories = remember { mutableStateListOf(false, false, false, false) }
     val context = LocalContext.current
+    val density = LocalDensity.current
     var search by remember { mutableStateOf("") }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     BackHandler {
         
     }
+
 
     Column(
         modifier = Modifier
@@ -84,7 +109,8 @@ fun RecommendsFragment(
             value = search,
             onValueChange = { search = it },
             onFiltersClick = {
-
+                toggleFilters(navigateViewModel, !partyFilters)
+                if(!partyFilters) keyboardController?.hide()
             },
             onSearchClick = {
                 // TODO Search
@@ -132,10 +158,57 @@ fun RecommendsFragment(
         }
 
     }
-    Box(modifier = Modifier.fillMaxSize()){
+    val offsetY = remember { Animatable(FiltersState.Inactive.padding.value) }
+    val coroutineScope = rememberCoroutineScope()
 
+    Box(
+        modifier = Modifier
+            .offset(y = offsetY.value.dp)
+            .fillMaxHeight()
+            .padding(bottom = FiltersState.Active.padding)
+            .fillMaxWidth()
+            .draggable(
+                orientation = Orientation.Vertical,
+                state = rememberDraggableState { delta ->
+                    val deltaDp = with(density) { delta.toDp() }
+                    val newOffset = (offsetY.value.dp + deltaDp).coerceAtLeast(FiltersState.Active.padding)
+                    coroutineScope.launch {
+                        offsetY.snapTo(newOffset.value)
+                    }
+
+                    val closeThreshold = FiltersState.Active.padding + 100.dp
+                    if (newOffset >= closeThreshold) {
+                        toggleFilters(navigateViewModel, false)
+                        coroutineScope.launch {
+                            offsetY.animateTo(FiltersState.Inactive.padding.value, tween(300))
+                            keyboardController?.hide()
+                        }
+                    }
+                },
+                onDragStopped = {
+                    if (offsetY.value < FiltersState.Active.padding.value + 100) {
+                        coroutineScope.launch {
+                            offsetY.animateTo(FiltersState.Active.padding.value, tween(300))
+                        }
+                    }
+                }
+            )
+    ) {
+        PartyFilters {}
     }
 
+    LaunchedEffect(partyFilters) {
+        val target = if (partyFilters) FiltersState.Active.padding.value else FiltersState.Inactive.padding.value
+        offsetY.animateTo(target, animationSpec = tween(300))
+    }
+}
+
+private fun toggleFilters(navigateViewModel: NavigationViewModel, newState: Boolean) {
+    partyFilters = newState
+    navigateViewModel.bottomNavState = BottomNavState(
+        if (newState) colorBg else colorContainerBg,
+        !newState
+    )
 }
 
 @Composable

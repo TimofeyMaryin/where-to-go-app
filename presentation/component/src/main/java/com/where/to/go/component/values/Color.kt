@@ -13,7 +13,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
-val colorBg = Color(0xff1e2031)
+val colorBg = Color(0xff1d2031)
 val colorBgBrush = Brush.horizontalGradient(colors = listOf(colorBg, colorBg))
 val colorContainerBg = Color(0xff27273F)
 

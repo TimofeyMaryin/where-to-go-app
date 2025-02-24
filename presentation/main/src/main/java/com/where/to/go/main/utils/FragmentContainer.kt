@@ -19,6 +19,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -75,6 +76,7 @@ import com.where.to.go.main.vms.NavigationViewModel
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
 import com.where.to.go.component.CustomSvgShape
+import com.where.to.go.main.vms.BottomNavState
 
 @Composable
 fun FragmentContainer(
@@ -84,20 +86,7 @@ fun FragmentContainer(
 ) {
     val hamburgerMenuTimeMs = 400
     var hamburgerMenuState by remember { mutableStateOf(false) }
-    val bottomNavState =  when (navigationViewModel.currentNavDestination) {
-        Screen.ProfileScreen.route -> {
-            BottomNavState(colorBg, true)
-        }
-        Screen.EditProfileScreen.route -> {
-            BottomNavState(colorBg, false)
-        }
-        Screen.PartyScreen.route -> {
-            BottomNavState(colorBg, false)
-        }
-        else -> {
-            BottomNavState(colorContainerBg, true)
-        }
-    }
+    val bottomNavState = navigationViewModel.bottomNavState
     GlobalContainer(
         topBarStart = {
             when (navigationViewModel.currentNavDestination) {
@@ -145,7 +134,7 @@ fun FragmentContainer(
 
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        if(bottomNavState.color != colorBg){
+        if(bottomNavState.color != colorBg && bottomNavState.isOpen){
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -184,11 +173,6 @@ fun FragmentContainer(
 
 }
 
-data class BottomNavState(
-    val color: Color,
-    val isOpen: Boolean
-)
-
 @Composable
 private fun BottomMenu(
     state: BottomNavState,
@@ -213,7 +197,13 @@ private fun BottomMenu(
                 .fillMaxWidth()
                 .height(90.dp)
                 .padding(horizontal = 50.dp)
-                .background(state.color, shape = customShape),
+                .background(state.color, shape = customShape)
+                .clickable(
+                    enabled = true,
+                    onClick = {},
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                ),
             contentAlignment = Alignment.Center,
         ) {
             Row(

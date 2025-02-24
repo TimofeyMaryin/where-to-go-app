@@ -37,12 +37,13 @@ enum class ButtonColor { COLORFUL, BORDER }
 fun PrimaryButton(
     value: String,
     color: ButtonColor,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
 
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .primaryButtonShadow()
             .clip(primaryClip())
             .border(
