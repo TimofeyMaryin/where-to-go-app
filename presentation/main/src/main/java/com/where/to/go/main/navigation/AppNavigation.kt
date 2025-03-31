@@ -1,6 +1,7 @@
 package com.where.to.go.main.navigation
 
 import android.os.Build
+
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -8,8 +9,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.where.to.go.internet.cases.UserUseCase
+import com.where.to.go.internet.models.UserRole
+import com.where.to.go.main.factory.NavigationViewModelFactory
 import com.where.to.go.main.fragment.EditProfileFragment
 import com.where.to.go.main.fragment.FavoritePartyFragment
+import com.where.to.go.main.fragment.ManagePartyFragment
 import com.where.to.go.main.fragment.PartyFragment
 import com.where.to.go.main.fragment.ProfileFragment
 import com.where.to.go.main.fragment.RecommendsFragment
@@ -35,7 +39,8 @@ fun AppNavigation(
     editorViewModel: EditProfileViewModel
 ) {
     val navController = rememberNavController()
-    val navigationViewModel: NavigationViewModel = viewModel()
+    val role = UserRole.fromId(profileViewModel.loginUser?.role ?: 1)
+    val navigationViewModel: NavigationViewModel = viewModel(factory = NavigationViewModelFactory(role))
     navigationViewModel.navController = navController
     val userUseCase = UserUseCase()
 
@@ -58,7 +63,11 @@ fun AppNavigation(
                 route = Screen.SchedulePartyScreen.route
             ) {
                 AnimateFragmentContainer(enable = navigationViewModel.isCurrentNavDestination.invoke(Screen.SchedulePartyScreen.route)) {
-                    SchedulePartyFragment(navigateViewModel = navigationViewModel, scheduleViewModel = scheduleViewModel)
+                    when(navigationViewModel.userRole){
+                        UserRole.GUEST -> SchedulePartyFragment(navigateViewModel = navigationViewModel, scheduleViewModel = scheduleViewModel);
+                        UserRole.ORGANIZER -> ManagePartyFragment(navigateViewModel = navigationViewModel, scheduleViewModel = scheduleViewModel)
+                    }
+
                 }
             }
 

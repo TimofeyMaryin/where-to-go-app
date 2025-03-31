@@ -2,13 +2,11 @@ package com.where.to.go.main.fragment
 
 import android.annotation.SuppressLint
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -24,7 +22,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -194,7 +191,12 @@ fun RecommendsFragment(
                 }
             )
     ) {
-        PartyFilters {}
+        PartyFilters { date, price, guestsCount ->
+            rViewModel.dateRange = mutableStateOf(date)
+            rViewModel.priceRange = mutableStateOf(price.first.toInt() to  price.second.toInt())
+            rViewModel.guestsRange = mutableStateOf(guestsCount.first.toInt() to  guestsCount.second.toInt())
+            rViewModel.applyFilters()
+        }
     }
 
     LaunchedEffect(partyFilters) {
@@ -278,8 +280,8 @@ private fun RecommendedTape(
                         modifier = Modifier.fillMaxWidth(),
                         contentPadding = PaddingValues(horizontal = 16.dp)
                     ) {
-                        items(viewModel.partyList.size) { index ->
-                            LargePartyView(viewModel.partyList[index]) {
+                        items(viewModel.partyList.value.size) { index ->
+                            LargePartyView(viewModel.partyList.value[index]) {
                                 onSelectedCurrentItem(it)
                             }
                         }
@@ -293,9 +295,9 @@ private fun RecommendedTape(
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                         contentPadding = PaddingValues(vertical = 16.dp)
                     ) {
-                        items(viewModel.partyList.size) { index ->
+                        items(viewModel.partyList.value.size) { index ->
                             PartyView(
-                                viewModel.partyList[index]
+                                viewModel.partyList.value[index]
                             ) {
                                 onSelectedCurrentItem(it)
                             }

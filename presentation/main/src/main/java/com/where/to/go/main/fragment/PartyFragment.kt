@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,21 +33,35 @@ fun PartyFragment(
 ) {
     val party = viewModel.party!!
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Column(modifier = Modifier.fillMaxWidth().align(Alignment.TopCenter), verticalArrangement = Arrangement.Top) {
-            Box(modifier = Modifier.height(216.dp)
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .align(Alignment.TopCenter), verticalArrangement = Arrangement.Top) {
+            Box(modifier = Modifier
+                .height(216.dp)
                 .fillMaxWidth()
                 .background(shape = RoundedCornerShape(25.dp), color = Color.Transparent)){
                 WebImage(url = party.image,
                     modifier = Modifier.fillMaxSize())
             }
             Spacer(modifier = Modifier.height(20.dp))
-            Box(modifier = Modifier.height(50.dp)
-                .fillMaxWidth()){
-                AppText(text = party.name, weight = TextWeight.BOLD, size = TextSize.TITLE,
-                    modifier = Modifier.align(Alignment.TopStart))
-                AppText(text = "Смотрящий хаты", weight = TextWeight.REGULAR, size = TextSize.BODY_LARGE,
-                    modifier = Modifier.align(Alignment.BottomStart))
+            Row(modifier = Modifier
+                .height(50.dp).fillMaxWidth()) {
+                Box(modifier = Modifier
+                    .weight(1f)){
+                    AppText(text = party.name, weight = TextWeight.BOLD, size = TextSize.TITLE,
+                        modifier = Modifier.align(Alignment.TopStart))
+                    AppText(text = "Смотрящий хаты", weight = TextWeight.REGULAR, size = TextSize.BODY_LARGE,
+                        modifier = Modifier.align(Alignment.BottomStart))
+                }
+                Box(modifier = Modifier
+                    .weight(1f)){
+                    AppText(text = party.name, weight = TextWeight.BOLD, size = TextSize.TITLE,
+                        modifier = Modifier.align(Alignment.TopEnd))
+                    AppText(text = "Смотрящий хаты", weight = TextWeight.REGULAR, size = TextSize.BODY_LARGE,
+                        modifier = Modifier.align(Alignment.BottomEnd))
+                }
             }
+
 
 
 

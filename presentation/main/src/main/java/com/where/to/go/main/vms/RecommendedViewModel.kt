@@ -4,21 +4,19 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.where.to.go.internet.cases.PartyUseCase
 import com.where.to.go.internet.cases.UserUseCase
-import com.where.to.go.internet.models.AuthRequestModel
 import com.where.to.go.internet.models.Party
 import com.where.to.go.internet.models.RequestState
 import com.where.to.go.internet.models.User
-import com.where.to.go.main.navigation.Screen
 import com.where.to.go.main.utils.RecommendTape
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.toLocalDate
 
 class RecommendedViewModel: ViewModel() {
     private val userUseCase = UserUseCase()
@@ -36,7 +34,7 @@ class RecommendedViewModel: ViewModel() {
 
     val categories = mutableStateListOf(false, false, false, false, false, false, false, false)
 
-    val partyList = listOf(
+    val partiesData = listOf(
         Party(
             id = 1,
             ownerId = 1001,
@@ -109,6 +107,31 @@ class RecommendedViewModel: ViewModel() {
         )
     )
     /*** Test ***/
+
+    var partyList = mutableStateOf(partiesData)
+        private set
+
+    var priceRange = mutableStateOf(0 to Int.MAX_VALUE)
+    var guestsRange = mutableStateOf(0 to Int.MAX_VALUE)
+    var dateRange = mutableStateOf("" to "")
+
+    fun applyFilters() {
+        partyList.value = partiesData.filter { party ->
+            val priceInRange = party.price in priceRange.value.first..priceRange.value.second
+            val guestsInRange = party.maxGuests in guestsRange.value.first..guestsRange.value.second
+            val dateInRange = isDateInRange(party.date, dateRange.value.first, dateRange.value.second)
+
+            priceInRange && guestsInRange && dateInRange
+        }
+    }
+
+    private fun isDateInRange(date: String, startDate: String, endDate: String): Boolean {
+        val partyDate = date.toLocalDate()
+        val start = startDate.takeIf { it.isNotEmpty() }?.toLocalDate() ?: LocalDate.parse("1970-01-01")
+        val end = endDate.takeIf { it.isNotEmpty() }?.toLocalDate() ?: LocalDate.parse("9999-12-31")
+
+        return partyDate in start..end
+    }
 
     var recommendedParties: List<Party>? = null
 

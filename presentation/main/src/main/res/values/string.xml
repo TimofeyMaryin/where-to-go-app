@@ -7,6 +7,7 @@
     <string name="top_bar_edit_profile">Редактировать профиль</string>
     <string name="top_bar_settings">Настройки</string>
     <string name="top_bar_party">Вечеринка</string>
+    <string name="top_bar_manage_party">Мои вечеринки</string>
 
     <string name="error">Error</string>
     <string name="about">Описание:</string>

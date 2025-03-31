@@ -76,6 +76,7 @@ import com.where.to.go.main.vms.NavigationViewModel
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
 import com.where.to.go.component.CustomSvgShape
+import com.where.to.go.internet.models.UserRole
 import com.where.to.go.main.vms.BottomNavState
 
 @Composable
@@ -89,44 +90,9 @@ fun FragmentContainer(
     val bottomNavState = navigationViewModel.bottomNavState
     GlobalContainer(
         topBarStart = {
-            when (navigationViewModel.currentNavDestination) {
-                Screen.PartyScreen.route -> {
-                    SquareButton(icon = R.drawable.baseline_close_24) {
-                        navigationViewModel.navigateBack()
-                    }
-                }
-
-                else -> {
-                    SquareButton(icon = R.drawable.ic_top_bar_menu) {
-                        hamburgerMenuState = !hamburgerMenuState
-                    }
-                }
-            }
-            AppText(
-                text = stringResource(id = navigationViewModel.getCurrentScreenTitle()),
-                weight = TextWeight.REGULAR,
-                size = TextSize.TITLE
-            )
+            getTopBarStart(navigationViewModel = navigationViewModel, onToggle = {value -> hamburgerMenuState = value})()
         },
-        topBarEnd = {
-            when (navigationViewModel.currentNavDestination) {
-                Screen.ProfileScreen.route -> {
-                    SquareButton(icon = R.drawable.ic_edit) {
-                        navigationViewModel.navigate(Screen.EditProfileScreen.route)
-                    }
-                }
-                Screen.EditProfileScreen.route -> {
-                    SquareButton(icon = R.drawable.baseline_close_24) {
-                        navigationViewModel.navigate(Screen.ProfileScreen.route)
-                    }
-                }
-                else -> {
-                    SquareButton(icon = R.drawable.ic_top_bar_settings) {
-                        navigationViewModel.navigate(Screen.SettingsScreen.route)
-                    }
-                }
-            }
-        },
+        topBarEnd =  getTopBarEnd(navigationViewModel = navigationViewModel),
         horizontalOffset = 0.dp
     ) {
         content()
@@ -171,6 +137,75 @@ fun FragmentContainer(
         }
     }
 
+}
+
+
+@Composable
+private fun getTopBarStart(
+    navigationViewModel: NavigationViewModel,
+    onToggle: (Boolean) -> Unit
+): @Composable () -> Unit {
+    var hamburgerMenuState by remember { mutableStateOf(false) }
+
+    val hamburgerButton =  @Composable {
+        SquareButton(icon = R.drawable.ic_top_bar_menu) {
+            hamburgerMenuState = !hamburgerMenuState
+            onToggle(hamburgerMenuState)
+        }
+    }
+
+    val closeButton =  @Composable {
+        SquareButton(icon = R.drawable.baseline_close_24) {
+            navigationViewModel.navigateBack()
+        }
+    }
+    val final = @Composable{
+        when (navigationViewModel.currentNavDestination) {
+            Screen.PartyScreen.route -> {closeButton() }
+            else -> { hamburgerButton() }
+        }
+        AppText(
+            text = stringResource(id = navigationViewModel.getCurrentScreenTitle()),
+            weight = TextWeight.REGULAR,
+            size = TextSize.TITLE
+        )
+    }
+    return final
+}
+
+@Composable
+private fun getTopBarEnd(
+    navigationViewModel: NavigationViewModel
+): @Composable () -> Unit {
+    val settingsButton = @Composable {
+        SquareButton(icon = R.drawable.ic_top_bar_settings) {
+            navigationViewModel.navigate(Screen.SettingsScreen.route)
+        }
+    }
+
+    val editButton =  @Composable {
+        SquareButton(icon = R.drawable.ic_edit) {
+            navigationViewModel.navigate(Screen.EditProfileScreen.route)
+        }
+    }
+
+    val closeButton =  @Composable {
+        SquareButton(icon = R.drawable.baseline_close_24) {
+            navigationViewModel.navigate(Screen.ProfileScreen.route)
+        }
+    }
+
+    return when (navigationViewModel.currentNavDestination) {
+        Screen.ProfileScreen.route -> {
+            editButton
+        }
+        Screen.EditProfileScreen.route -> {
+            closeButton
+        }
+        else -> {
+            settingsButton
+        }
+    }
 }
 
 @Composable

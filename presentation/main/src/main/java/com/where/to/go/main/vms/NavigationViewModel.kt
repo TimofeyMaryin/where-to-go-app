@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.where.to.go.component.values.colorBg
 import com.where.to.go.component.values.colorContainerBg
+import com.where.to.go.internet.models.UserRole
 import com.where.to.go.main.navigation.Screen
 import com.where.to.go.main.R
 
@@ -21,7 +22,9 @@ data class BottomNavState(
     val isOpen: Boolean
 )
 
-class NavigationViewModel : ViewModel() {
+class NavigationViewModel(role: UserRole) : ViewModel() {
+    val userRole: UserRole = role
+
     private var _bottomNavState by mutableStateOf(BottomNavState(colorContainerBg, true))
     var bottomNavState: BottomNavState
         get() = when (currentNavDestination) {

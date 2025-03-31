@@ -19,6 +19,14 @@ data class User(
     val phone: String?,
     val region: String?,
     val town: String?,
-    val created: String // LocalDateTime
+    val created: String
 )
-
+enum class UserRole(val id: Int) {
+    GUEST(0),
+    ORGANIZER(1);
+    companion object {
+        fun fromId(id: Int): UserRole {
+            return entries.find { it.id == id } ?: ORGANIZER
+        }
+    }
+}

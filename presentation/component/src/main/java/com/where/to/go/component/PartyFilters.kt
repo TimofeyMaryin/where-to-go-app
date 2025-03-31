@@ -31,7 +31,7 @@ import com.where.to.go.component.values.offset
 @Composable
 fun PartyFilters(
     modifier: Modifier = Modifier,
-    onApply: () -> Unit
+    onApply: (Pair<String, String>, Pair<String, String>, Pair<String, String>) -> Unit
 )  {
     var date by remember { mutableStateOf(Pair("", "")) }
     var price by remember { mutableStateOf(Pair("", "")) }
@@ -82,7 +82,17 @@ fun PartyFilters(
             PrimaryButton(
                 value = stringResource(id = R.string.apply),
                 color = ButtonColor.COLORFUL,
-                modifier = Modifier.align(Alignment.BottomStart)) { }
+                modifier = Modifier.align(Alignment.BottomStart)) {
+
+                onApply(date,
+
+                    Pair(if(price.first == ""){"0"}else{price.first },
+                        if(price.second== ""){"${Int.MAX_VALUE}"}else{price.second}),
+
+                    Pair(if(guestsCount.first == ""){"0"}else{guestsCount.first},
+                        if(guestsCount.second == ""){"${Int.MAX_VALUE}"}else{guestsCount.second}))
+
+            }
         }
         Box(modifier = Modifier
             .width(40.dp)
@@ -99,7 +109,8 @@ fun PartyFiltersPreview(
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        PartyFilters {
+        PartyFilters { date, price, guestsCount ->
+
         }
     }
 }

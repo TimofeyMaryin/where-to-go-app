@@ -81,6 +81,7 @@ dependencies {
 
     //AsyncImage
     implementation("io.coil-kt.coil3:coil-compose:3.0.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.0")
 
     // Custom Shadow
     implementation(libs.custom.shadow)

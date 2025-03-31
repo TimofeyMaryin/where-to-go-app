@@ -11,7 +11,8 @@ sealed class Screen(val route: String, val titleRes: Int) {
     data object ProfileScreen : Screen("profile-screen", R.string.top_bar_profile)
     data object EditProfileScreen : Screen("edit-profile-screen", R.string.top_bar_edit_profile)
     data object FavoritePartyScreen : Screen("favorite-party-screen", R.string.top_bar_favorite)
-    data object SchedulePartyScreen : Screen("schedule-party-screen", R.string.top_bar_party)
+    data object SchedulePartyScreen : Screen("schedule-party-screen", R.string.top_bar_schedule)
+    data object ManagePartyScreen : Screen("manage-party-screen", R.string.top_bar_manage_party)
     data object SettingsScreen : Screen("settings-screen", R.string.top_bar_settings)
     data object PartyScreen : Screen("party-screen", R.string.top_bar_party)
 }

@@ -26,6 +26,8 @@ class ProfileViewModel: ViewModel() {
 
     var loginUser by mutableStateOf<User?>(null)
 
+
+
     fun updateUserData(
         newUser: User,
         callback: UserDataChangedCallback
