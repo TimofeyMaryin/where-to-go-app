@@ -37,6 +37,7 @@ enum class ButtonColor { COLORFUL, BORDER }
 fun PrimaryButton(
     value: String,
     color: ButtonColor,
+    aspectRatio: Float = 2.2f,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
@@ -54,7 +55,7 @@ fun PrimaryButton(
                 shape = primaryClip()
             )
             .height(70.dp)
-            .aspectRatio(2.2f)
+            .aspectRatio(aspectRatio)
             .background(
                 when (color) {
                     ButtonColor.COLORFUL -> animateBrushPrimary()
@@ -94,7 +95,7 @@ fun SquareButton(
             painter = painterResource(id = icon),
             contentDescription = null,
             tint = colorBg,
-            modifier = Modifier.size(iconSize)
+            modifier = Modifier.size(iconSize).align(Alignment.Center)
         )
     }
 }

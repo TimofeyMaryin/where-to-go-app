@@ -9,6 +9,13 @@
     <string name="top_bar_party">Вечеринка</string>
     <string name="top_bar_manage_party">Мои вечеринки</string>
 
+
+    <string name="category">Тематика</string>
+    <string name="location">Локация</string>
+    <string name="date">Дата</string>
+    <string name="enter_price">Цена за вход</string>
+    <string name="description">Описание</string>
+
     <string name="error">Error</string>
     <string name="about">Описание:</string>
     <string name="about_empty">Вы ничего не написали о себе</string>

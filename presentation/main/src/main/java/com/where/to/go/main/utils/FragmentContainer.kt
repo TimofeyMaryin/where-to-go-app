@@ -154,6 +154,12 @@ private fun getTopBarStart(
         }
     }
 
+    val backButton =  @Composable {
+        SquareButton(icon = R.drawable.arrow_back, iconSize = 16.dp) {
+            navigationViewModel.navigateBack()
+        }
+    }
+
     val closeButton =  @Composable {
         SquareButton(icon = R.drawable.baseline_close_24) {
             navigationViewModel.navigateBack()
@@ -161,7 +167,7 @@ private fun getTopBarStart(
     }
     val final = @Composable{
         when (navigationViewModel.currentNavDestination) {
-            Screen.PartyScreen.route -> {closeButton() }
+            Screen.PartyScreen.route -> {backButton() }
             else -> { hamburgerButton() }
         }
         AppText(

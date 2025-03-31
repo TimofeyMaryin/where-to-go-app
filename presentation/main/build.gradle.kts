@@ -96,6 +96,8 @@ dependencies {
     implementation("com.github.TimofeyMaryin:gufo-shadow:1.0.0")
     implementation ("androidx.compose.runtime:runtime-livedata:1.7.6")
 
+    implementation ("com.github.a914-gowtham:compose-ratingbar:1.3.12")
+
     implementation(libs.androidx.compose.foundation)
     implementation(kotlin("reflect"))
 

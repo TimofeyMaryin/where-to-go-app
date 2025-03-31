@@ -32,7 +32,7 @@ import com.where.to.go.main.vms.ScheduleViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavigation(
-    recommendsViewModel: RecommendedViewModel,
+    recommendsViewModel: RecommendedViewModel,  
     scheduleViewModel: ScheduleViewModel,
     partyViewModel: PartyViewModel,
     profileViewModel: ProfileViewModel,

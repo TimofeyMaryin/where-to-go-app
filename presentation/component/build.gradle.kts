@@ -65,6 +65,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation ("com.github.a914-gowtham:compose-ratingbar:1.3.12")
 
     implementation(libs.custom.shadow)
     implementation(project(":internet"))

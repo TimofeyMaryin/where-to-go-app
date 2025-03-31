@@ -3,6 +3,7 @@ package com.where.to.go.internet.models
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 
+//TODO add category&&location fields
 @Serializable
 data class Party(
     val id: Int,
@@ -18,3 +19,8 @@ data class Party(
     val status : Int,
     val created: String
 )
+
+enum class PartyCategory{
+    Xmas,
+    Birthday
+}
