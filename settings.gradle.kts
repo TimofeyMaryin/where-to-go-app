@@ -22,10 +22,15 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "WhereToGoApplication"
+
 include(":app")
+include(":common-ui")
+include(":core")
 include(":domain")
-include(":internet")
+
+include(":feature-auth")
+include(":feature-profile")
+
 include(":presentation:auth")
-include(":presentation:component")
 include(":presentation:main")
 include(":presentation:utils")

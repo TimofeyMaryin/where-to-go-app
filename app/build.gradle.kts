@@ -74,7 +74,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // Dagger Hilt
+    // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
@@ -85,12 +85,9 @@ dependencies {
 
     implementation(libs.navigation)
 
-    implementation(project(":domain"))
-    implementation(project(":internet"))
+    //implementation(project(":domain"))
     implementation(project(":presentation:auth"))
-     implementation(project(":presentation:main"))
-
-
+    implementation(project(":presentation:main"))
 }
 
 kapt {

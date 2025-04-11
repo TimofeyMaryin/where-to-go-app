@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="filter">Фильтр</string>
+    <string name="price">Цена</string>
+    <string name="date">Дата</string>
+    <string name="guests_count">Количество гостей</string>
+    <string name="apply">Применить</string>
+
+</resources>

@@ -3,6 +3,25 @@
   <component name="deploymentTargetDropDown">
     <value>
       <entry key="Unnamed">
+        <State>
+          <targetSelectedWithDropDown>
+            <Target>
+              <type value="QUICK_BOOT_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="C:\Users\viski\.android\avd\Pixel_5_API_34.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2025-03-31T10:41:32.249401600Z" />
+        </State>
+      </entry>
+      <entry key="feature-auth">
+        <State />
+      </entry>
+      <entry key="feature-profile">
         <State />
       </entry>
     </value>
