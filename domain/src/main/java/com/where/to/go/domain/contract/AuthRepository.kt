@@ -10,11 +10,11 @@ import retrofit2.Response
 
 
 interface AuthRepository {
-    suspend fun signup(domain: AuthDomain): ResponseDomain
-    suspend fun login(domain: AuthDomain): ResponseDomain
+    suspend fun signup(domain: AuthDomain): Response<ResponseDomain>
+    suspend fun login(domain: AuthDomain): Response<ResponseDomain>
     suspend fun confirmCode(domain: ConfirmCodeDomain): Response<ResponseDomain>
-    suspend fun resetPassword(domain: ResetPasswordDomain): Response<ResponseDomain>
+    suspend fun resetPassword(domain: ResetPasswordDomain, authToken: String): Response<ResponseDomain>
     suspend fun restorePassword(domain: ResponseDomain): Response<ResponseDomain>
-    suspend fun tokenUpdate(token: ResponseDomain): Response<ResponseDomain>
+    suspend fun tokenUpdate(token: ResponseDomain, authToken: String): Response<ResponseDomain>
 
 }

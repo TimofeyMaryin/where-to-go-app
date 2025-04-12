@@ -1,7 +1,7 @@
-package com.where.to.go.core.data.dao
+package com.where.to.go.data.dao
 
-import com.where.to.go.core.data.dto.ResponseDto
-import com.where.to.go.core.data.dto.UserDto
+import com.where.to.go.data.dto.ResponseDto
+import com.where.to.go.data.dto.UserDto
 import com.where.to.go.domain.ResponseDomain
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -23,7 +23,7 @@ interface UserService {
     suspend fun getUser(@Path("id") id: Int): Response<UserDto>
 
     @POST("users/find")
-    suspend fun findUser(@Body email: ResponseDto): Response<UserDto?>
+    suspend fun findUser(@Body email: String): Response<UserDto?>
 
     @Multipart
     @POST("users/{id}/avatar")

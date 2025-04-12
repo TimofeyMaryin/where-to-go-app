@@ -1,9 +1,6 @@
-package com.where.to.go.core
+package com.where.to.go.data
 
 import com.google.gson.GsonBuilder
-import com.where.to.go.core.data.dao.AuthService
-import com.where.to.go.core.data.dao.PartyService
-import com.where.to.go.core.data.dao.UserService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -30,14 +27,14 @@ object RetrofitClient {
 
     }
 
-    val userService: UserService by lazy {
-        retrofit.create(UserService::class.java)
+    val userService: com.where.to.go.data.dao.UserService by lazy {
+        retrofit.create(com.where.to.go.data.dao.UserService::class.java)
     }
-    val authService: AuthService by lazy {
-        retrofit.create(AuthService::class.java)
+    val authService: com.where.to.go.data.dao.AuthService by lazy {
+        retrofit.create(com.where.to.go.data.dao.AuthService::class.java)
     }
-    val partyService: PartyService by lazy {
-        retrofit.create(PartyService::class.java)
+    val partyService: com.where.to.go.data.dao.PartyService by lazy {
+        retrofit.create(com.where.to.go.data.dao.PartyService::class.java)
     }
 
 }

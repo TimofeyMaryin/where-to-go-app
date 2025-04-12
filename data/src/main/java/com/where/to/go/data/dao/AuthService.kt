@@ -1,9 +1,9 @@
-package com.where.to.go.core.data.dao
+package com.where.to.go.data.dao
 
-import com.where.to.go.core.data.dto.AuthDto
-import com.where.to.go.core.data.dto.ConfirmCodeDto
-import com.where.to.go.core.data.dto.ResetPasswordDto
-import com.where.to.go.core.data.dto.ResponseDto
+import com.where.to.go.data.dto.AuthDto
+import com.where.to.go.data.dto.ConfirmCodeDto
+import com.where.to.go.data.dto.ResetPasswordDto
+import com.where.to.go.data.dto.ResponseDto
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header

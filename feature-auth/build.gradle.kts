@@ -67,4 +67,5 @@ dependencies {
     implementation(project(":common-ui"))
     implementation(project(":domain"))
     implementation(project(":core"))
+    implementation(project(":data"))
 }

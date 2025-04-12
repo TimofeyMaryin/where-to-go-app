@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.where.to.go.feature_auth.R
 import com.where.to.go.feature_auth.navigation.Screen
-import com.where.to.go.core.plugins.TokenManager
+import com.where.to.go.data.plugins.TokenManager
 import com.where.to.go.feature_auth.vms.AuthViewModel
 import com.where.to.go.common_ui.AppText
 import com.where.to.go.common_ui.AppTextField

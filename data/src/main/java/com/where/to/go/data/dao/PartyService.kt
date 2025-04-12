@@ -1,4 +1,4 @@
-package com.where.to.go.core.data.dao
+package com.where.to.go.data.dao
 
 import com.where.to.go.domain.PartyDomain
 import retrofit2.Response

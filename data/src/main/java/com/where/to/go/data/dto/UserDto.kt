@@ -1,4 +1,4 @@
-package com.where.to.go.core.data.dto
+package com.where.to.go.data.dto
 
 import com.google.gson.annotations.SerializedName
 

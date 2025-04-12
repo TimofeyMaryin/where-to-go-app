@@ -11,8 +11,8 @@ import com.where.to.go.feature_auth.screen.RestoreScreen
 import com.where.to.go.feature_auth.screen.StartScreen
 import com.where.to.go.feature_auth.screen.VerificationScreen
 import com.where.to.go.feature_auth.vms.AuthViewModel
-import com.where.to.go.core.cases.AuthUseCase
-import com.where.to.go.core.cases.UserUseCase
+import com.where.to.go.core.cases.auth.AuthUseCase
+import com.where.to.go.core.cases.user.UserUseCase
 
 @Composable
 fun AppNavigation(

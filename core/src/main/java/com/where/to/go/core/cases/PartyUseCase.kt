@@ -1,11 +1,10 @@
 package com.where.to.go.core.cases
 
-import com.where.to.go.core.RetrofitClient
-import com.where.to.go.core.data.dao.PartyService
+import com.where.to.go.data.RetrofitClient
 import com.where.to.go.domain.PartyDomain
 import retrofit2.Response
 
-class PartyUseCase: PartyService {
+class PartyUseCase: com.where.to.go.data.dao.PartyService {
 
     override suspend fun createParty(event: PartyDomain, authToken: String): Response<String> {
         return RetrofitClient.partyService.createParty(event, authToken)

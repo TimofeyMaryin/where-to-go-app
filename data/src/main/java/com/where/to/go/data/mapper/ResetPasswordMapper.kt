@@ -1,7 +1,7 @@
-package com.where.to.go.core.data.mapper
+package com.where.to.go.data.mapper
 
-import com.where.to.go.core.data.dto.ResetPasswordDto
-import com.where.to.go.core.data.dto.ResponseDto
+import com.where.to.go.data.dto.ResetPasswordDto
+import com.where.to.go.data.dto.ResponseDto
 import com.where.to.go.domain.ResetPasswordDomain
 import com.where.to.go.domain.ResponseDomain
 

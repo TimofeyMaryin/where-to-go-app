@@ -13,15 +13,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.where.to.go.feature_auth.navigation.AppNavigation
-import com.where.to.go.core.plugins.TokenManager
+import com.where.to.go.data.plugins.TokenManager
 import com.where.to.go.feature_auth.vms.AuthViewModel
 import com.where.to.go.common_ui.AppText
 import com.where.to.go.common_ui.values.TextSize
 import com.where.to.go.common_ui.values.TextWeight
 import com.where.to.go.common_ui.values.WhereToGoApplicationTheme
 import com.where.to.go.common_ui.values.colorBg
-import com.where.to.go.core.cases.AuthUseCase
-import com.where.to.go.core.cases.UserUseCase
+import com.where.to.go.core.cases.auth.AuthUseCase
+import com.where.to.go.core.cases.user.UserUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -35,7 +35,7 @@ class AuthActivity: ComponentActivity(), CoroutineScope by MainScope()  {
         super.onCreate(savedInstanceState)
         authUseCase = AuthUseCase()
         val userUseCase = UserUseCase()
-        TokenManager.init(this)
+        com.where.to.go.data.plugins.TokenManager.init(this)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN

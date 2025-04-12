@@ -28,8 +28,8 @@ import com.where.to.go.common_ui.SquareButton
 import com.where.to.go.common_ui.values.TextFieldType
 import com.where.to.go.common_ui.values.TextSize
 import com.where.to.go.common_ui.values.TextWeight
-import com.where.to.go.core.cases.AuthUseCase
-import com.where.to.go.core.plugins.TokenManager
+import com.where.to.go.core.cases.auth.AuthUseCase
+import com.where.to.go.data.plugins.TokenManager
 import com.where.to.go.domain.ConfirmCodeModel
 import com.where.to.go.domain.model.RequestState
 
@@ -50,7 +50,7 @@ fun VerificationScreen(
             Log.e("AUTOLOGIN", confirmCodeState.error.toString())
         }
         confirmCodeState.data != null -> {
-            TokenManager.saveToken(confirmCodeState.data!!.token)
+            com.where.to.go.data.plugins.TokenManager.saveToken(confirmCodeState.data!!.token)
             Toast.makeText(context, "Код верный", Toast.LENGTH_LONG).show()
             navController.navigate(Screen.ResetPasswordScreen.route)
         }

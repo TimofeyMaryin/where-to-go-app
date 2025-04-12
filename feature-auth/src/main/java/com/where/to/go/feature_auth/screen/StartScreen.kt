@@ -41,7 +41,7 @@ import com.where.to.go.common_ui.values.TextSize
 import com.where.to.go.common_ui.values.TextWeight
 import com.where.to.go.common_ui.values.animatedColorPrimary
 import com.where.to.go.domain.model.RequestState
-import com.where.to.go.core.plugins.TokenManager
+import com.where.to.go.data.plugins.TokenManager
 import com.where.to.go.main.MainActivity
 import kotlin.system.exitProcess
 
@@ -62,8 +62,8 @@ fun StartScreen(
             Log.e("AUTOLOGIN", autoLoginState.error.toString())
         }
         autoLoginState.data != null -> {
-            TokenManager.clearToken()
-            TokenManager.saveToken(autoLoginState.data!!.token)
+            com.where.to.go.data.plugins.TokenManager.clearToken()
+            com.where.to.go.data.plugins.TokenManager.saveToken(autoLoginState.data!!.token)
             val intent = Intent(context, MainActivity::class.java)
             context.startActivity(intent)
         }
@@ -78,7 +78,7 @@ fun StartScreen(
         ), label = ""
     )
     LaunchedEffect(key1 = Unit) {
-        if(!TokenManager.getToken().isNullOrEmpty() && !autoLoginState.isLoading) viewModel.autoLogin()
+        if(!com.where.to.go.data.plugins.TokenManager.getToken().isNullOrEmpty() && !autoLoginState.isLoading) viewModel.autoLogin()
     }
     Box(modifier = Modifier
         .padding(bottom = 18.dp)

@@ -1,7 +1,7 @@
-package com.where.to.go.core.data.mapper
+package com.where.to.go.data.mapper
 
-import com.where.to.go.core.data.dto.AuthDto
-import com.where.to.go.core.data.dto.UserDto
+import com.where.to.go.data.dto.AuthDto
+import com.where.to.go.data.dto.UserDto
 import com.where.to.go.domain.AuthDomain
 import com.where.to.go.domain.UserDomain
 import com.where.to.go.domain.UserRole

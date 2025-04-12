@@ -1,4 +1,4 @@
-package com.where.to.go.core.plugins
+package com.where.to.go.data.plugins
 
 import android.content.Context
 import android.content.SharedPreferences

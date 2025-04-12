@@ -6,22 +6,19 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.where.to.go.core.plugins.TokenManager
-import com.where.to.go.core.cases.AuthUseCase
+import com.where.to.go.data.plugins.TokenManager
+import com.where.to.go.core.cases.auth.AuthUseCase
 import com.where.to.go.domain.AuthDomain
-import com.where.to.go.domain.model.AuthResponseModel
-import com.where.to.go.domain.ConfirmCodeModel
+import com.where.to.go.domain.ResetPasswordDomain
 import com.where.to.go.domain.model.RequestState
-import com.where.to.go.domain.ResetPasswordModel
 import com.where.to.go.domain.ResponseDomain
-import com.where.to.go.domain.RestorePasswordModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 @HiltViewModel
-class AuthViewModel @Inject constructor(): ViewModel() {
+class AuthViewModel @Inject constructor(private val authUseCase: AuthUseCase,): ViewModel() {
 
     var userEmail by mutableStateOf("")
     var restoreCode by mutableStateOf("")
@@ -58,11 +55,14 @@ class AuthViewModel @Inject constructor(): ViewModel() {
     var enterUserAccType: (Int) -> Unit = { type -> userRole = type }
 
     /*** Server ***/
-    private val authUseCase = AuthUseCase()
     private val tokenManager = TokenManager
 
     val resetPasswordState = MutableLiveData<RequestState<ResponseDomain>>()
-    fun resetPassword(model: ResetPasswordModel) {
+    fun resetPassword() {
+        val model = ResetPasswordDomain(
+            email = userEmail,
+            password = userPassword
+        )
         resetPasswordState.value = RequestState(isLoading = true)
         viewModelScope.launch {
             try {
