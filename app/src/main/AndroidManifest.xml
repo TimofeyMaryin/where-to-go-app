@@ -6,27 +6,16 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
+        android:name=".WhereToGoApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".Apps"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.WhereToGoApplication"
         tools:targetApi="31">
-        <activity
-            android:name=".AuthorizationActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.WhereToGoApplication">
 
-        </activity>
-        <activity
-            android:name="com.where.to.go.main.MainActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.WhereToGoApplication"/>
 
         <activity
             android:name=".MainActivity"
@@ -34,25 +23,15 @@
             android:exported="true"
             >
             <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
                 <data android:scheme="wg" android:host="main" android:path="/main" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
-
-        <activity
-            android:name="com.where.to.go.auth.AuthActivity"
-            android:theme="@style/Theme.WhereToGoApplication"
-            android:exported="true"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <data android:scheme="myapp" android:host="moduleAuth" android:path="/auth" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
 
     </application>

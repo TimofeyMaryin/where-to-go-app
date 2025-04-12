@@ -12,13 +12,10 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/common-ui" />
             <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/feature-auth" />
             <option value="$PROJECT_DIR$/feature-profile" />
-            <option value="$PROJECT_DIR$/presentation" />
-            <option value="$PROJECT_DIR$/presentation/auth" />
-            <option value="$PROJECT_DIR$/presentation/main" />
-            <option value="$PROJECT_DIR$/presentation/utils" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
