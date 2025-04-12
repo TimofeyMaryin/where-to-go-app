@@ -30,7 +30,4 @@ include(":domain")
 
 include(":feature-auth")
 include(":feature-profile")
-
-include(":presentation:auth")
-include(":presentation:main")
-include(":presentation:utils")
+include(":data")

@@ -2,12 +2,12 @@ package com.where.to.go.core.cases
 
 import com.where.to.go.core.RetrofitClient
 import com.where.to.go.core.data.dao.PartyService
-import com.where.to.go.domain.model.Party
+import com.where.to.go.domain.PartyDomain
 import retrofit2.Response
 
 class PartyUseCase: PartyService {
 
-    override suspend fun createParty(event: Party, authToken: String): Response<String> {
+    override suspend fun createParty(event: PartyDomain, authToken: String): Response<String> {
         return RetrofitClient.partyService.createParty(event, authToken)
     }
 
@@ -19,15 +19,15 @@ class PartyUseCase: PartyService {
         return RetrofitClient.partyService.payParty(id, authToken)
     }
 
-    override suspend fun getAllParties(): Response<List<Party>> {
+    override suspend fun getAllParties(): Response<List<PartyDomain>> {
         return RetrofitClient.partyService.getAllParties()
     }
 
-    override suspend fun getParty(id: Int): Response<Party> {
+    override suspend fun getParty(id: Int): Response<PartyDomain> {
         return RetrofitClient.partyService.getParty(id)
     }
 
-    override suspend fun getOwnerParties(id: Int): Response<List<Party>> {
+    override suspend fun getOwnerParties(id: Int): Response<List<PartyDomain>> {
         return RetrofitClient.partyService.getOwnerParties(id)
     }
 

@@ -8,13 +8,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.where.to.go.core.plugins.TokenManager
 import com.where.to.go.core.cases.AuthUseCase
-import com.where.to.go.domain.model.AuthRequestModel
+import com.where.to.go.domain.AuthDomain
 import com.where.to.go.domain.model.AuthResponseModel
-import com.where.to.go.domain.model.ConfirmCodeModel
+import com.where.to.go.domain.ConfirmCodeModel
 import com.where.to.go.domain.model.RequestState
-import com.where.to.go.domain.model.ResetPasswordModel
-import com.where.to.go.domain.model.ResponseModel
-import com.where.to.go.domain.model.RestorePasswordModel
+import com.where.to.go.domain.ResetPasswordModel
+import com.where.to.go.domain.ResponseDomain
+import com.where.to.go.domain.RestorePasswordModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -61,7 +61,7 @@ class AuthViewModel @Inject constructor(): ViewModel() {
     private val authUseCase = AuthUseCase()
     private val tokenManager = TokenManager
 
-    val resetPasswordState = MutableLiveData<RequestState<ResponseModel>>()
+    val resetPasswordState = MutableLiveData<RequestState<ResponseDomain>>()
     fun resetPassword(model: ResetPasswordModel) {
         resetPasswordState.value = RequestState(isLoading = true)
         viewModelScope.launch {
@@ -79,7 +79,7 @@ class AuthViewModel @Inject constructor(): ViewModel() {
     }
 
     val loginState = MutableLiveData<RequestState<AuthResponseModel>>()
-    fun login(model: AuthRequestModel) {
+    fun login(model: AuthDomain) {
         loginState.value = RequestState(isLoading = true)
         viewModelScope.launch {
             try {
@@ -97,7 +97,7 @@ class AuthViewModel @Inject constructor(): ViewModel() {
     }
 
     val signupState = MutableLiveData<RequestState<AuthResponseModel>>()
-    fun signup(model: AuthRequestModel) {
+    fun signup(model: AuthDomain) {
         signupState.value = RequestState(isLoading = true)
         viewModelScope.launch {
             try {
@@ -150,7 +150,7 @@ class AuthViewModel @Inject constructor(): ViewModel() {
         }
     }
 
-    val restorePasswordState = MutableLiveData<RequestState<ResponseModel>>()
+    val restorePasswordState = MutableLiveData<RequestState<ResponseDomain>>()
     fun restorePassword(model: RestorePasswordModel) {
         restorePasswordState.value = RequestState(isLoading = true)
         viewModelScope.launch {

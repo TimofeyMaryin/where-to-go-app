@@ -1,11 +1,10 @@
-package com.where.to.go.domain.model
+package com.where.to.go.domain
 
 import kotlinx.serialization.Serializable
-import java.time.LocalDateTime
 
 //TODO add category&&location fields
 @Serializable
-data class Party(
+data class PartyDomain(
     val id: Int,
     val ownerId: Int,
     val image : String,

@@ -1,6 +1,5 @@
 package com.where.to.go.common_ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,19 +21,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.where.to.go.common_ui.values.TextSize
 import com.where.to.go.common_ui.values.TextWeight
 import com.where.to.go.common_ui.values.colorBg
-import com.where.to.go.domain.model.Party
+import com.where.to.go.domain.PartyDomain
 
 @Composable
 fun PartyView(
-    party: Party,
+    party: PartyDomain,
     modifier: Modifier = Modifier,
-    onClick: (Party) -> Unit
+    onClick: (PartyDomain) -> Unit
 ) {
     Box(
         modifier = modifier
@@ -113,9 +111,9 @@ fun PartyView(
 
 @Composable
 fun LargePartyView(
-    party: Party,
+    party: PartyDomain,
     modifier: Modifier = Modifier,
-    onClick: (Party) -> Unit
+    onClick: (PartyDomain) -> Unit
 ) {
     Box(
         modifier = modifier
@@ -204,7 +202,7 @@ fun LargePartyView(
 @Preview
 @Composable
 private fun PartyViewPreview() {
-    val party = Party(
+    val party = PartyDomain(
         id = 1,
         ownerId = 1001,
         image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTRgUPG8RubS8Z3lAG1lGlwJyudTbg6KXoeEyfQHe0QktRH3ahrGyMI0FnK0tNGPuUd0w&usqp=CAU",

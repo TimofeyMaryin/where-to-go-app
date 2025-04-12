@@ -28,7 +28,7 @@ import com.where.to.go.common_ui.values.TextFieldType
 import com.where.to.go.common_ui.values.TextSize
 import com.where.to.go.common_ui.values.TextWeight
 import com.where.to.go.domain.model.RequestState
-import com.where.to.go.domain.model.ResetPasswordModel
+import com.where.to.go.domain.ResetPasswordModel
 
 @Composable
 fun ResetPasswordScreen(

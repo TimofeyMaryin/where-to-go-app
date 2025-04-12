@@ -43,7 +43,7 @@ import com.where.to.go.common_ui.primaryClip
 import com.where.to.go.common_ui.values.TextFieldType
 import com.where.to.go.common_ui.values.TextSize
 import com.where.to.go.common_ui.values.TextWeight
-import com.where.to.go.domain.model.AuthRequestModel
+import com.where.to.go.domain.AuthDomain
 import com.where.to.go.domain.model.RequestState
 import com.where.to.go.main.MainActivity
 
@@ -159,7 +159,7 @@ fun LoginScreen(
             PrimaryButton(value = "Продолжить", color = ButtonColor.COLORFUL) {
                 if(viewModel.sendable){
                     viewModel.login(
-                        AuthRequestModel(
+                        AuthDomain(
                             role = viewModel.userRole,
                             email = viewModel.userEmail,
                             password = viewModel.userPassword

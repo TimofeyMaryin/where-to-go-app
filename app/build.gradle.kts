@@ -85,9 +85,7 @@ dependencies {
 
     implementation(libs.navigation)
 
-    //implementation(project(":domain"))
-    implementation(project(":presentation:auth"))
-    implementation(project(":presentation:main"))
+    implementation(project(":domain"))
 }
 
 kapt {

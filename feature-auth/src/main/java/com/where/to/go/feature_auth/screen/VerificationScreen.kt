@@ -30,7 +30,7 @@ import com.where.to.go.common_ui.values.TextSize
 import com.where.to.go.common_ui.values.TextWeight
 import com.where.to.go.core.cases.AuthUseCase
 import com.where.to.go.core.plugins.TokenManager
-import com.where.to.go.domain.model.ConfirmCodeModel
+import com.where.to.go.domain.ConfirmCodeModel
 import com.where.to.go.domain.model.RequestState
 
 @Composable

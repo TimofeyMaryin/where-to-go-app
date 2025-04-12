@@ -48,7 +48,7 @@ import com.where.to.go.common_ui.primaryClip
 import com.where.to.go.common_ui.values.TextFieldType
 import com.where.to.go.common_ui.values.TextSize
 import com.where.to.go.common_ui.values.TextWeight
-import com.where.to.go.domain.model.AuthRequestModel
+import com.where.to.go.domain.AuthDomain
 import com.where.to.go.domain.model.RequestState
 
 @Composable
@@ -169,7 +169,7 @@ fun AuthScreen(
                     color = ButtonColor.COLORFUL
                 ) {
                     if(viewModel.sendable){
-                        viewModel.signup(AuthRequestModel(viewModel.userRole, viewModel.userEmail, viewModel.userPassword))
+                        viewModel.signup(AuthDomain(viewModel.userRole, viewModel.userEmail, viewModel.userPassword))
                     }
                     else{
                         Toast.makeText(context, "Не все поля правильно заполнены", Toast.LENGTH_LONG).show()

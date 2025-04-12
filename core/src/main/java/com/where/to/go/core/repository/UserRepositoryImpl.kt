@@ -1,11 +1,12 @@
 package com.where.to.go.core.repository
 
 import com.where.to.go.core.data.dao.UserService
+import com.where.to.go.core.data.dto.ResponseDto
+import com.where.to.go.core.data.mapper.ResponseMapper
 import com.where.to.go.core.data.mapper.UserMapper
 import com.where.to.go.domain.contract.UserRepository
 import com.where.to.go.domain.UserDomain
-import com.where.to.go.domain.model.ResponseModel
-import com.where.to.go.domain.model.RestorePasswordModel
+import com.where.to.go.domain.ResponseDomain
 import okhttp3.MultipartBody
 import retrofit2.Response
 
@@ -50,8 +51,8 @@ class UserRepositoryImpl(
         }
     }
 
-    override suspend fun findUser(email: RestorePasswordModel): Response<UserDomain?> {
-        val response = userService.findUser(email)
+    override suspend fun findUser(email: ResponseDomain): Response<UserDomain?> {
+        val response = userService.findUser(ResponseMapper.toDto(email))
         return if (response.isSuccessful) {
             Response.success(response.body()?.let { UserMapper.toDomain(it) })
         } else {
@@ -59,8 +60,12 @@ class UserRepositoryImpl(
         }
     }
 
-    override suspend fun uploadAvatar(userId: Int, file: MultipartBody.Part, authToken: String): Response<ResponseModel> {
-        return userService.uploadAvatar(userId, file, authToken)
+    override suspend fun uploadAvatar(
+        userId: Int,
+        file: MultipartBody.Part,
+        authToken: String
+    ): Response<ResponseDomain> {
+        return userService.uploadAvatar(userId, file,  authToken)
     }
 
     override suspend fun deleteUser(id: Int, authToken: String): Response<String> {
