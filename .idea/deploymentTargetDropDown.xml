@@ -21,7 +21,13 @@
       <entry key="feature-auth">
         <State />
       </entry>
+      <entry key="feature-party">
+        <State />
+      </entry>
       <entry key="feature-profile">
+        <State />
+      </entry>
+      <entry key="feature-recommends">
         <State />
       </entry>
     </value>

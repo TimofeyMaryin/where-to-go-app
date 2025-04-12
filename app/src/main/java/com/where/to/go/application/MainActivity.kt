@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.where.to.go.application.ui.theme.WhereToGoApplicationTheme
 
 
 class MainActivity : ComponentActivity() {
@@ -26,7 +27,11 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
 
-        setContent {  }
+        setContent {
+            WhereToGoApplicationTheme {
+
+            }
+        }
     }
 }
 

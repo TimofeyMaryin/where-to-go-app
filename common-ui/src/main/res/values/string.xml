@@ -6,5 +6,6 @@
     <string name="date">Дата</string>
     <string name="guests_count">Количество гостей</string>
     <string name="apply">Применить</string>
+    <string name="add">Добавить</string>
 
 </resources>

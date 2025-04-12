@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import com.where.to.go.common_ui.values.TextFieldType
 import com.where.to.go.common_ui.values.TextSize
 import com.where.to.go.common_ui.values.TextWeight
-import com.where.to.go.component.common_ui.R
 
 enum class ContactType(val type: TextFieldType, val hint: String) {
     TG(TextFieldType.TEXT, "Введите свой ID"),
@@ -116,17 +115,17 @@ private fun SocialLinkPreview() {
         verticalArrangement = Arrangement.Center,
     ) {
         /**** Social link ****/
-        SocialLink(img = R.drawable.telegram, "",
+        SocialLink(img = R.drawable.ic_phone_rounded, "",
             end = {  },
             onAdd = {})
 
         /**** Social link with checkbox ****/
-        SocialLink(img = R.drawable.telegram, "",
+        SocialLink(img = R.drawable.ic_telergam_rounded, "",
             end = { SmallCheckBox(status = true) },
             onAdd = {})
 
         /**** Social link with button ****/
-        SocialLinkEditable(img = R.drawable.telegram, "",
+        SocialLinkEditable(img = R.drawable.ic_vk_rounded, "",
             onEdit = {},
             onAdd = {})
 

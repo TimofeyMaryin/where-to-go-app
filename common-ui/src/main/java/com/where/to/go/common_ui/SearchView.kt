@@ -81,7 +81,7 @@ fun CustomSearchView(
         }
 
 
-        SquareButton(icon = R.drawable.baseline_search_24, size = size.dp, iconSize = 34.dp) {
+        SquareButton(icon = R.drawable.ic_search, size = size.dp, iconSize = 34.dp) {
             onSearchClick()
         }
     }
